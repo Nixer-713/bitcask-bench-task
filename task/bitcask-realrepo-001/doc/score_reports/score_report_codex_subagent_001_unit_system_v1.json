@@ -1,0 +1,435 @@
+{
+  "total_cases": 28,
+  "passed_cases": 28,
+  "total_weight": 160,
+  "passed_weight": 160,
+  "score": 1.0,
+  "unit_score": {
+    "weight": 64,
+    "passed_weight": 64,
+    "cases": 16,
+    "passed_cases": 16,
+    "score": 1.0
+  },
+  "system_score": {
+    "weight": 96,
+    "passed_weight": 96,
+    "cases": 12,
+    "passed_cases": 12,
+    "score": 1.0
+  },
+  "unit_system_gap": 0.0,
+  "layers": {
+    "unit": {
+      "weight": 64,
+      "passed_weight": 64,
+      "cases": 16,
+      "passed": 16,
+      "score": 1.0
+    },
+    "system": {
+      "weight": 96,
+      "passed_weight": 96,
+      "cases": 12,
+      "passed": 12,
+      "score": 1.0
+    }
+  },
+  "categories": {
+    "put": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    },
+    "get": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    },
+    "update": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    },
+    "delete": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    },
+    "metadata": {
+      "weight": 20,
+      "passed_weight": 20,
+      "cases": 5,
+      "passed": 5,
+      "score": 1.0
+    },
+    "compact": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    },
+    "durability": {
+      "weight": 4,
+      "passed_weight": 4,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "put_compact_query": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "mixed_mutation_lifecycle": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "metadata_consistency": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "failed_update_preserves_state": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "failed_delete_no_append": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "delete_then_put_resurrection": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "writes_after_compaction": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "persist_across_invocations": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "overwrite_delete_compact": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "compaction_no_resurrection": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "cross_segment_compaction": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "mget_across_mutations": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    }
+  },
+  "system_dimensions": {
+    "cross_feature_dataflow": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "state_accumulation": {
+      "weight": 16,
+      "passed_weight": 16,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    },
+    "global_invariant": {
+      "weight": 16,
+      "passed_weight": 16,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    },
+    "error_atomicity": {
+      "weight": 16,
+      "passed_weight": 16,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    },
+    "operation_order_sensitivity": {
+      "weight": 16,
+      "passed_weight": 16,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    },
+    "durability_reload": {
+      "weight": 8,
+      "passed_weight": 8,
+      "cases": 1,
+      "passed": 1,
+      "score": 1.0
+    },
+    "boundary_crossing": {
+      "weight": 16,
+      "passed_weight": 16,
+      "cases": 2,
+      "passed": 2,
+      "score": 1.0
+    }
+  },
+  "failed_cases": [],
+  "all_cases": [
+    {
+      "id": "KVU001",
+      "layer": "unit",
+      "category": "put",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU002",
+      "layer": "unit",
+      "category": "put",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU003",
+      "layer": "unit",
+      "category": "get",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU004",
+      "layer": "unit",
+      "category": "update",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU005",
+      "layer": "unit",
+      "category": "update",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU006",
+      "layer": "unit",
+      "category": "delete",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU007",
+      "layer": "unit",
+      "category": "delete",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU008",
+      "layer": "unit",
+      "category": "metadata",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU009",
+      "layer": "unit",
+      "category": "metadata",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU010",
+      "layer": "unit",
+      "category": "metadata",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU011",
+      "layer": "unit",
+      "category": "get",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU012",
+      "layer": "unit",
+      "category": "metadata",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU013",
+      "layer": "unit",
+      "category": "compact",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU014",
+      "layer": "unit",
+      "category": "durability",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU015",
+      "layer": "unit",
+      "category": "compact",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVU016",
+      "layer": "unit",
+      "category": "metadata",
+      "weight": 4,
+      "passed": true
+    },
+    {
+      "id": "KVS001",
+      "layer": "system",
+      "category": "put_compact_query",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "cross_feature_dataflow"
+    },
+    {
+      "id": "KVS002",
+      "layer": "system",
+      "category": "mixed_mutation_lifecycle",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "state_accumulation"
+    },
+    {
+      "id": "KVS003",
+      "layer": "system",
+      "category": "metadata_consistency",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "global_invariant"
+    },
+    {
+      "id": "KVS004",
+      "layer": "system",
+      "category": "failed_update_preserves_state",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "error_atomicity"
+    },
+    {
+      "id": "KVS005",
+      "layer": "system",
+      "category": "failed_delete_no_append",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "error_atomicity"
+    },
+    {
+      "id": "KVS006",
+      "layer": "system",
+      "category": "delete_then_put_resurrection",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "operation_order_sensitivity"
+    },
+    {
+      "id": "KVS007",
+      "layer": "system",
+      "category": "writes_after_compaction",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "operation_order_sensitivity"
+    },
+    {
+      "id": "KVS008",
+      "layer": "system",
+      "category": "persist_across_invocations",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "durability_reload"
+    },
+    {
+      "id": "KVS009",
+      "layer": "system",
+      "category": "overwrite_delete_compact",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "boundary_crossing"
+    },
+    {
+      "id": "KVS010",
+      "layer": "system",
+      "category": "compaction_no_resurrection",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "global_invariant"
+    },
+    {
+      "id": "KVS011",
+      "layer": "system",
+      "category": "cross_segment_compaction",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "state_accumulation"
+    },
+    {
+      "id": "KVS012",
+      "layer": "system",
+      "category": "mget_across_mutations",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "boundary_crossing"
+    }
+  ]
+}

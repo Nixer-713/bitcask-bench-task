@@ -1,0 +1,7 @@
+.DS_Store
+__pycache__/
+*.py[cod]
+
+# Local source checkout and candidate model runs.
+bitcask-main/
+runs/
