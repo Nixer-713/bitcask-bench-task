@@ -85,35 +85,6 @@ The system set covers all seven requested dimensions. `durability_reload` is a
 bitcask-specific extension to the standard six-dimension family, reflecting that
 durable on-disk reload is this product's defining property.
 
-## Reference And Model Verification
-
-| Solution | Unit | System | Gap | Report |
-| --- | ---: | ---: | ---: | --- |
-| Reference | 100.00% | 100.00% | 0.00pp | `score_report_reference_unit_system_v1.json` |
-| Codex subagent | 100.00% | 100.00% | 0.00pp | `score_report_codex_subagent_001_unit_system_v1.json` |
-| GPT-5.4-mini candidate | 100.00% | 100.00% | 0.00pp | `score_report_gpt54mini_001_unit_system_v1.json` |
-
-The reference solution (`_reference/kvmini.py`) passes the full rubric with a
-0pp unit/system gap, confirming the hidden tests are satisfiable. Candidate rows
-are populated by running a model-generated `kvmini.py` through
-`_reference/score.py`. In the current run, both tested coding candidates reached
-100% unit and 100% system scores, so this packet is **structurally valid but not
-yet a confirmed core-strong gap task**. The target signal remains a large
-positive unit/system gap on weaker candidates: high unit scores with materially
-lower system scores, indicating per-command correctness that does not compose
-into a consistent durable store. The next hardening pass should add fairer,
-more complex system workflows rather than private-format or implementation-shape
-checks.
-
-## Reproducing The Reference Report
-
-```console
-cd _reference
-python3 build_rubric.py          # regenerate ../rubric.json
-python3 score.py --solution ./kvmini.py --rubric ../rubric.json \
-    --label reference --out ../doc/score_reports/score_report_reference_unit_system_v1.json
-```
-
 ## Fairness Notes
 
 - Only CLI output and exit codes are scored; the on-disk format, segment naming,

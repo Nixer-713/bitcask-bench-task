@@ -1,44 +1,29 @@
-# Unit/System Gap Benchmark Task Draft
+# Bitcask Benchmark Task Deliverables
 
-This repository contains one draft benchmark task:
+This repository contains the benchmark task deliverables for one open-source
+project:
 
-- `task/bitcask-realrepo-001`
+- Source project: `SarthakMakhija/bitcask`
+- Task directory: `task/bitcask-realrepo-001`
 
-The task is derived from a real Bitcask-style key/value store and asks a
-candidate model to implement a compact Python CLI, `kvmini.py`, from the public
-product packet in `prd.md`.
+The core deliverables are:
 
-## Current Status
+- `task/bitcask-realrepo-001/prd.md`
+- `task/bitcask-realrepo-001/rubric.json`
 
-The packet is structurally aligned with the Bmk-dev task layout:
+`prd.md` is the public product requirement document given to a model. It
+describes the expected behavior of a simplified mini-bitcask command-line
+program without exposing hidden test answers.
 
-- `prd.md`
-- `rubric.json`
-- `doc/source_repo.md`
-- `doc/requirement_map.md`
-- `doc/score_reports/`
+`rubric.json` is the evaluation definition. It contains unit-level and
+system-level cases used to score whether a model-generated implementation
+satisfies the PRD.
 
-The reference solution passes the full rubric:
+The `doc/` directory only provides supporting review context:
 
-- unit: 100.00%
-- system: 100.00%
-- gap: 0.00pp
+- `source_repo.md`: why the selected open-source repository is suitable.
+- `requirement_map.md`: how PRD requirements map to unit and system cases.
 
-Two candidate model runs also reached 100.00% unit and 100.00% system. That
-means the task is reproducible and fair after the latest cleanup, but it is not
-yet confirmed as a core-strong gap task. The next pass should add harder,
-fair CLI-observable system workflows that expose model degradation without
-checking private file formats or implementation details.
-
-## Reproduce Scores
-
-```console
-python3 task/bitcask-realrepo-001/_reference/score.py \
-  --solution task/bitcask-realrepo-001/_reference/kvmini.py \
-  --rubric task/bitcask-realrepo-001/rubric.json \
-  --label reference \
-  --out task/bitcask-realrepo-001/doc/score_reports/score_report_reference_unit_system_v1.json
-```
-
-Candidate solutions should be generated from `task/bitcask-realrepo-001/prd.md`
-only, then scored with the same harness.
+Reference implementations, scorer scripts, and score reports are intentionally
+not included in this handoff repository because the requested deliverable is the
+PRD plus rubric for the selected open-source project, not an implementation.

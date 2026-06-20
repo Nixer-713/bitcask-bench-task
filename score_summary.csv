@@ -1,4 +1,0 @@
-task,solution,unit_score,system_score,gap_pp,status
-MiniBitcask,reference,100.00,100.00,0.00,reference_pass
-MiniBitcask,codex-subagent-001,100.00,100.00,0.00,no_gap_observed
-MiniBitcask,gpt54mini-001,100.00,100.00,0.00,no_gap_observed
