@@ -100,7 +100,7 @@ Print a compact JSON object mapping every live key to its value.
 
 ### `stats`
 
-Print a compact JSON object with at least:
+Print a compact JSON object with exactly:
 
 - `live_keys`: the number of live keys.
 - `log_entries`: the number of physical records currently persisted on disk,

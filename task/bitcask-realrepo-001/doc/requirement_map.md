@@ -42,6 +42,7 @@ Rubric: `rubric.json`
 | `KVU014` | durability | `REQ-durability` | value written by one invocation read by a later one |
 | `KVU015` | compact | `REQ-compact` | compact removes tombstoned keys entirely |
 | `KVU016` | metadata | `REQ-metadata` | metadata on empty store is consistent and empty |
+| `KVU017` | error/atomicity | `REQ-atomic` | malformed command fails and appends nothing |
 
 Unit requirement coverage:
 
@@ -52,7 +53,7 @@ Unit requirement coverage:
 - `REQ-metadata`: `KVU008`, `KVU009`, `KVU010`, `KVU012`, `KVU016`
 - `REQ-compact`: `KVU013`, `KVU015`
 - `REQ-durability`: `KVU014`
-- `REQ-atomic`: `KVU005`, `KVU007`
+- `REQ-atomic`: `KVU005`, `KVU007`, `KVU017`
 
 ## System Coverage
 
