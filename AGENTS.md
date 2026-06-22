@@ -43,8 +43,19 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 - Check at minimum: unique IDs, valid layers, non-empty requirement refs, system cases have dimensions, and no implementation fields such as `solution`, `reference`, `implementation`, or `test_code`.
 - Confirm repository file tree contains only allowed deliverables and supporting docs.
 - If local validation tools exist outside the handoff tree, run them from ignored/local paths and do not commit them.
+- Run a leakage scan before commit: search for `_reference`, `score_report`, `score.py`, `evaluator`, `candidate`, `answer`, `expected output`, and implementation artifacts.
+- Use `git ls-files` as the source of truth for what will be delivered.
 
-## 6. Required Subagent Checks
+## 6. Correctness And Leakage Gates
+
+- Every rubric case must trace to `requirement_map.md` and a public PRD behavior.
+- If a test cannot be inferred from PRD, either remove the test or update PRD.
+- If PRD states an implementation choice is free, rubric must not constrain that choice.
+- PRD must not contain case IDs, hidden assertions, score strategy, or reference implementation hints.
+- Rubric must not contain solution code, reference outputs beyond public assertions, or private setup formats.
+- Official handoff tree should stay small: `README.md`, `AGENTS.md`, optional `INDEX.md`, and task PRD/rubric/docs.
+
+## 7. Required Subagent Checks
 
 - Before final handoff, spawn one subagent to run benchmark-structure validation.
 - Spawn a second independent subagent to review PRD/rubric consistency and fairness.
@@ -52,7 +63,7 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 - The review subagent must cite concrete evidence from files, including relevant snippets or line references showing why the task is acceptable or what must be fixed.
 - Main agent must independently inspect subagent findings before committing or pushing.
 
-## 7. Handoff Standard
+## 8. Handoff Standard
 
 - Final repo should be understandable from `README.md`, `prd.md`, `rubric.json`, `source_repo.md`, and `requirement_map.md`.
 - State clearly whether the task is draft, candidate, or confirmed gap-producing.
