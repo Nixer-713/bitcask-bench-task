@@ -22,6 +22,31 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 - Unit cases check local capabilities; system cases check interactions across at least two capabilities.
 - The target signal is a meaningful gap: high unit pass rate with lower system pass rate.
 
+## 2.1 Task Selection Roadmap
+
+- Current next task order is fixed: build `xitkit` first, then `marmite`.
+- `xitkit` should become a local task-file CLI benchmark focused on parsing `.xit`
+  tasks, stable IDs, status/priority/due/tag extraction, writeback, filtering,
+  sorting, stats, and cross-file move consistency.
+- `marmite` should become a static-site generator benchmark focused on markdown
+  frontmatter, post/page classification, taxonomy pages, pagination, feeds,
+  search index, URL manifest, and wikilink/backlink consistency.
+- Do not start another source repository unless these two are rejected with
+  concrete validation evidence or the user explicitly changes priority.
+
+## 2.2 Case-Like Difficulty Requirements
+
+- Follow the reference benchmark style: unit tests cover local features, while
+  system tests cross heterogeneous modules and derived views.
+- Prefer tasks where one source state drives several public outputs: parsed
+  records, filters, indexes, summaries, graph/links, generated files, or config
+  effects.
+- Avoid tasks whose public behavior collapses into one simple state model, such
+  as append log -> live map -> metadata, unless extra public source-derived
+  lifecycle semantics are added to the PRD first.
+- Do not hard-code failure: candidate implementations may score 100/100. Treat
+  that as no-gap evidence, not as proof that the task is invalid.
+
 ## 3. PRD Requirements
 
 - Describe the command/program surface, inputs, outputs, errors, constraints, non-goals, and global invariants.
