@@ -1,0 +1,5 @@
+task,solution,unit_score,system_score,gap_pp,failed_cases,status
+MiniBitcask,reference,100.00,100.00,0.00,0,reference_pass
+MiniBitcask,codex_agent_001,100.00,100.00,0.00,0,no_gap_observed
+MiniBitcask,codex_agent_002,100.00,100.00,0.00,0,no_gap_observed
+MiniBitcask,gpt54mini_agent_001,100.00,100.00,0.00,0,no_gap_observed
