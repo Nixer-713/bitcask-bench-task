@@ -1,9 +1,9 @@
 {
   "label": "codex_agent_002",
-  "total_cases": 29,
-  "passed_cases": 29,
-  "total_weight": 164,
-  "passed_weight": 164,
+  "total_cases": 35,
+  "passed_cases": 35,
+  "total_weight": 212,
+  "passed_weight": 212,
   "score": 1.0,
   "unit_score": {
     "weight": 68,
@@ -13,26 +13,26 @@
     "score": 1.0
   },
   "system_score": {
-    "weight": 96,
-    "passed_weight": 96,
-    "cases": 12,
-    "passed_cases": 12,
+    "weight": 144,
+    "passed_weight": 144,
+    "cases": 18,
+    "passed_cases": 18,
     "score": 1.0
   },
   "gap_pp": 0.0,
   "system_dimensions": {
     "cross_feature_dataflow": {
-      "weight": 8,
-      "passed_weight": 8,
-      "cases": 1,
-      "passed_cases": 1,
-      "score": 1.0
-    },
-    "state_accumulation": {
       "weight": 16,
       "passed_weight": 16,
       "cases": 2,
       "passed_cases": 2,
+      "score": 1.0
+    },
+    "state_accumulation": {
+      "weight": 24,
+      "passed_weight": 24,
+      "cases": 3,
+      "passed_cases": 3,
       "score": 1.0
     },
     "global_invariant": {
@@ -43,31 +43,31 @@
       "score": 1.0
     },
     "error_atomicity": {
-      "weight": 16,
-      "passed_weight": 16,
-      "cases": 2,
-      "passed_cases": 2,
+      "weight": 24,
+      "passed_weight": 24,
+      "cases": 3,
+      "passed_cases": 3,
       "score": 1.0
     },
     "operation_order_sensitivity": {
-      "weight": 16,
-      "passed_weight": 16,
-      "cases": 2,
-      "passed_cases": 2,
+      "weight": 24,
+      "passed_weight": 24,
+      "cases": 3,
+      "passed_cases": 3,
       "score": 1.0
     },
     "durability_reload": {
-      "weight": 8,
-      "passed_weight": 8,
-      "cases": 1,
-      "passed_cases": 1,
-      "score": 1.0
-    },
-    "boundary_crossing": {
       "weight": 16,
       "passed_weight": 16,
       "cases": 2,
       "passed_cases": 2,
+      "score": 1.0
+    },
+    "boundary_crossing": {
+      "weight": 24,
+      "passed_weight": 24,
+      "cases": 3,
+      "passed_cases": 3,
       "score": 1.0
     }
   },
@@ -287,6 +287,54 @@
       "weight": 8,
       "passed": true,
       "system_dimension": "boundary_crossing"
+    },
+    {
+      "id": "KVS013",
+      "layer": "system",
+      "category": "long_lifecycle_replay",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "state_accumulation"
+    },
+    {
+      "id": "KVS014",
+      "layer": "system",
+      "category": "tombstone_survives_reload_compact",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "durability_reload"
+    },
+    {
+      "id": "KVS015",
+      "layer": "system",
+      "category": "rollover_replay_order",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "boundary_crossing"
+    },
+    {
+      "id": "KVS016",
+      "layer": "system",
+      "category": "multiple_compactions_idempotent",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "operation_order_sensitivity"
+    },
+    {
+      "id": "KVS017",
+      "layer": "system",
+      "category": "error_atomicity_after_compact",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "error_atomicity"
+    },
+    {
+      "id": "KVS018",
+      "layer": "system",
+      "category": "read_metadata_agreement_mixed_lifecycle",
+      "weight": 8,
+      "passed": true,
+      "system_dimension": "cross_feature_dataflow"
     }
   ]
 }

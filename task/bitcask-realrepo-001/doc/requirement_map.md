@@ -71,16 +71,22 @@ Unit requirement coverage:
 | `KVS010` | `global_invariant` | put -> delete -> put -> compact -> keys/get | `REQ-compact`, `REQ-delete`, `REQ-put`, `REQ-get`, `REQ-global-invariants` | compaction never resurrects deleted keys or reverts values |
 | `KVS011` | `state_accumulation` | put across rolled segments -> compact -> list | `REQ-put`, `REQ-compact`, `REQ-metadata`, `REQ-durability` | correctness holds when writes span multiple segments |
 | `KVS012` | `boundary_crossing` | put -> update -> delete -> mget/list | `REQ-get`, `REQ-update`, `REQ-delete`, `REQ-metadata`, `REQ-global-invariants` | mget reflects updates and deletions and matches list |
+| `KVS013` | `state_accumulation` | put/update/delete -> compact -> update/put -> mget/list/stats | `REQ-put`, `REQ-update`, `REQ-delete`, `REQ-compact`, `REQ-get`, `REQ-metadata`, `REQ-global-invariants` | long mutation history preserves latest live values across compact and later writes |
+| `KVS014` | `durability_reload` | put -> delete -> compact -> get/stats across invocations | `REQ-delete`, `REQ-compact`, `REQ-durability`, `REQ-get`, `REQ-metadata`, `REQ-global-invariants` | tombstoned keys stay absent after replay and compact while live keys persist |
+| `KVS015` | `boundary_crossing` | put/update/delete/recreate across small segment threshold -> list/count/stats | `REQ-put`, `REQ-delete`, `REQ-metadata`, `REQ-durability`, `REQ-global-invariants` | replay order and live metadata stay correct when mutation history crosses segment boundaries |
+| `KVS016` | `operation_order_sensitivity` | put/update/delete -> compact -> compact -> write/update -> compact -> list/stats/get | `REQ-put`, `REQ-update`, `REQ-delete`, `REQ-compact`, `REQ-get`, `REQ-metadata`, `REQ-global-invariants` | repeated compactions are idempotent and later writes still become latest state |
+| `KVS017` | `error_atomicity` | put -> compact -> invalid update/delete/malformed put -> stats/list/get | `REQ-put`, `REQ-update`, `REQ-delete`, `REQ-compact`, `REQ-atomic`, `REQ-metadata`, `REQ-global-invariants` | failed commands after compaction append nothing and preserve compacted state |
+| `KVS018` | `cross_feature_dataflow` | put/update/delete/recreate -> compact -> mget/list/keys/count | `REQ-put`, `REQ-update`, `REQ-delete`, `REQ-compact`, `REQ-get`, `REQ-metadata`, `REQ-global-invariants` | read and metadata surfaces agree after mixed lifecycle operations |
 
 System dimension coverage:
 
-- `cross_feature_dataflow`: `KVS001`
-- `state_accumulation`: `KVS002`, `KVS011`
+- `cross_feature_dataflow`: `KVS001`, `KVS018`
+- `state_accumulation`: `KVS002`, `KVS011`, `KVS013`
 - `global_invariant`: `KVS003`, `KVS010`
-- `error_atomicity`: `KVS004`, `KVS005`
-- `operation_order_sensitivity`: `KVS006`, `KVS007`
-- `boundary_crossing`: `KVS009`, `KVS012`
-- `durability_reload`: `KVS008`
+- `error_atomicity`: `KVS004`, `KVS005`, `KVS017`
+- `operation_order_sensitivity`: `KVS006`, `KVS007`, `KVS016`
+- `boundary_crossing`: `KVS009`, `KVS012`, `KVS015`
+- `durability_reload`: `KVS008`, `KVS014`
 
 The system set covers all seven requested dimensions. `durability_reload` is a
 bitcask-specific extension to the standard six-dimension family, reflecting that

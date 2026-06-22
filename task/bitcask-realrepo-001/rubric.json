@@ -1409,5 +1409,574 @@
         }
       }
     }
+  },
+  {
+    "id": "KVS013",
+    "layer": "system",
+    "system_dimension": "state_accumulation",
+    "category": "long_lifecycle_replay",
+    "requirement_refs": [
+      "REQ-put",
+      "REQ-update",
+      "REQ-delete",
+      "REQ-compact",
+      "REQ-get",
+      "REQ-metadata",
+      "REQ-global-invariants"
+    ],
+    "description": "Long mutation history preserves latest live values across compact and later writes.",
+    "weight": 8,
+    "commands": [
+      [
+        "store",
+        "put",
+        "a",
+        "1"
+      ],
+      [
+        "store",
+        "put",
+        "b",
+        "1"
+      ],
+      [
+        "store",
+        "update",
+        "a",
+        "2"
+      ],
+      [
+        "store",
+        "delete",
+        "b"
+      ],
+      [
+        "store",
+        "put",
+        "c",
+        "3"
+      ],
+      [
+        "store",
+        "compact"
+      ],
+      [
+        "store",
+        "update",
+        "a",
+        "4"
+      ],
+      [
+        "store",
+        "put",
+        "b",
+        "5"
+      ],
+      [
+        "store",
+        "mget",
+        "a",
+        "b",
+        "c",
+        "z"
+      ],
+      [
+        "store",
+        "list"
+      ],
+      [
+        "store",
+        "stats"
+      ]
+    ],
+    "checks": {
+      "stdout_json": {
+        "8": {
+          "a": "4",
+          "b": "5",
+          "c": "3"
+        },
+        "9": {
+          "a": "4",
+          "b": "5",
+          "c": "3"
+        },
+        "10": {
+          "live_keys": 3,
+          "log_entries": 4
+        }
+      }
+    }
+  },
+  {
+    "id": "KVS014",
+    "layer": "system",
+    "system_dimension": "durability_reload",
+    "category": "tombstone_survives_reload_compact",
+    "requirement_refs": [
+      "REQ-delete",
+      "REQ-compact",
+      "REQ-durability",
+      "REQ-get",
+      "REQ-metadata",
+      "REQ-global-invariants"
+    ],
+    "description": "A deleted key remains absent after separate invocations and compaction while live keys remain readable.",
+    "weight": 8,
+    "commands": [
+      [
+        "store",
+        "put",
+        "x",
+        "old"
+      ],
+      [
+        "store",
+        "put",
+        "y",
+        "live"
+      ],
+      [
+        "store",
+        "delete",
+        "x"
+      ],
+      [
+        "store",
+        "compact"
+      ],
+      {
+        "args": [
+          "store",
+          "get",
+          "x"
+        ],
+        "expect_error": true
+      },
+      [
+        "store",
+        "get",
+        "y"
+      ],
+      [
+        "store",
+        "stats"
+      ]
+    ],
+    "checks": {
+      "stdout_equals": {
+        "5": "live"
+      },
+      "stdout_json": {
+        "6": {
+          "live_keys": 1,
+          "log_entries": 1
+        }
+      }
+    }
+  },
+  {
+    "id": "KVS015",
+    "layer": "system",
+    "system_dimension": "boundary_crossing",
+    "category": "rollover_replay_order",
+    "requirement_refs": [
+      "REQ-put",
+      "REQ-delete",
+      "REQ-metadata",
+      "REQ-durability",
+      "REQ-global-invariants"
+    ],
+    "description": "Replay order and live metadata stay correct when mutation history crosses small segment boundaries.",
+    "weight": 8,
+    "env": {
+      "KVMINI_MAX_SEGMENT_BYTES": "45"
+    },
+    "commands": [
+      [
+        "store",
+        "put",
+        "k1",
+        "aaaaa"
+      ],
+      [
+        "store",
+        "put",
+        "k2",
+        "bbbbb"
+      ],
+      [
+        "store",
+        "put",
+        "k1",
+        "newer"
+      ],
+      [
+        "store",
+        "delete",
+        "k2"
+      ],
+      [
+        "store",
+        "put",
+        "k3",
+        "ccccc"
+      ],
+      [
+        "store",
+        "put",
+        "k2",
+        "reborn"
+      ],
+      [
+        "store",
+        "delete",
+        "k1"
+      ],
+      [
+        "store",
+        "put",
+        "k1",
+        "final"
+      ],
+      [
+        "store",
+        "list"
+      ],
+      [
+        "store",
+        "count"
+      ],
+      [
+        "store",
+        "stats"
+      ]
+    ],
+    "checks": {
+      "stdout_json": {
+        "8": {
+          "k1": "final",
+          "k2": "reborn",
+          "k3": "ccccc"
+        },
+        "10": {
+          "live_keys": 3,
+          "log_entries": 8
+        }
+      },
+      "stdout_equals": {
+        "9": "3"
+      }
+    }
+  },
+  {
+    "id": "KVS016",
+    "layer": "system",
+    "system_dimension": "operation_order_sensitivity",
+    "category": "multiple_compactions_idempotent",
+    "requirement_refs": [
+      "REQ-put",
+      "REQ-update",
+      "REQ-delete",
+      "REQ-compact",
+      "REQ-get",
+      "REQ-metadata",
+      "REQ-global-invariants"
+    ],
+    "description": "Repeated compactions are idempotent and later writes still become the latest live state.",
+    "weight": 8,
+    "commands": [
+      [
+        "store",
+        "put",
+        "a",
+        "1"
+      ],
+      [
+        "store",
+        "put",
+        "b",
+        "1"
+      ],
+      [
+        "store",
+        "update",
+        "a",
+        "2"
+      ],
+      [
+        "store",
+        "delete",
+        "b"
+      ],
+      [
+        "store",
+        "compact"
+      ],
+      [
+        "store",
+        "compact"
+      ],
+      [
+        "store",
+        "put",
+        "c",
+        "3"
+      ],
+      [
+        "store",
+        "update",
+        "a",
+        "4"
+      ],
+      [
+        "store",
+        "compact"
+      ],
+      [
+        "store",
+        "list"
+      ],
+      [
+        "store",
+        "stats"
+      ],
+      [
+        "store",
+        "get",
+        "a"
+      ],
+      {
+        "args": [
+          "store",
+          "get",
+          "b"
+        ],
+        "expect_error": true
+      }
+    ],
+    "checks": {
+      "stdout_json": {
+        "9": {
+          "a": "4",
+          "c": "3"
+        },
+        "10": {
+          "live_keys": 2,
+          "log_entries": 2
+        }
+      },
+      "stdout_equals": {
+        "11": "4"
+      }
+    }
+  },
+  {
+    "id": "KVS017",
+    "layer": "system",
+    "system_dimension": "error_atomicity",
+    "category": "error_atomicity_after_compact",
+    "requirement_refs": [
+      "REQ-put",
+      "REQ-update",
+      "REQ-delete",
+      "REQ-compact",
+      "REQ-atomic",
+      "REQ-metadata",
+      "REQ-global-invariants"
+    ],
+    "description": "Malformed and invalid commands after compaction append nothing and preserve compacted state.",
+    "weight": 8,
+    "commands": [
+      [
+        "store",
+        "put",
+        "a",
+        "1"
+      ],
+      [
+        "store",
+        "put",
+        "b",
+        "2"
+      ],
+      [
+        "store",
+        "compact"
+      ],
+      [
+        "store",
+        "stats"
+      ],
+      {
+        "args": [
+          "store",
+          "update",
+          "c",
+          "9"
+        ],
+        "expect_error": true
+      },
+      {
+        "args": [
+          "store",
+          "delete",
+          "z"
+        ],
+        "expect_error": true
+      },
+      {
+        "args": [
+          "store",
+          "put",
+          "q"
+        ],
+        "expect_error": true
+      },
+      [
+        "store",
+        "stats"
+      ],
+      [
+        "store",
+        "list"
+      ],
+      [
+        "store",
+        "get",
+        "a"
+      ]
+    ],
+    "checks": {
+      "stdout_json": {
+        "3": {
+          "live_keys": 2,
+          "log_entries": 2
+        },
+        "7": {
+          "live_keys": 2,
+          "log_entries": 2
+        },
+        "8": {
+          "a": "1",
+          "b": "2"
+        }
+      },
+      "stdout_equals": {
+        "9": "1"
+      }
+    }
+  },
+  {
+    "id": "KVS018",
+    "layer": "system",
+    "system_dimension": "cross_feature_dataflow",
+    "category": "read_metadata_agreement_mixed_lifecycle",
+    "requirement_refs": [
+      "REQ-put",
+      "REQ-update",
+      "REQ-delete",
+      "REQ-compact",
+      "REQ-get",
+      "REQ-metadata",
+      "REQ-global-invariants"
+    ],
+    "description": "mget, list, keys, and count agree after mixed update/delete/recreate and compaction lifecycle.",
+    "weight": 8,
+    "commands": [
+      [
+        "store",
+        "put",
+        "a",
+        "1"
+      ],
+      [
+        "store",
+        "put",
+        "b",
+        "2"
+      ],
+      [
+        "store",
+        "put",
+        "c",
+        "3"
+      ],
+      [
+        "store",
+        "update",
+        "b",
+        "22"
+      ],
+      [
+        "store",
+        "delete",
+        "c"
+      ],
+      [
+        "store",
+        "put",
+        "d",
+        "4"
+      ],
+      [
+        "store",
+        "delete",
+        "a"
+      ],
+      [
+        "store",
+        "put",
+        "a",
+        "11"
+      ],
+      [
+        "store",
+        "compact"
+      ],
+      [
+        "store",
+        "mget",
+        "a",
+        "b",
+        "c",
+        "d",
+        "z"
+      ],
+      [
+        "store",
+        "list"
+      ],
+      [
+        "store",
+        "keys"
+      ],
+      [
+        "store",
+        "count"
+      ]
+    ],
+    "checks": {
+      "stdout_json": {
+        "9": {
+          "a": "11",
+          "b": "22",
+          "d": "4"
+        },
+        "10": {
+          "a": "11",
+          "b": "22",
+          "d": "4"
+        },
+        "11": [
+          "a",
+          "b",
+          "d"
+        ]
+      },
+      "stdout_equals": {
+        "12": "3"
+      }
+    }
   }
 ]

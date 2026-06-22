@@ -1,10 +1,13 @@
 # Hardening Plan
 
-Current validation shows no unit/system gap across three code-agent candidates.
-The next iteration should strengthen system workflows while staying inside the
-current PRD.
+Current validation still shows no unit/system gap across three code-agent
+candidates. This means the evidence does not support `core_strong`; it does not
+make the task invalid.
 
-Candidate additions should target public, PRD-defined behavior:
+## Applied Lifecycle Cases
+
+The rubric now includes `KVS013` through `KVS018`, all targeting public,
+PRD-defined Bitcask lifecycle behavior:
 
 - Longer mixed mutation histories before and after `compact`.
 - Multiple `compact` calls interleaved with `put`, `update`, `delete`, `mget`,
@@ -16,7 +19,10 @@ Candidate additions should target public, PRD-defined behavior:
 - Rollover with a small `KVMINI_MAX_SEGMENT_BYTES` combined with delete,
   recreate, compact, and stats invariants.
 
-Rules for hardening:
+Reference remains 100/100 after these additions. Three non-reference candidates
+also remain 100/100, so the current evidence status is `no_gap_observed`.
+
+## Rules for Further Hardening
 
 - Every new case must be inferable from `prd.md`.
 - Do not constrain on-disk file names, record formats, segment counts, classes,
