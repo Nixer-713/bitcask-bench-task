@@ -1,31 +1,36 @@
-# Bitcask Benchmark Task Deliverables
+# Benchmark Task Deliverables
 
-This repository contains the benchmark task deliverables for one open-source
-project:
+This repository contains benchmark task handoff files derived from real
+open-source projects. Each task is represented by a public PRD and a hidden
+rubric, plus supporting source and requirement mapping docs.
 
-- Source project: `SarthakMakhija/bitcask`
-- Task directory: `task/bitcask-realrepo-001`
+## Tasks
 
-The core deliverables are:
+| Task | Source project | Status |
+| --- | --- | --- |
+| `task/bitcask-realrepo-001` | `SarthakMakhija/bitcask` | Candidate with no-gap-observed validation evidence; not core-strong |
+| `task/xitkit-realrepo-001` | `hoechstleistungshaartrockner/xitkit` | Active candidate task under source-grounding review |
 
-- `task/bitcask-realrepo-001/prd.md`
-- `task/bitcask-realrepo-001/rubric.json`
+## Deliverable Boundary
 
-`prd.md` is the public product requirement document given to a model. It
-describes the expected behavior of a simplified mini-bitcask command-line
-program without exposing hidden test answers.
+For each task, the core deliverables are:
 
-`rubric.json` is the evaluation definition. It contains unit-level and
-system-level cases used to score whether a model-generated implementation
-satisfies the PRD.
+- `prd.md`: public product requirement document shown to model/code agents.
+- `rubric.json`: hidden unit/system evaluation definition.
+- `doc/source_repo.md`: source-project evidence and adaptation rationale.
+- `doc/requirement_map.md`: traceability from PRD requirements to rubric cases.
 
-The `doc/` directory only provides supporting review context:
+Reference implementations, scorer scripts, candidate outputs, and score reports
+must stay out of `main` unless the repository is explicitly converted into a
+validation package.
 
-- `source_repo.md`: why the selected open-source repository is suitable.
-- `requirement_map.md`: how PRD requirements map to unit and system cases.
+## Current Direction
 
-For AI reviewers, start from `PROJECT_CONTEXT.md` and `INDEX.md`.
+Bitcask remains useful as a clean candidate handoff and no-gap evidence, but it
+must not be claimed as `core_strong`. The active construction path is:
 
-Reference implementations, scorer scripts, and score reports are intentionally
-not included in this handoff repository because the requested deliverable is the
-PRD plus rubric for the selected open-source project, not an implementation.
+1. Finish source-grounding and handoff cleanup for `xitkit-realrepo-001`.
+2. Use validation evidence to decide whether to expand or validate xitkit.
+3. Build `marmite` next if xitkit is rejected or completed.
+
+For AI reviewers, start from `PROJECT_CONTEXT.md`, `INDEX.md`, and `AGENTS.md`.

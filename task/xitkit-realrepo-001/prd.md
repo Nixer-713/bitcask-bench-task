@@ -90,14 +90,15 @@ are written after the due date in the order supplied by the command.
 
 ```console
 python xitlite.py list --file FILE [--file FILE ...]
-  [--status STATUS] [--tag TAG] [--priority-min N]
+  [--status STATUS] [--tag TAG ...] [--priority-min N]
   [--due-on DATE] [--due-by DATE]
   [--sort id|priority|due] [--order asc|desc]
 ```
 
 Print a JSON array of task objects. Multiple `--file` arguments are read in the
 given order. Multiple filters compose as intersection. `--tag TAG` matches tag
-name regardless of value. `--priority-min N` keeps tasks with priority at least
+name regardless of value, and `--tag` may be repeated; repeated tag filters
+compose as intersection. `--priority-min N` keeps tasks with priority at least
 `N`. `--due-on` and `--due-by` use the same normalized date rules as parsing.
 
 Default sort is `id asc`. Priority sort compares priority, due sort compares
