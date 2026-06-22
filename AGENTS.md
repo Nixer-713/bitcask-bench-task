@@ -53,7 +53,7 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 - If PRD states an implementation choice is free, rubric must not constrain that choice.
 - PRD must not contain case IDs, hidden assertions, score strategy, or reference implementation hints.
 - Rubric must not contain solution code, reference outputs beyond public assertions, or private setup formats.
-- Official handoff tree should stay small: `README.md`, `AGENTS.md`, optional `INDEX.md`, and task PRD/rubric/docs.
+- Official handoff tree should stay small: `README.md`, `AGENTS.md`, optional `INDEX.md`, optional `PROJECT_CONTEXT.md`, and task PRD/rubric/docs.
 
 ## 7. Required Subagent Checks
 
@@ -65,6 +65,6 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 
 ## 8. Handoff Standard
 
-- Final repo should be understandable from `README.md`, `prd.md`, `rubric.json`, `source_repo.md`, and `requirement_map.md`.
+- Final repo should be understandable from `README.md`, `PROJECT_CONTEXT.md`, `prd.md`, `rubric.json`, `source_repo.md`, and `requirement_map.md`.
 - State clearly whether the task is draft, candidate, or confirmed gap-producing.
 - If gap evidence is unavailable, do not claim the task is core-strong.

@@ -24,7 +24,7 @@ The `doc/` directory only provides supporting review context:
 - `source_repo.md`: why the selected open-source repository is suitable.
 - `requirement_map.md`: how PRD requirements map to unit and system cases.
 
-For AI reviewers, start from `INDEX.md`.
+For AI reviewers, start from `PROJECT_CONTEXT.md` and `INDEX.md`.
 
 Reference implementations, scorer scripts, and score reports are intentionally
 not included in this handoff repository because the requested deliverable is the

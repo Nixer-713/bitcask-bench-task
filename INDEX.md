@@ -6,6 +6,7 @@ implementation repository.
 ## Entry Points
 
 - `README.md`: high-level repository purpose and deliverable boundary.
+- `PROJECT_CONTEXT.md`: project background, benchmark goal, and external review questions.
 - `AGENTS.md`: construction rules, correctness gates, leakage prevention, and required review workflow.
 - `task/bitcask-realrepo-001/prd.md`: public requirement document shown to model/code agents.
 - `task/bitcask-realrepo-001/rubric.json`: hidden unit/system evaluation cases.
@@ -45,6 +46,7 @@ finding. Prioritize fairness issues, hidden assumptions, implementation-detail
 tests, missing requirement mappings, malformed rubric cases, and weak
 unit/system separation. Also verify that the handoff used two independent
 checks: benchmark-structure validation and PRD/rubric fairness review.
+Start with `PROJECT_CONTEXT.md` and `INDEX.md`.
 
 ## Mechanical Checks
 
@@ -84,6 +86,7 @@ PRD/rubric inconsistencies with file evidence.
 README.md
 AGENTS.md
 INDEX.md
+PROJECT_CONTEXT.md
 task/bitcask-realrepo-001/prd.md
 task/bitcask-realrepo-001/rubric.json
 task/bitcask-realrepo-001/doc/source_repo.md
