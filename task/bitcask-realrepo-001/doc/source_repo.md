@@ -39,6 +39,12 @@ bitcask lifecycle: append-only writes, latest-value-wins reads, tombstone
 deletes, metadata, and an explicit `compact` step, with all state persisted to a
 directory so it survives across separate process invocations.
 
+The missing-key behavior for `update` and `delete` is a deliberate public
+mini-task CLI contract, not a hidden assumption about the Go repository. The PRD
+defines these malformed state transitions as non-zero failures that append
+nothing and preserve existing state, so the rubric can test error atomicity
+through observable CLI behavior.
+
 This case is promising because the output artifact is **durable on-disk state**,
 not formatted command output. Correctness requires append-only logging, a
 correct latest-record-wins reload, tombstone semantics that survive compaction,
