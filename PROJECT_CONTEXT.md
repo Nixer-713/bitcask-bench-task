@@ -26,20 +26,38 @@ more Bitcask lifecycle cases unless explicitly requested.
 
 ### Xitkit
 
-`task/xitkit-realrepo-001` is the current active candidate task. It is derived
-from `hoechstleistungshaartrockner/xitkit` and abstracts the source into a local
+`task/xitkit-realrepo-001` is a source-grounded candidate task derived from
+`hoechstleistungshaartrockner/xitkit`. It abstracts the source into a local
 `.xit` task-file CLI. The intended system pressure is that one task-file state
 drives several public outputs and effects: parsed task records, filters, sorted
 views, stats summaries, writeback results, and cross-file movement.
+
+Initial validation evidence exists on `validation/xitkit`: the reference passed
+16/16 unit and 12/12 system cases, and three independent code-agent candidates
+also passed 16/16 unit and 12/12 system cases. Treat xitkit as
+source-grounded candidate/no-gap-observed evidence. Do not claim
+`core_strong`, `confirmed benchmark`, or `gap-producing` from current evidence.
+
+### Marmite
+
+`task/marmite-realrepo-001` is the active source-grounding target, derived from
+`rochacbruno/marmite`. The expected benchmark direction is a static-site
+generator task where one markdown content graph and configuration produce
+multiple public outputs: rendered pages, taxonomies, pagination, feeds, search
+index, URL manifest, and wikilink/backlink views.
+
+Only `doc/source_repo.md` exists so far. PRD, rubric, and requirement map are
+not drafted yet.
 
 ### Roadmap
 
 The active roadmap is fixed unless the user changes it explicitly:
 
-1. Finish source-grounding and handoff cleanup for xitkit.
-2. Decide whether to validate or expand xitkit only after source grounding is
-   clean.
-3. Build marmite next.
+1. Keep Bitcask as candidate/no-gap-observed evidence.
+2. Keep xitkit as source-grounded candidate/no-gap-observed evidence from
+   initial validation.
+3. Continue marmite source-grounding, then draft PRD/rubric only after source
+   behavior boundaries are clear.
 
 ## Goal
 
@@ -63,11 +81,14 @@ Review these files first:
 
 - `AGENTS.md`: repo-wide construction, priority, and leakage-prevention rules.
 - `INDEX.md`: task index and mechanical checks.
-- `task/xitkit-realrepo-001/prd.md`: active model-visible requirements.
-- `task/xitkit-realrepo-001/rubric.json`: active unit/system evaluation cases.
+- `task/xitkit-realrepo-001/prd.md`: source-grounded model-visible requirements.
+- `task/xitkit-realrepo-001/rubric.json`: source-grounded unit/system
+  evaluation cases with no-gap-observed initial validation.
 - `task/xitkit-realrepo-001/doc/source_repo.md`: source-grounding evidence.
 - `task/xitkit-realrepo-001/doc/requirement_map.md`: traceability and
   source-grounding map.
+- `task/marmite-realrepo-001/doc/source_repo.md`: active source-grounding notes
+  for the next task.
 
 ## Review Questions
 
@@ -79,7 +100,8 @@ Review these files first:
 6. Do all `requirement_refs` map back to `requirement_map.md`?
 7. Is there any answer leakage, reference implementation, scorer, candidate
    output, or score report committed to `main`?
-8. Is xitkit source grounding strong enough before validation starts?
+8. Does xitkit's no-gap-observed validation status stay clearly separated from
+   any `core_strong` or confirmed benchmark claim?
 
 ## Non-Goals
 
