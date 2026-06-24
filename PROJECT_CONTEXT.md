@@ -46,8 +46,8 @@ generator task where one markdown content graph and configuration produce
 multiple public outputs: rendered pages, taxonomies, pagination, feeds, search
 index, URL manifest, and wikilink/backlink views.
 
-Only `doc/source_repo.md` exists so far. PRD, rubric, and requirement map are
-not drafted yet.
+`prd.md` now exists as the first model-visible draft. Rubric and requirement
+map are not drafted yet.
 
 ### Roadmap
 
@@ -56,8 +56,8 @@ The active roadmap is fixed unless the user changes it explicitly:
 1. Keep Bitcask as candidate/no-gap-observed evidence.
 2. Keep xitkit as source-grounded candidate/no-gap-observed evidence from
    initial validation.
-3. Continue marmite source-grounding, then draft PRD/rubric only after source
-   behavior boundaries are clear.
+3. Review the marmite PRD boundary, then draft requirement map and rubric only
+   after the PRD is stable.
 
 ## Goal
 
@@ -89,6 +89,7 @@ Review these files first:
   source-grounding map.
 - `task/marmite-realrepo-001/doc/source_repo.md`: active source-grounding notes
   for the next task.
+- `task/marmite-realrepo-001/prd.md`: current Marmite model-visible draft.
 
 ## Review Questions
 

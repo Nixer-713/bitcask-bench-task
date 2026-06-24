@@ -179,7 +179,8 @@ Likely exclusions unless explicitly justified later:
 ## Next Source-Grounding Questions
 
 Resolved boundary proposal below answers these questions for the first PRD
-draft. The PRD/rubric should not be written until these choices are reviewed.
+draft. The current `prd.md` follows this proposal. Rubric cases should not be
+written until the PRD boundary is reviewed and stable.
 
 ## PRD Boundary Proposal
 

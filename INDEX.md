@@ -44,8 +44,9 @@ implementation repository.
   taxonomy pages, pagination, feeds, search index, URL manifest, and
   wikilink/backlink consistency.
 - Files:
+  - `task/marmite-realrepo-001/prd.md`
   - `task/marmite-realrepo-001/doc/source_repo.md`
-- Status: source-grounding started. PRD, rubric, and requirement map are not
+- Status: PRD drafted from source-grounding. Rubric and requirement map are not
   drafted yet.
 
 ## Review Checklist
@@ -122,5 +123,6 @@ task/xitkit-realrepo-001/prd.md
 task/xitkit-realrepo-001/rubric.json
 task/xitkit-realrepo-001/doc/source_repo.md
 task/xitkit-realrepo-001/doc/requirement_map.md
+task/marmite-realrepo-001/prd.md
 task/marmite-realrepo-001/doc/source_repo.md
 ```
