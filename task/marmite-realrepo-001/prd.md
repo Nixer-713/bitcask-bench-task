@@ -285,18 +285,21 @@ remain relative.
 Manifest groups have these meanings:
 
 - `posts`: non-draft post content pages.
-- `pages`: page content pages.
+- `pages`: page content pages plus `pages.html` when generated.
 - `index`: `index.html` and index pagination files.
-- `tags`: tag listing pages, including `tags.html`.
-- `streams`: stream listing pages, including `streams.html`.
+- `tags`: tag listing pages plus `tags.html` when generated.
+- `streams`: stream listing pages plus `streams.html` when generated.
 - `feeds`: generated JSON feed files.
 - `search`: `search_index.json` when generated.
-- `misc`: `urls.json` and any other required public file not covered above.
+- `misc`: `urls.json` only, unless a later PRD revision explicitly defines
+  another miscellaneous public file.
 
-`summary` must include integer counts for every array key plus `total`, the sum
-of all generated paths in the manifest except `urls.json` itself. `misc` must
-include `urls.json`; it may also include `tags.html`, `streams.html`, and
-`pages.html` when generated.
+`summary` must include integer counts for every array key plus `total`.
+`summary.<group>` equals `len(manifest[group])` for each manifest array,
+including `summary.misc == 1` because `misc` contains `urls.json`.
+`summary.total` is the sum of all generated public paths represented in the
+manifest except `urls.json` itself, so it equals the sum of all group lengths
+minus one.
 
 The manifest is the primary global invariant: every public generated file must
 be represented exactly once in the appropriate manifest group, and draft content

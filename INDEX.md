@@ -46,7 +46,8 @@ implementation repository.
 - Files:
   - `task/marmite-realrepo-001/prd.md`
   - `task/marmite-realrepo-001/doc/source_repo.md`
-- Status: PRD drafted from source-grounding. Rubric and requirement map are not
+  - `task/marmite-realrepo-001/doc/requirement_map.md`
+- Status: PRD and requirement map drafted from source-grounding. Rubric is not
   drafted yet.
 
 ## Review Checklist
@@ -125,4 +126,5 @@ task/xitkit-realrepo-001/doc/source_repo.md
 task/xitkit-realrepo-001/doc/requirement_map.md
 task/marmite-realrepo-001/prd.md
 task/marmite-realrepo-001/doc/source_repo.md
+task/marmite-realrepo-001/doc/requirement_map.md
 ```
