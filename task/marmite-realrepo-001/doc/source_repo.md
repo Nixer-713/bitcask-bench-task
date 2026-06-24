@@ -18,6 +18,7 @@ paths.
 - `src/site.rs`
 - `src/feed.rs`
 - `src/config.rs`
+- `tests/basic_functionality.rs`
 - `tests/content_generation.rs`
 - `tests/features.rs`
 - `tests/streams.rs`
@@ -86,7 +87,7 @@ paths.
 - `src/site.rs` collects generated URLs across posts, pages, tags, authors,
   series, streams, archives, feeds, pagination, file mappings, and misc files.
 - `src/site.rs` can publish `urls.json` when enabled by config.
-- `tests/basic_functionality.rs` covers the show-urls command.
+- `tests/basic_functionality.rs` covers the `--show-urls` command.
 - `tests/features.rs` covers sitemap generation.
 
 ### Wikilinks And Backlinks
@@ -177,10 +178,103 @@ Likely exclusions unless explicitly justified later:
 
 ## Next Source-Grounding Questions
 
-- Which Marmite behaviors should be retained in PRD versus left as non-goals?
-- Should the mini task include both tags and streams, or only one taxonomy plus
-  wikilinks/backlinks?
-- Should feeds be RSS/XML, JSON feed, or a simplified public JSON feed?
-- Should `urls.json` be the primary system invariant oracle?
-- How should draft/excluded content be publicly specified so it affects pages,
-  taxonomies, feeds, search, and manifest consistently?
+Resolved boundary proposal below answers these questions for the first PRD
+draft. The PRD/rubric should not be written until these choices are reviewed.
+
+## PRD Boundary Proposal
+
+### Behavior Scope Decisions
+
+| Source behavior | Decision | Reason |
+| --- | --- | --- |
+| Markdown input directory and output directory CLI | Keep | Core public Marmite behavior from `README.md`. |
+| YAML frontmatter parsing | Keep, simplified | Needed for title, slug, date, tags, stream, draft, and config-derived outputs. |
+| Title extraction from frontmatter or first heading | Keep | Source-derived in `src/content.rs`; easy to observe in HTML and manifests. |
+| Slug extraction from frontmatter/title/filename | Keep, simplified | Central to generated filenames, URLs, wikilinks, feeds, and manifests. |
+| Date extraction from frontmatter and date-prefixed filename | Keep | Drives post/page classification and chronological ordering. |
+| Post/page classification by presence of date | Keep | Explicit in `README.md` and `src/site.rs`. |
+| Tags taxonomy | Keep | Public feature and good cross-output system dimension. |
+| Streams taxonomy | Keep | Public feature; source tests cover frontmatter and filename-derived streams. |
+| Authors/series/archive | Simplify or exclude from first PRD | Useful but increases breadth; tags+streams already provide two heterogeneous groupings. |
+| Pagination | Keep | Strong system pressure because it affects listing pages and URL manifest. |
+| RSS/XML feed | Exclude from first PRD | XML parsing details add surface area without much extra source-graph pressure. |
+| JSON feed | Keep | Source-supported and scorer-friendly; preserves feed semantics without XML friction. |
+| `urls.json` manifest / `--show-urls` | Keep as core invariant | Source has `create_urls_json`, `generate_urls_json`, and `--show-urls`; ideal global oracle. |
+| Search index | Keep | Source-supported; tests can check that only public content enters search. |
+| Wikilinks | Keep | Public feature and tested integration behavior. |
+| Backlinks | Keep as required derived metadata | Source collects backlinks; forces graph-level consistency across pages. |
+| Draft/excluded content | Keep, define explicitly | Source filters draft-stream content from feeds/search and grouped listings; the mini task should make exclusion propagation public and deterministic. |
+| Static/media copy | Exclude or mark optional | Mostly file-copy behavior; less useful for unit/system gap. |
+| Sitemap | Exclude initially | `urls.json` covers the same global URL invariant in simpler JSON form. |
+| Tera templates/theme system | Exclude | Private rendering architecture and large unrelated surface. |
+| Full CommonMark/GFM parity | Exclude | Mini task should define a small observable markdown subset. |
+| Image resizing/downloads | Exclude | Requires binary assets and external-image semantics. |
+| Server/watch/live reload | Exclude | Operational mode, not needed for benchmark core. |
+| Shortcodes/gallery/highlighting/comments | Exclude | Feature-specific and not necessary for source-derived system pressure. |
+
+### Proposed Public Outputs
+
+The mini task should expose these observable outputs:
+
+- `*.html` files for each rendered post and page.
+- `index.html` and paginated `index-N.html` post listings.
+- `pages.html` for undated pages.
+- `tag-{tag}.html` and `tag-{tag}-N.html` listing pages.
+- `{stream}.html` and `{stream}-N.html` listing pages for non-default streams.
+- `feed.json`, `tag-{tag}.json`, and `{stream}.json` JSON feeds.
+- `search_index.json`.
+- `urls.json` with grouped arrays and summary counts.
+- Per-page HTML containing resolved wikilinks and backlink sections.
+
+`urls.json` should be the primary system invariant oracle because it can tie
+generated HTML files, taxonomy pages, pagination, feeds, and search-visible
+content back to one parsed source state.
+
+### Likely Unit Modules
+
+- Frontmatter parsing and fallback title extraction.
+- Slug/date extraction from frontmatter and filenames.
+- Post/page classification.
+- Tag extraction and tag page naming.
+- Stream extraction from frontmatter and filename patterns.
+- Basic markdown-to-HTML rendering for headings, paragraphs, and links.
+- JSON feed item generation.
+- Search index item generation.
+- Wikilink resolution.
+- Draft/excluded content recognition.
+
+### Likely System Dimensions
+
+- `content_graph_fanout`: one markdown source state generates pages, listings,
+  feeds, search index, and URL manifest.
+- `classification_propagation`: post/page/draft classification affects every
+  derived output consistently.
+- `taxonomy_cross_views`: tags and streams create pages, feed subsets,
+  pagination, and manifest entries from the same posts.
+- `pagination_manifest_consistency`: page counts and generated listing files
+  agree with `urls.json`.
+- `link_graph_consistency`: wikilinks and backlinks agree across rendered HTML
+  and manifests.
+- `exclusion_propagation`: draft content is consistently absent from the
+  public outputs defined by the mini PRD while non-draft content remains
+  visible.
+- `config_effects`: config values such as pagination, base URL, and JSON feed
+  toggle affect all relevant outputs consistently.
+
+### Boundary Decisions For Open Questions
+
+- Include both tags and streams. Tags alone are too close to one grouping
+  module; tags+streams force parallel taxonomy logic and filename/frontmatter
+  interactions.
+- Use JSON feed rather than RSS/XML. Marmite supports both, but JSON is easier
+  to score and still preserves feed membership/order semantics.
+- Make `urls.json` a core invariant. It should be checked in most system cases
+  because Marmite's source uses generated URL collection as a global site map.
+- Make wikilinks/backlinks required system behavior. They are source-supported,
+  observable, and graph-like enough to create system pressure.
+- Define draft/excluded content publicly as `stream: draft` or filename stream
+  prefix `draft-YYYY-MM-DD-...`. Source Marmite filters draft-stream content
+  from feeds, search, and grouped listing contexts; the mini task should use a
+  simpler public rule: excluded content produces no public page, taxonomy entry,
+  feed item, search item, or URL manifest entry. This is a deterministic
+  adaptation and must be stated in PRD before rubric cases rely on it.
