@@ -1,0 +1,5 @@
+implementation,unit_passed,unit_total,system_passed,system_total,unit_score,system_score,gap_pp,failed_case_ids,status
+reference,16,16,12,12,100.0,100.0,0.0,,satisfiable
+codex_agent_001,16,16,12,12,100.0,100.0,0.0,,no_gap_observed
+codex_agent_002,16,16,12,12,100.0,100.0,0.0,,no_gap_observed
+codex_agent_003,16,16,12,12,100.0,100.0,0.0,,no_gap_observed

@@ -1,0 +1,1080 @@
+{
+  "summary": {
+    "total_passed": 28,
+    "total_cases": 28,
+    "unit_passed": 16,
+    "unit_total": 16,
+    "system_passed": 12,
+    "system_total": 12,
+    "unit_score": 100.0,
+    "system_score": 100.0,
+    "gap_pp": 0.0,
+    "failed_case_ids": []
+  },
+  "results": [
+    {
+      "id": "XITU001",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Open item\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"done\",\"description\":\"Done item\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":3,\"file\":\"tasks.xit\",\"line\":3,\"status\":\"ongoing\",\"description\":\"Doing item\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":4,\"file\":\"tasks.xit\",\"line\":4,\"status\":\"obsolete\",\"description\":\"Old item\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":5,\"file\":\"tasks.xit\",\"line\":5,\"status\":\"question\",\"description\":\"Question item\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU002",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":4,\"status\":\"open\",\"description\":\"Valid\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU003",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"One\",\"priority\":1,\"due\":null,\"tags\":{}},{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"Two\",\"priority\":2,\"due\":null,\"tags\":{}},{\"id\":3,\"file\":\"tasks.xit\",\"line\":3,\"status\":\"open\",\"description\":\"Three\",\"priority\":3,\"due\":null,\"tags\":{}},{\"id\":4,\"file\":\"tasks.xit\",\"line\":4,\"status\":\"open\",\"description\":\".!. Not priority\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU004",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Day -> 2026-03-04\",\"priority\":0,\"due\":\"2026-03-04\",\"tags\":{}},{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"Month -> 2026-02\",\"priority\":0,\"due\":\"2026-02-28\",\"tags\":{}},{\"id\":3,\"file\":\"tasks.xit\",\"line\":3,\"status\":\"open\",\"description\":\"Year -> 2026\",\"priority\":0,\"due\":\"2026-12-31\",\"tags\":{}},{\"id\":4,\"file\":\"tasks.xit\",\"line\":4,\"status\":\"open\",\"description\":\"Week -> 2026-W01\",\"priority\":0,\"due\":\"2026-01-04\",\"tags\":{}},{\"id\":5,\"file\":\"tasks.xit\",\"line\":5,\"status\":\"open\",\"description\":\"Quarter -> 2026-Q2\",\"priority\":0,\"due\":\"2026-06-30\",\"tags\":{}},{\"id\":6,\"file\":\"tasks.xit\",\"line\":6,\"status\":\"open\",\"description\":\"Slash -> 2026/05/06\",\"priority\":0,\"due\":\"2026-05-06\",\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU005",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Tags #work #area=lab #note=\\\"hello world\\\" #empty=\\\"\\\" #国=日本\",\"priority\":0,\"due\":null,\"tags\":{\"work\":null,\"area\":\"lab\",\"note\":\"hello world\",\"empty\":\"\",\"国\":\"日本\"}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU006",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"First line\\nsecond line\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":2,\"file\":\"tasks.xit\",\"line\":4,\"status\":\"open\",\"description\":\"Next\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU007",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--status",
+            "done"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"done\",\"description\":\"B\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU008",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--tag",
+            "work",
+            "--tag",
+            "urgent"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"B #work #urgent\",\"priority\":0,\"due\":null,\"tags\":{\"work\":null,\"urgent\":null}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU009",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--priority-min",
+            "2"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"Mid\",\"priority\":2,\"due\":null,\"tags\":{}},{\"id\":3,\"file\":\"tasks.xit\",\"line\":3,\"status\":\"open\",\"description\":\"High\",\"priority\":3,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU010",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--due-on",
+            "2026-01-02"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"A -> 2026-01-02\",\"priority\":0,\"due\":\"2026-01-02\",\"tags\":{}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--due-by",
+            "2026-01-02"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"A -> 2026-01-02\",\"priority\":0,\"due\":\"2026-01-02\",\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU011",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--sort",
+            "priority",
+            "--order",
+            "desc"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"B\",\"priority\":3,\"due\":null,\"tags\":{}},{\"id\":3,\"file\":\"tasks.xit\",\"line\":3,\"status\":\"open\",\"description\":\"C\",\"priority\":2,\"due\":null,\"tags\":{}},{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"A\",\"priority\":1,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU012",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--sort",
+            "due",
+            "--order",
+            "asc"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":3,\"file\":\"tasks.xit\",\"line\":3,\"status\":\"open\",\"description\":\"Earlier -> 2026-01-01\",\"priority\":0,\"due\":\"2026-01-01\",\"tags\":{}},{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"Later -> 2026-05-01\",\"priority\":0,\"due\":\"2026-05-01\",\"tags\":{}},{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"No date\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU013",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":3,\"by_status\":{\"open\":1,\"done\":1,\"ongoing\":1},\"by_priority\":{\"1\":1,\"0\":1,\"2\":1},\"by_file\":{\"tasks.xit\":3},\"with_tags\":2,\"with_due\":1}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU014",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "add",
+            "--file",
+            "tasks.xit",
+            "--text",
+            "Ship report",
+            "--priority",
+            "2",
+            "--due",
+            "2026-02-01",
+            "--tag",
+            "work"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Ship report -> 2026-02-01 #work\",\"priority\":2,\"due\":\"2026-02-01\",\"tags\":{\"work\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Ship report -> 2026-02-01 #work\",\"priority\":2,\"due\":\"2026-02-01\",\"tags\":{\"work\":null}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU015",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "mark",
+            "--file",
+            "tasks.xit",
+            "1",
+            "--status",
+            "done"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"done\",\"description\":\"Fix bug #work -> 2026-03-01\",\"priority\":2,\"due\":\"2026-03-01\",\"tags\":{\"work\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"done\",\"description\":\"Fix bug #work -> 2026-03-01\",\"priority\":2,\"due\":\"2026-03-01\",\"tags\":{\"work\":null}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITU016",
+      "layer": "unit",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "tag",
+            "--file",
+            "tasks.xit",
+            "1",
+            "new=blue"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Task #old #new=blue\",\"priority\":0,\"due\":null,\"tags\":{\"old\":null,\"new\":\"blue\"}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "untag",
+            "--file",
+            "tasks.xit",
+            "1",
+            "old"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Task #new=blue\",\"priority\":0,\"due\":null,\"tags\":{\"new\":\"blue\"}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Task #new=blue\",\"priority\":0,\"due\":null,\"tags\":{\"new\":\"blue\"}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS001",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--status",
+            "open",
+            "--tag",
+            "work",
+            "--priority-min",
+            "2",
+            "--sort",
+            "due"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":4,\"file\":\"tasks.xit\",\"line\":4,\"status\":\"open\",\"description\":\"Delta #work -> 2026-03-01\",\"priority\":2,\"due\":\"2026-03-01\",\"tags\":{\"work\":null}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":4,\"by_status\":{\"open\":2,\"ongoing\":1,\"done\":1},\"by_priority\":{\"1\":1,\"3\":1,\"0\":1,\"2\":1},\"by_file\":{\"tasks.xit\":4},\"with_tags\":4,\"with_due\":3}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS002",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "add",
+            "--file",
+            "tasks.xit",
+            "--text",
+            "New task",
+            "--status",
+            "ongoing",
+            "--priority",
+            "3",
+            "--due",
+            "2026-Q1",
+            "--tag",
+            "release"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"ongoing\",\"description\":\"New task -> 2026-03-31 #release\",\"priority\":3,\"due\":\"2026-03-31\",\"tags\":{\"release\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--sort",
+            "priority",
+            "--order",
+            "desc"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"ongoing\",\"description\":\"New task -> 2026-03-31 #release\",\"priority\":3,\"due\":\"2026-03-31\",\"tags\":{\"release\":null}},{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Existing\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":2,\"by_status\":{\"open\":1,\"ongoing\":1},\"by_priority\":{\"0\":1,\"3\":1},\"by_file\":{\"tasks.xit\":2},\"with_tags\":1,\"with_due\":1}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS003",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "mark",
+            "--file",
+            "tasks.xit",
+            "2",
+            "--status",
+            "done"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"done\",\"description\":\"B #work\",\"priority\":0,\"due\":null,\"tags\":{\"work\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--status",
+            "open",
+            "--tag",
+            "work"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"A #work\",\"priority\":0,\"due\":null,\"tags\":{\"work\":null}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":3,\"by_status\":{\"open\":1,\"done\":2},\"by_priority\":{\"0\":3},\"by_file\":{\"tasks.xit\":3},\"with_tags\":2,\"with_due\":0}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS004",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "tag",
+            "--file",
+            "tasks.xit",
+            "2",
+            "new"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"B #new\",\"priority\":0,\"due\":null,\"tags\":{\"new\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "untag",
+            "--file",
+            "tasks.xit",
+            "1",
+            "old"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"A\",\"priority\":0,\"due\":null,\"tags\":{}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--tag",
+            "new"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"B #new\",\"priority\":0,\"due\":null,\"tags\":{\"new\":null}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 3,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--tag",
+            "old"
+          ],
+          "returncode": 0,
+          "stdout": "[]\n",
+          "stderr": ""
+        },
+        {
+          "index": 4,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":2,\"by_status\":{\"open\":2},\"by_priority\":{\"0\":2},\"by_file\":{\"tasks.xit\":2},\"with_tags\":1,\"with_due\":0}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS005",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "reschedule",
+            "--file",
+            "tasks.xit",
+            "2",
+            "2025-Q4"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"No date -> 2025-12-31\",\"priority\":0,\"due\":\"2025-12-31\",\"tags\":{}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--due-by",
+            "2025-12-31"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"No date -> 2025-12-31\",\"priority\":0,\"due\":\"2025-12-31\",\"tags\":{}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--sort",
+            "due",
+            "--order",
+            "asc"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"No date -> 2025-12-31\",\"priority\":0,\"due\":\"2025-12-31\",\"tags\":{}},{\"id\":3,\"file\":\"tasks.xit\",\"line\":3,\"status\":\"open\",\"description\":\"Early -> 2026-01-01\",\"priority\":0,\"due\":\"2026-01-01\",\"tags\":{}},{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Later -> 2026-05-01\",\"priority\":0,\"due\":\"2026-05-01\",\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS006",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "move",
+            "--from",
+            "inbox.xit",
+            "--to",
+            "done.xit",
+            "2"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":2,\"file\":\"done.xit\",\"line\":2,\"status\":\"open\",\"description\":\"Move me #work -> 2026-01-01\",\"priority\":2,\"due\":\"2026-01-01\",\"tags\":{\"work\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "list",
+            "--file",
+            "inbox.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"inbox.xit\",\"line\":1,\"status\":\"open\",\"description\":\"A\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "list",
+            "--file",
+            "done.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"done.xit\",\"line\":1,\"status\":\"done\",\"description\":\"Existing\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":2,\"file\":\"done.xit\",\"line\":2,\"status\":\"open\",\"description\":\"Move me #work -> 2026-01-01\",\"priority\":2,\"due\":\"2026-01-01\",\"tags\":{\"work\":null}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 3,
+          "args": [
+            "stats",
+            "--file",
+            "inbox.xit",
+            "--file",
+            "done.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":3,\"by_status\":{\"open\":2,\"done\":1},\"by_priority\":{\"0\":2,\"2\":1},\"by_file\":{\"inbox.xit\":1,\"done.xit\":2},\"with_tags\":1,\"with_due\":1}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS007",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "a.xit",
+            "--file",
+            "b.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"a.xit\",\"line\":1,\"status\":\"open\",\"description\":\"A1\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":2,\"file\":\"a.xit\",\"line\":2,\"status\":\"open\",\"description\":\"A2\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":3,\"file\":\"b.xit\",\"line\":1,\"status\":\"open\",\"description\":\"B1\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "move",
+            "--from",
+            "a.xit",
+            "--to",
+            "b.xit",
+            "2"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":2,\"file\":\"b.xit\",\"line\":2,\"status\":\"open\",\"description\":\"A2\",\"priority\":0,\"due\":null,\"tags\":{}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "list",
+            "--file",
+            "a.xit",
+            "--file",
+            "b.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"a.xit\",\"line\":1,\"status\":\"open\",\"description\":\"A1\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":2,\"file\":\"b.xit\",\"line\":1,\"status\":\"open\",\"description\":\"B1\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":3,\"file\":\"b.xit\",\"line\":2,\"status\":\"open\",\"description\":\"A2\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS008",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "mark",
+            "--file",
+            "a.xit",
+            "1",
+            "--status",
+            "ongoing"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"a.xit\",\"line\":1,\"status\":\"ongoing\",\"description\":\"Write docs\\ninclude examples\",\"priority\":0,\"due\":null,\"tags\":{}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "move",
+            "--from",
+            "a.xit",
+            "--to",
+            "b.xit",
+            "1"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"b.xit\",\"line\":1,\"status\":\"ongoing\",\"description\":\"Write docs\\ninclude examples\",\"priority\":0,\"due\":null,\"tags\":{}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "list",
+            "--file",
+            "b.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"b.xit\",\"line\":1,\"status\":\"ongoing\",\"description\":\"Write docs\\ninclude examples\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS009",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "add",
+            "--file",
+            "tasks.xit",
+            "--text",
+            "Plan",
+            "--due",
+            "2026"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Plan -> 2026-12-31\",\"priority\":0,\"due\":\"2026-12-31\",\"tags\":{}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "reschedule",
+            "--file",
+            "tasks.xit",
+            "1",
+            "2026-W02"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Plan -> 2026-01-11\",\"priority\":0,\"due\":\"2026-01-11\",\"tags\":{}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--due-on",
+            "2026-01-11"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Plan -> 2026-01-11\",\"priority\":0,\"due\":\"2026-01-11\",\"tags\":{}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 3,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":1,\"by_status\":{\"open\":1},\"by_priority\":{\"0\":1},\"by_file\":{\"tasks.xit\":1},\"with_tags\":0,\"with_due\":1}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS010",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":2,\"by_status\":{\"open\":2},\"by_priority\":{\"0\":2},\"by_file\":{\"tasks.xit\":2},\"with_tags\":0,\"with_due\":0}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "mark",
+            "--file",
+            "tasks.xit",
+            "9",
+            "--status",
+            "done"
+          ],
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "task ID not found: 9\n"
+        },
+        {
+          "index": 2,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"A\",\"priority\":0,\"due\":null,\"tags\":{}},{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"B\",\"priority\":0,\"due\":null,\"tags\":{}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 3,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":2,\"by_status\":{\"open\":2},\"by_priority\":{\"0\":2},\"by_file\":{\"tasks.xit\":2},\"with_tags\":0,\"with_due\":0}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS011",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--tag",
+            "work",
+            "--priority-min",
+            "2"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"B #work #urgent -> 2026-02-01\",\"priority\":2,\"due\":\"2026-02-01\",\"tags\":{\"work\":null,\"urgent\":null}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--status",
+            "done",
+            "--tag",
+            "urgent"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":3,\"file\":\"tasks.xit\",\"line\":3,\"status\":\"done\",\"description\":\"C #urgent -> 2026-03-01\",\"priority\":3,\"due\":\"2026-03-01\",\"tags\":{\"urgent\":null}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":3,\"by_status\":{\"open\":2,\"done\":1},\"by_priority\":{\"1\":1,\"2\":1,\"3\":1},\"by_file\":{\"tasks.xit\":3},\"with_tags\":3,\"with_due\":3}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "XITS012",
+      "layer": "system",
+      "passed": true,
+      "diagnostic": "",
+      "commands": [
+        {
+          "index": 0,
+          "args": [
+            "add",
+            "--file",
+            "tasks.xit",
+            "--text",
+            "Second",
+            "--priority",
+            "1",
+            "--tag",
+            "work"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"Second #work\",\"priority\":1,\"due\":null,\"tags\":{\"work\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 1,
+          "args": [
+            "tag",
+            "--file",
+            "tasks.xit",
+            "1",
+            "work"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"open\",\"description\":\"Base #seed #work\",\"priority\":0,\"due\":null,\"tags\":{\"seed\":null,\"work\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 2,
+          "args": [
+            "reschedule",
+            "--file",
+            "tasks.xit",
+            "2",
+            "2026-04"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"Second -> 2026-04-30 #work\",\"priority\":1,\"due\":\"2026-04-30\",\"tags\":{\"work\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 3,
+          "args": [
+            "mark",
+            "--file",
+            "tasks.xit",
+            "1",
+            "--status",
+            "question"
+          ],
+          "returncode": 0,
+          "stdout": "{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"question\",\"description\":\"Base #seed #work\",\"priority\":0,\"due\":null,\"tags\":{\"seed\":null,\"work\":null}}\n",
+          "stderr": ""
+        },
+        {
+          "index": 4,
+          "args": [
+            "list",
+            "--file",
+            "tasks.xit",
+            "--tag",
+            "work",
+            "--sort",
+            "due",
+            "--order",
+            "asc"
+          ],
+          "returncode": 0,
+          "stdout": "[{\"id\":2,\"file\":\"tasks.xit\",\"line\":2,\"status\":\"open\",\"description\":\"Second -> 2026-04-30 #work\",\"priority\":1,\"due\":\"2026-04-30\",\"tags\":{\"work\":null}},{\"id\":1,\"file\":\"tasks.xit\",\"line\":1,\"status\":\"question\",\"description\":\"Base #seed #work\",\"priority\":0,\"due\":null,\"tags\":{\"seed\":null,\"work\":null}}]\n",
+          "stderr": ""
+        },
+        {
+          "index": 5,
+          "args": [
+            "stats",
+            "--file",
+            "tasks.xit"
+          ],
+          "returncode": 0,
+          "stdout": "{\"total\":2,\"by_status\":{\"question\":1,\"open\":1},\"by_priority\":{\"0\":1,\"1\":1},\"by_file\":{\"tasks.xit\":2},\"with_tags\":2,\"with_due\":1}\n",
+          "stderr": ""
+        }
+      ]
+    }
+  ]
+}
