@@ -143,6 +143,10 @@ Tags may come only from frontmatter. Empty tags are ignored. Tag slugs use the
 same slugification rule as content slugs. A post can belong to multiple tags.
 Pages do not appear in tag listing pages or tag feeds.
 
+Content item `tags` arrays in `inspect`, JSON feeds, and `search_index.json`
+preserve the cleaned tag strings from frontmatter. Tag map keys, tag page
+filenames, and tag feed filenames use slugified tag names.
+
 ### Streams
 
 Posts belong to stream `index` by default. A stream may be supplied by
@@ -200,11 +204,12 @@ Each page must contain:
 
 ### Index And Pages Listings
 
-`index.html` lists non-draft posts from stream `index`, sorted by post order.
-If the post count exceeds `pagination`, also generate `index-2.html`,
-`index-3.html`, and so on. `index-1.html` is not required.
+`index.html` is always generated. It lists non-draft posts from stream `index`,
+sorted by post order. If the post count exceeds `pagination`, also generate
+`index-2.html`, `index-3.html`, and so on. `index-1.html` is not required.
 
-`pages.html` lists all pages sorted by page order. Pages are not paginated.
+`pages.html` is generated when there is at least one non-draft page. It lists
+all pages sorted by page order. Pages are not paginated.
 
 Listing pages must include links to each listed content page.
 
@@ -214,7 +219,8 @@ For every tag used by at least one non-draft post, generate `tag-{tag}.html`.
 If that tag has more posts than `pagination`, also generate
 `tag-{tag}-2.html`, `tag-{tag}-3.html`, and so on.
 
-`tags.html` lists all generated tag pages.
+`tags.html` is generated when at least one tag page is generated. It lists all
+generated tag pages.
 
 ### Stream Listings
 
@@ -222,7 +228,8 @@ For every non-`index`, non-`draft` stream used by at least one non-draft post,
 generate `{stream}.html`. If that stream has more posts than `pagination`, also
 generate `{stream}-2.html`, `{stream}-3.html`, and so on.
 
-`streams.html` lists all generated non-default stream pages.
+`streams.html` is generated when at least one non-default stream page is
+generated. It lists all generated non-default stream pages.
 
 ## JSON Feeds
 
