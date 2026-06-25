@@ -1,0 +1,5 @@
+run_id,kind,unit_pass,unit_total,system_pass,system_total,unit_score,system_score,gap_pp,failed_case_ids
+reference,reference,19,19,15,15,100.00,100.00,0.00,
+codex_agent_001,candidate,19,19,15,15,100.00,100.00,0.00,
+codex_agent_002,candidate,17,19,14,15,89.47,93.33,-3.86,MMU005 MMU007 MMS008
+codex_agent_003,candidate,17,19,14,15,89.47,93.33,-3.86,MMU005 MMU007 MMS008
