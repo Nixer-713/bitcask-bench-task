@@ -48,9 +48,13 @@ implementation repository.
   - `task/marmite-realrepo-001/rubric.json`
   - `task/marmite-realrepo-001/doc/source_repo.md`
   - `task/marmite-realrepo-001/doc/requirement_map.md`
-- Status: small source-grounded hardening pass drafted. Prior validation on
-  `validation/marmite` was reference-satisfiable/no-positive-gap-observed, but
-  the hardened rubric has not been revalidated. Do not claim `core_strong`.
+- Status: hardened reference-satisfiable/no-positive-gap-observed evidence
+  exists on `validation/marmite-hardened`. The hardened rubric has 34 cases
+  (19 unit / 15 system). Reference passed 19/19 unit and 15/15 system;
+  `codex_agent_001` also passed all cases; `codex_agent_002` and
+  `codex_agent_003` passed 17/19 unit and 14/15 system. Their failures were
+  local filename metadata / stream parsing issues, not positive unit/system gap
+  evidence. Do not claim `core_strong`.
 
 ## Review Checklist
 

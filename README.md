@@ -10,7 +10,7 @@ rubric, plus supporting source and requirement mapping docs.
 | --- | --- | --- |
 | `task/bitcask-realrepo-001` | `SarthakMakhija/bitcask` | Candidate with no-gap-observed validation evidence; not core-strong |
 | `task/xitkit-realrepo-001` | `hoechstleistungshaartrockner/xitkit` | Source-grounded candidate with initial no-gap-observed validation evidence; not core-strong |
-| `task/marmite-realrepo-001` | `rochacbruno/marmite` | Small source-grounded hardening pass drafted; prior validation was no-positive-gap; revalidation not started |
+| `task/marmite-realrepo-001` | `rochacbruno/marmite` | Hardened reference-satisfiable on `validation/marmite-hardened`; no positive unit/system gap observed; not core-strong |
 
 ## Deliverable Boundary
 
@@ -29,12 +29,16 @@ validation package.
 
 Bitcask remains useful as a clean candidate handoff and no-gap evidence, but it
 must not be claimed as `core_strong`. Xitkit is source-grounded and executable,
-but initial validation also produced no observed unit/system gap. Marmite has a
-small source-grounded hardening pass drafted after a prior reference-satisfiable
-no-positive-gap validation batch. The active construction path is:
+but initial validation also produced no observed unit/system gap. Marmite's
+hardened rubric has been validated on `validation/marmite-hardened`: the
+reference passed 19/19 unit and 15/15 system cases, one candidate passed all
+cases, and two candidates passed 17/19 unit and 14/15 system cases. Those
+failures were local filename metadata / stream parsing issues, not positive
+unit/system gap evidence. The active construction path is:
 
 1. Keep Bitcask and xitkit recorded as candidate/no-gap-observed evidence.
 2. Do not merge validation assets into `main`.
-3. Revalidate the hardened Marmite rubric before making any new evidence claim.
+3. Treat Marmite as hardened reference-satisfiable/no-positive-gap-observed
+   evidence unless future source-grounded work changes the validation result.
 
 For AI reviewers, start from `PROJECT_CONTEXT.md`, `INDEX.md`, and `AGENTS.md`.

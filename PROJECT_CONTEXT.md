@@ -46,12 +46,18 @@ markdown content graph and configuration produce multiple public outputs:
 rendered pages, taxonomies, pagination, feeds, search index, URL manifest, and
 wikilink/backlink views.
 
-Prior validation evidence exists on `validation/marmite`: the reference passed
-16/16 unit and 12/12 system cases. Two independent code-agent candidates also
-reached 16/16 unit and 12/12 system, while a third scored 8/16 unit and 9/12
-system. After that, a small source-grounded hardening pass added draft-aware
-link exclusion, archive-year taxonomy, and a read-only URL manifest preview
-command. The hardened rubric has not been revalidated yet. Do not claim
+Prior validation evidence on `validation/marmite` was reference-satisfiable but
+no-positive-gap-observed. After that, a small source-grounded hardening pass
+added draft-aware link exclusion, archive-year taxonomy, and a read-only URL
+manifest preview command.
+
+Hardened validation evidence now exists on `validation/marmite-hardened`. The
+hardened rubric has 34 cases: 19 unit and 15 system. The reference passed 19/19
+unit and 15/15 system cases. `codex_agent_001` also passed 19/19 unit and 15/15
+system. `codex_agent_002` and `codex_agent_003` each passed 17/19 unit and
+14/15 system; their failures were local filename metadata / stream parsing
+issues, not positive unit/system gap evidence. Treat Marmite as hardened
+reference-satisfiable/no-positive-gap-observed evidence. Do not claim
 `core_strong`, `confirmed benchmark`, or `gap-producing` from current evidence.
 
 ### Roadmap
@@ -61,7 +67,8 @@ The active roadmap is fixed unless the user changes it explicitly:
 1. Keep Bitcask as candidate/no-gap-observed evidence.
 2. Keep xitkit as source-grounded candidate/no-gap-observed evidence from
    initial validation.
-3. Revalidate the hardened Marmite rubric before making any new evidence claim.
+3. Keep Marmite as hardened reference-satisfiable/no-positive-gap-observed
+   evidence unless future source-grounded work changes validation results.
 
 ## Goal
 
