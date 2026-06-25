@@ -2,6 +2,8 @@
 
 Branch: `validation/marmite-hardened`
 
+Validation evidence commit: `d41f4d3`
+
 Task: `task/marmite-realrepo-001`
 
 Rubric size: 34 cases
