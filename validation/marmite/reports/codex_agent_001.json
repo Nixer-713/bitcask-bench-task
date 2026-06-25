@@ -1,0 +1,180 @@
+{
+  "cases": [
+    {
+      "diagnostics": [],
+      "id": "MMU001",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU002",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU003",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU004",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU005",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU006",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU007",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU008",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU009",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU010",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU011",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU012",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU013",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU014",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU015",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU016",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS001",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS002",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS003",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS004",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS005",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS006",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS007",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS008",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS009",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS010",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS011",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS012",
+      "layer": "system",
+      "passed": true
+    }
+  ],
+  "failed_case_ids": [],
+  "gap_pp": 0.0,
+  "system_pass": 12,
+  "system_score": 100.0,
+  "system_total": 12,
+  "unit_pass": 16,
+  "unit_score": 100.0,
+  "unit_total": 16
+}

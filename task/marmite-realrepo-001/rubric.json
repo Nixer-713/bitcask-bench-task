@@ -353,7 +353,7 @@
     "checks": {
       "stdout_json_contains_unordered": {
         "0": {
-          "posts": ["news-manifest-post.html"],
+          "posts": ["news-post.html"],
           "pages": ["manifest-page.html", "pages.html"],
           "index": ["index.html"],
           "tags": ["tag-x.html", "tags.html"],

@@ -1,0 +1,223 @@
+{
+  "cases": [
+    {
+      "diagnostics": [
+        "stdout 0 does not contain expected subset"
+      ],
+      "id": "MMU001",
+      "layer": "unit",
+      "passed": false
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU002",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU003",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [
+        "stdout 0 does not contain expected subset"
+      ],
+      "id": "MMU004",
+      "layer": "unit",
+      "passed": false
+    },
+    {
+      "diagnostics": [
+        "stdout 0 does not contain expected subset"
+      ],
+      "id": "MMU005",
+      "layer": "unit",
+      "passed": false
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU006",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [
+        "stdout 0 does not contain expected subset"
+      ],
+      "id": "MMU007",
+      "layer": "unit",
+      "passed": false
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU008",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [
+        "missing file out/source-page.html",
+        "missing file out/target-page.html",
+        "missing file for contains out/source-page.html"
+      ],
+      "id": "MMU009",
+      "layer": "unit",
+      "passed": false
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU010",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU011",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [
+        "missing file out/about-page.html",
+        "out/pages.html missing text 'about-page.html'",
+        "out/urls.json does not contain expected JSON subset"
+      ],
+      "id": "MMU012",
+      "layer": "unit",
+      "passed": false
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU013",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [
+        "out/search_index.json does not contain expected JSON subset"
+      ],
+      "id": "MMU014",
+      "layer": "unit",
+      "passed": false
+    },
+    {
+      "diagnostics": [
+        "stdout 0 does not contain expected subset"
+      ],
+      "id": "MMU015",
+      "layer": "unit",
+      "passed": false
+    },
+    {
+      "diagnostics": [],
+      "id": "MMU016",
+      "layer": "unit",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS001",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [
+        "missing file out/public-page.html",
+        "stdout 0 does not contain expected subset"
+      ],
+      "id": "MMS002",
+      "layer": "system",
+      "passed": false
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS003",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS004",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [
+        "missing file for contains out/alpha-page.html",
+        "out/beta-custom.html missing text 'alpha-page'",
+        "out/urls.json does not contain expected JSON subset"
+      ],
+      "id": "MMS005",
+      "layer": "system",
+      "passed": false
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS006",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS007",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [
+        "missing file out/guide-install-rust.html",
+        "out/guide.json does not contain expected JSON subset",
+        "out/urls.json does not contain expected JSON subset"
+      ],
+      "id": "MMS008",
+      "layer": "system",
+      "passed": false
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS009",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS010",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS011",
+      "layer": "system",
+      "passed": true
+    },
+    {
+      "diagnostics": [],
+      "id": "MMS012",
+      "layer": "system",
+      "passed": true
+    }
+  ],
+  "failed_case_ids": [
+    "MMU001",
+    "MMU004",
+    "MMU005",
+    "MMU007",
+    "MMU009",
+    "MMU012",
+    "MMU014",
+    "MMU015",
+    "MMS002",
+    "MMS005",
+    "MMS008"
+  ],
+  "gap_pp": -25.0,
+  "system_pass": 9,
+  "system_score": 75.0,
+  "system_total": 12,
+  "unit_pass": 8,
+  "unit_score": 50.0,
+  "unit_total": 16
+}

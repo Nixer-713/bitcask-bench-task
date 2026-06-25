@@ -1,0 +1,5 @@
+run,kind,unit_pass,unit_total,system_pass,system_total,unit_score,system_score,gap_pp,failed_case_ids,status
+reference,reference,16,16,12,12,100.0,100.0,0.0,,satisfiable
+codex_agent_001,candidate,16,16,12,12,100.0,100.0,0.0,,no_gap_observed
+codex_agent_002,candidate,16,16,12,12,100.0,100.0,0.0,,no_gap_observed
+codex_agent_003,candidate,8,16,9,12,50.0,75.0,-25.0,"MMU001 MMU004 MMU005 MMU007 MMU009 MMU012 MMU014 MMU015 MMS002 MMS005 MMS008",low_unit_no_positive_gap
