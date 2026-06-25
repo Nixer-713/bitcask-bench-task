@@ -36,7 +36,7 @@ Rubric: `rubric.json`
 | `REQ-input-layout` | `README.md` and `src/site.rs` use input/content paths and skip fragment-like files | Fragment behavior is simplified to ignore underscore files. |
 | `REQ-config` | `src/config.rs` defines many config fields | Mini task keeps only site name, base URL, pagination, feeds, and search toggles. |
 | `REQ-frontmatter` | `src/content.rs` and `src/parser.rs` parse frontmatter | Mini task defines a small YAML-like subset for deterministic scoring. |
-| `REQ-title-slug` | `get_title` and `get_slug` derive title/slug from frontmatter, heading, and filename | Slugification is explicitly simplified and public. |
+| `REQ-title-slug` | `get_title` and `get_slug` derive title/slug from frontmatter, heading, and filename | Slugification is explicitly simplified and public; recognized date/stream filename patterns provide the slug base when frontmatter `slug` is absent. |
 | `REQ-date-kind` | `README.md` states date differentiates posts/pages; `get_date` reads frontmatter/filename | Date formats are narrowed to fixed literal forms. |
 | `REQ-tags` | Marmite groups posts by tags and generates tag pages/feeds | Authors/series/archives are excluded from first PRD to keep scope focused. |
 | `REQ-streams` | Marmite supports streams from frontmatter and filename patterns; tests cover both | Keep streams with tags to create parallel taxonomy pressure. |

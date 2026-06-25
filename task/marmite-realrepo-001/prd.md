@@ -108,7 +108,10 @@ date and stream prefixes.
 ### Slug
 
 Use frontmatter `slug` when present. Otherwise slugify the title. If the title
-was inferred from filename fallback, slugify the cleaned filename stem.
+was inferred from filename fallback, slugify the cleaned filename stem. For
+recognized date-prefixed or stream-prefixed post filenames, the filename slug
+base below is used when frontmatter `slug` is absent; the title may still come
+from frontmatter or the first heading.
 
 Slugification lowercases text, replaces every run of non-ASCII alphanumeric
 characters with `-`, and trims leading/trailing `-`.
