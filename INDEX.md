@@ -48,8 +48,9 @@ implementation repository.
   - `task/marmite-realrepo-001/rubric.json`
   - `task/marmite-realrepo-001/doc/source_repo.md`
   - `task/marmite-realrepo-001/doc/requirement_map.md`
-- Status: reference-satisfiable on `validation/marmite`; no positive gap
-  observed in the current validation batch; do not claim `core_strong`.
+- Status: small source-grounded hardening pass drafted. Prior validation on
+  `validation/marmite` was reference-satisfiable/no-positive-gap-observed, but
+  the hardened rubric has not been revalidated. Do not claim `core_strong`.
 
 ## Review Checklist
 

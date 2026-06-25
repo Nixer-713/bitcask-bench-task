@@ -25,8 +25,9 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 ## 2.1 Task Selection Roadmap
 
 - Current roadmap state: `xitkit` has initial no-gap-observed validation
-  evidence; `marmite` is reference-satisfiable on `validation/marmite`, with no
-  positive gap observed in the current validation batch.
+  evidence; `marmite` has a small source-grounded hardening pass drafted after
+  prior no-positive-gap validation, and the hardened rubric still needs
+  revalidation.
 - `xitkit` should become a local task-file CLI benchmark focused on parsing `.xit`
   tasks, stable IDs, status/priority/due/tag extraction, writeback, filtering,
   sorting, stats, and cross-file move consistency.

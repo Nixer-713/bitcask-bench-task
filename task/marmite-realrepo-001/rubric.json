@@ -341,7 +341,7 @@
     "id": "MMU015",
     "layer": "unit",
     "category": "url_manifest_counts",
-    "requirement_refs": ["REQ-url-manifest"],
+    "requirement_refs": ["REQ-archives", "REQ-url-manifest"],
     "description": "urls.json groups pages.html, tags.html, streams.html, and urls.json into their defined groups with exact summary counts.",
     "weight": 4,
     "setup_files": {
@@ -358,13 +358,14 @@
           "index": ["index.html"],
           "tags": ["tag-x.html", "tags.html"],
           "streams": ["news.html", "streams.html"],
+          "archives": ["archive-2026.html", "archive.html"],
           "feeds": [],
           "search": [],
           "misc": ["urls.json"],
-          "summary": {"posts": 1, "pages": 2, "index": 1, "tags": 2, "streams": 2, "feeds": 0, "search": 0, "misc": 1}
+          "summary": {"posts": 1, "pages": 2, "index": 1, "tags": 2, "streams": 2, "archives": 2, "feeds": 0, "search": 0, "misc": 1}
         }
       },
-      "stdout_json_path_equals": {"0.summary.total": 8}
+      "stdout_json_path_equals": {"0.summary.total": 10}
     }
   },
   {
@@ -383,6 +384,86 @@
     ],
     "checks": {
       "file_not_exists": ["out/index.html", "out/pages.html", "out/urls.json"]
+    }
+  },
+  {
+    "id": "MMU017",
+    "layer": "unit",
+    "category": "draft_wikilink_public_missing",
+    "requirement_refs": ["REQ-drafts", "REQ-wikilinks-backlinks", "REQ-content-pages"],
+    "description": "public wikilinks to draft content behave like unresolved wikilinks and do not generate draft pages.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/draft-2026-12-01-secret.md": "# Secret Draft\n",
+      "site/content/source.md": "# Source\n\n[[Secret Draft|secret link]]\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_contains": {
+        "out/source.html": ["data-wikilink=\"missing\"", "secret link", "secret-draft.html"]
+      },
+      "file_not_exists": ["out/draft-secret.html"]
+    }
+  },
+  {
+    "id": "MMU018",
+    "layer": "unit",
+    "category": "archive_year_taxonomy",
+    "requirement_refs": ["REQ-date-kind", "REQ-archives", "REQ-json-feeds", "REQ-url-manifest"],
+    "description": "post dates generate archive year pages, archive feeds, and manifest archive entries while drafts/pages are excluded.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/2026-01-01-alpha.md": "# Alpha\n",
+      "site/content/2025-02-02-beta.md": "# Beta\n",
+      "site/content/draft-2024-03-03-hidden.md": "# Hidden\n",
+      "site/content/page.md": "# Plain Page\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_exists": ["out/archive-2026.html", "out/archive-2025.html", "out/archive.html", "out/archive-2026.json", "out/archive-2025.json"],
+      "file_contains": {
+        "out/archive-2026.html": ["alpha.html"],
+        "out/archive-2025.html": ["beta.html"],
+        "out/archive.html": ["archive-2026.html", "archive-2025.html"]
+      },
+      "file_not_exists": ["out/archive-2024.html", "out/archive-2024.json"],
+      "file_json_contains_unordered": {
+        "out/urls.json": {
+          "archives": ["archive-2026.html", "archive-2025.html", "archive.html"],
+          "feeds": ["archive-2026.json", "archive-2025.json"]
+        }
+      }
+    }
+  },
+  {
+    "id": "MMU019",
+    "layer": "unit",
+    "category": "urls_preview_no_write",
+    "requirement_refs": ["REQ-cli-build-inspect", "REQ-url-manifest", "REQ-archives"],
+    "description": "urls command prints the would-be manifest and writes no output files.",
+    "weight": 4,
+    "setup_files": {
+      "site/marmite.yaml": "json_feed: false\nenable_search: false\n",
+      "site/content/2026-01-01-post.md": "# Post\n",
+      "site/content/page.md": "# Page\n"
+    },
+    "commands": [["urls", "--input", "site"]],
+    "checks": {
+      "stdout_json_contains_unordered": {
+        "0": {
+          "posts": ["post.html"],
+          "pages": ["page.html", "pages.html"],
+          "index": ["index.html"],
+          "tags": [],
+          "streams": [],
+          "archives": ["archive-2026.html", "archive.html"],
+          "feeds": [],
+          "search": [],
+          "misc": ["urls.json"],
+          "summary": {"posts": 1, "pages": 2, "index": 1, "tags": 0, "streams": 0, "archives": 2, "feeds": 0, "search": 0, "misc": 1, "total": 6}
+        }
+      },
+      "file_not_exists": ["out/urls.json", "site/urls.json", "site/index.html"]
     }
   },
   {
@@ -586,7 +667,7 @@
     "layer": "system",
     "system_dimension": "manifest_summary_consistency",
     "category": "all_manifest_groups_and_total",
-    "requirement_refs": ["REQ-list-pages", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
+    "requirement_refs": ["REQ-list-pages", "REQ-archives", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
     "description": "Manifest group membership and summary counts agree across pages, taxonomies, feeds, search, and misc.",
     "weight": 8,
     "setup_files": {
@@ -602,10 +683,11 @@
           "index": ["index.html"],
           "tags": ["tag-x.html", "tags.html"],
           "streams": ["news.html", "streams.html"],
-          "feeds": ["feed.json", "tag-x.json", "news.json"],
+          "archives": ["archive-2026.html", "archive.html"],
+          "feeds": ["feed.json", "tag-x.json", "news.json", "archive-2026.json"],
           "search": ["search_index.json"],
           "misc": ["urls.json"],
-          "summary": {"posts": 1, "pages": 2, "index": 1, "tags": 2, "streams": 2, "feeds": 3, "search": 1, "misc": 1, "total": 12}
+          "summary": {"posts": 1, "pages": 2, "index": 1, "tags": 2, "streams": 2, "archives": 2, "feeds": 4, "search": 1, "misc": 1, "total": 15}
         }
       }
     }
@@ -667,6 +749,128 @@
     ],
     "checks": {
       "file_not_exists": ["out/bad.html", "out/index.html", "out/urls.json", "out/feed.json", "out/search_index.json"]
+    }
+  },
+  {
+    "id": "MMS013",
+    "layer": "system",
+    "system_dimension": "draft_aware_link_exclusion",
+    "category": "draft_link_exclusion_across_views",
+    "requirement_refs": ["REQ-drafts", "REQ-wikilinks-backlinks", "REQ-tags", "REQ-streams", "REQ-archives", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "Draft content remains inspect-visible but is excluded from public links, backlinks, taxonomies, archives, feeds, search, and manifest.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/2026-01-01-public.md": "---\ntags: [visible]\nstream: news\n---\n# Public Post\n\n[[Secret Draft|draft link]]\n",
+      "site/content/draft-2027-02-02-secret.md": "---\ntags: [hidden]\n---\n# Secret Draft\n\n[[Public Post]]\n",
+      "site/content/page.md": "# Landing Page\n\n[[Public Post]]\n"
+    },
+    "commands": [
+      ["inspect", "--input", "site"],
+      ["build", "--input", "site", "--output", "out"]
+    ],
+    "checks": {
+      "stdout_json_contains_unordered": {"0": {"drafts": [{"slug": "draft-secret", "tags": ["hidden"]}], "posts": [{"slug": "news-public"}]}},
+      "file_contains": {
+        "out/news-public.html": ["data-wikilink=\"missing\"", "draft link"],
+        "out/landing-page.html": ["news-public.html"]
+      },
+      "file_not_contains": {
+        "out/news-public.html": ["draft-secret"]
+      },
+      "file_not_exists": ["out/draft-secret.html", "out/tag-hidden.html", "out/tag-hidden.json", "out/archive-2027.html", "out/archive-2027.json"],
+      "file_json_not_contains": {
+        "out/feed.json": ["draft-secret", "Secret Draft", "hidden"],
+        "out/search_index.json": ["draft-secret", "Secret Draft", "hidden"],
+        "out/urls.json": ["draft-secret.html", "tag-hidden.html", "archive-2027.html", "archive-2027.json"]
+      },
+      "file_json_contains_unordered": {
+        "out/urls.json": {
+          "posts": ["news-public.html"],
+          "pages": ["landing-page.html", "pages.html"],
+          "tags": ["tag-visible.html", "tags.html"],
+          "streams": ["news.html", "streams.html"],
+          "archives": ["archive-2026.html", "archive.html"],
+          "feeds": ["feed.json", "tag-visible.json", "news.json", "archive-2026.json"]
+        }
+      }
+    }
+  },
+  {
+    "id": "MMS014",
+    "layer": "system",
+    "system_dimension": "archive_cross_views",
+    "category": "archive_pagination_feed_search_manifest",
+    "requirement_refs": ["REQ-date-kind", "REQ-drafts", "REQ-archives", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "Archive years, pagination, archive feeds, search, draft exclusion, and manifest groups agree.",
+    "weight": 8,
+    "setup_files": {
+      "site/marmite.yaml": "pagination: 1\n",
+      "site/content/2026-03-02-new.md": "# New\n",
+      "site/content/2026-03-01-old.md": "# Old\n",
+      "site/content/2025-04-01-prior.md": "# Prior\n",
+      "site/content/draft-2026-05-01-hidden.md": "# Hidden Draft\n",
+      "site/content/page.md": "# Static Page\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_exists": ["out/archive-2026.html", "out/archive-2026-2.html", "out/archive-2025.html", "out/archive.html", "out/archive-2026.json", "out/archive-2025.json"],
+      "file_contains": {
+        "out/archive-2026.html": ["new.html"],
+        "out/archive-2026-2.html": ["old.html"],
+        "out/archive-2025.html": ["prior.html"]
+      },
+      "file_not_exists": ["out/draft-hidden.html"],
+      "file_json_not_contains": {
+        "out/archive-2026.json": ["draft-hidden", "Hidden Draft"],
+        "out/search_index.json": ["draft-hidden", "Hidden Draft"],
+        "out/urls.json": ["draft-hidden.html"]
+      },
+      "file_json_contains_unordered": {
+        "out/archive-2026.json": {"items": [{"slug": "new"}, {"slug": "old"}]},
+        "out/urls.json": {
+          "posts": ["new.html", "old.html", "prior.html"],
+          "pages": ["static-page.html", "pages.html"],
+          "archives": ["archive-2026.html", "archive-2026-2.html", "archive-2025.html", "archive.html"],
+          "feeds": ["archive-2026.json", "archive-2025.json"],
+          "search": ["search_index.json"]
+        }
+      }
+    }
+  },
+  {
+    "id": "MMS015",
+    "layer": "system",
+    "system_dimension": "urls_build_manifest_parity",
+    "category": "urls_preview_matches_build_manifest",
+    "requirement_refs": ["REQ-cli-build-inspect", "REQ-config", "REQ-tags", "REQ-streams", "REQ-archives", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "urls command output matches build's urls.json for the same source state across taxonomies, archives, feeds, search, and pagination.",
+    "weight": 8,
+    "setup_files": {
+      "site/marmite.yaml": "pagination: 1\nbase_url: https://example.test/base\n",
+      "site/content/2026-01-02-new.md": "---\ntags: [x]\nstream: news\n---\n# New\n",
+      "site/content/2026-01-01-old.md": "---\ntags: [x]\n---\n# Old\n",
+      "site/content/page.md": "# Page\n"
+    },
+    "commands": [
+      ["urls", "--input", "site"],
+      ["build", "--input", "site", "--output", "out"]
+    ],
+    "checks": {
+      "stdout_json_equals_file_json": {"0": "out/urls.json"},
+      "stdout_json_contains_unordered": {
+        "0": {
+          "posts": ["news-new.html", "old.html"],
+          "pages": ["page.html", "pages.html"],
+          "index": ["index.html"],
+          "tags": ["tag-x.html", "tag-x-2.html", "tags.html"],
+          "streams": ["news.html", "streams.html"],
+          "archives": ["archive-2026.html", "archive-2026-2.html", "archive.html"],
+          "feeds": ["feed.json", "tag-x.json", "news.json", "archive-2026.json"],
+          "search": ["search_index.json"],
+          "misc": ["urls.json"],
+          "summary": {"posts": 2, "pages": 2, "index": 1, "tags": 3, "streams": 2, "archives": 3, "feeds": 4, "search": 1, "misc": 1, "total": 18}
+        }
+      }
     }
   }
 ]

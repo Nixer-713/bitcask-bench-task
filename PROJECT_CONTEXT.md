@@ -46,12 +46,13 @@ markdown content graph and configuration produce multiple public outputs:
 rendered pages, taxonomies, pagination, feeds, search index, URL manifest, and
 wikilink/backlink views.
 
-Validation evidence exists on `validation/marmite`: the reference passed 16/16
-unit and 12/12 system cases. Two independent code-agent candidates also reached
-16/16 unit and 12/12 system, while a third scored 8/16 unit and 9/12 system.
-Treat Marmite as reference-satisfiable/no-positive-gap-observed evidence. Do
-not claim `core_strong`, `confirmed benchmark`, or `gap-producing` from current
-evidence.
+Prior validation evidence exists on `validation/marmite`: the reference passed
+16/16 unit and 12/12 system cases. Two independent code-agent candidates also
+reached 16/16 unit and 12/12 system, while a third scored 8/16 unit and 9/12
+system. After that, a small source-grounded hardening pass added draft-aware
+link exclusion, archive-year taxonomy, and a read-only URL manifest preview
+command. The hardened rubric has not been revalidated yet. Do not claim
+`core_strong`, `confirmed benchmark`, or `gap-producing` from current evidence.
 
 ### Roadmap
 
@@ -60,8 +61,7 @@ The active roadmap is fixed unless the user changes it explicitly:
 1. Keep Bitcask as candidate/no-gap-observed evidence.
 2. Keep xitkit as source-grounded candidate/no-gap-observed evidence from
    initial validation.
-3. Keep Marmite as reference-satisfiable/no-positive-gap-observed evidence
-   unless a future source-grounded hardening pass changes validation results.
+3. Revalidate the hardened Marmite rubric before making any new evidence claim.
 
 ## Goal
 

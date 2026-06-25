@@ -196,7 +196,8 @@ written until the PRD boundary is reviewed and stable.
 | Post/page classification by presence of date | Keep | Explicit in `README.md` and `src/site.rs`. |
 | Tags taxonomy | Keep | Public feature and good cross-output system dimension. |
 | Streams taxonomy | Keep | Public feature; source tests cover frontmatter and filename-derived streams. |
-| Authors/series/archive | Simplify or exclude from first PRD | Useful but increases breadth; tags+streams already provide two heterogeneous groupings. |
+| Archive year taxonomy | Keep in hardening pass | Source groups dated posts by archive year; year-only archives add source-derived system pressure without introducing authors/series breadth. |
+| Authors/series | Exclude from this pass | Useful but increases breadth; tags+streams+archives already provide heterogeneous groupings. |
 | Pagination | Keep | Strong system pressure because it affects listing pages and URL manifest. |
 | RSS/XML feed | Exclude from first PRD | XML parsing details add surface area without much extra source-graph pressure. |
 | JSON feed | Keep | Source-supported and scorer-friendly; preserves feed semantics without XML friction. |
@@ -222,9 +223,13 @@ The mini task should expose these observable outputs:
 - `pages.html` for undated pages.
 - `tag-{tag}.html` and `tag-{tag}-N.html` listing pages.
 - `{stream}.html` and `{stream}-N.html` listing pages for non-default streams.
-- `feed.json`, `tag-{tag}.json`, and `{stream}.json` JSON feeds.
+- `archive-{YYYY}.html` and `archive-{YYYY}-N.html` listing pages.
+- `feed.json`, `tag-{tag}.json`, `{stream}.json`, and
+  `archive-{YYYY}.json` JSON feeds.
 - `search_index.json`.
 - `urls.json` with grouped arrays and summary counts.
+- `urls` command stdout containing the same manifest that build writes to
+  `urls.json`, without writing site files.
 - Per-page HTML containing resolved wikilinks and backlink sections.
 
 `urls.json` should be the primary system invariant oracle because it can tie
@@ -238,6 +243,7 @@ content back to one parsed source state.
 - Post/page classification.
 - Tag extraction and tag page naming.
 - Stream extraction from frontmatter and filename patterns.
+- Archive year extraction from post dates.
 - Basic markdown-to-HTML rendering for headings, paragraphs, and links.
 - JSON feed item generation.
 - Search index item generation.
@@ -254,6 +260,10 @@ content back to one parsed source state.
   pagination, and manifest entries from the same posts.
 - `pagination_manifest_consistency`: page counts and generated listing files
   agree with `urls.json`.
+- `archive_cross_views`: post dates drive archive pages, archive feeds, search,
+  and manifest entries consistently.
+- `urls_build_manifest_parity`: read-only URL preview agrees with generated
+  `urls.json`.
 - `link_graph_consistency`: wikilinks and backlinks agree across rendered HTML
   and manifests.
 - `exclusion_propagation`: draft content is consistently absent from the
@@ -267,15 +277,22 @@ content back to one parsed source state.
 - Include both tags and streams. Tags alone are too close to one grouping
   module; tags+streams force parallel taxonomy logic and filename/frontmatter
   interactions.
+- Include year-only archives in the hardening pass. Marmite source tracks
+  archives as generated URLs and grouped pages, while month/day archive detail
+  remains outside the mini task.
 - Use JSON feed rather than RSS/XML. Marmite supports both, but JSON is easier
   to score and still preserves feed membership/order semantics.
 - Make `urls.json` a core invariant. It should be checked in most system cases
   because Marmite's source uses generated URL collection as a global site map.
+- Add a read-only `urls` command as the mini-task counterpart of Marmite's
+  public URL preview behavior. It must not require or create an output
+  directory.
 - Make wikilinks/backlinks required system behavior. They are source-supported,
   observable, and graph-like enough to create system pressure.
 - Define draft/excluded content publicly as `stream: draft` or filename stream
   prefix `draft-YYYY-MM-DD-...`. Source Marmite filters draft-stream content
   from feeds, search, and grouped listing contexts; the mini task should use a
   simpler public rule: excluded content produces no public page, taxonomy entry,
-  feed item, search item, or URL manifest entry. This is a deterministic
-  adaptation and must be stated in PRD before rubric cases rely on it.
+  feed item, search item, backlink, wikilink target, or URL manifest entry.
+  This is a deterministic adaptation and must be stated in PRD before rubric
+  cases rely on it.

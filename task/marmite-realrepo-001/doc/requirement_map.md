@@ -8,7 +8,7 @@ Rubric: `rubric.json`
 
 | ID | Capability | Public basis |
 | --- | --- | --- |
-| `REQ-cli-build-inspect` | Provide `build` and `inspect` commands with JSON stdout and non-zero failures | Invocation |
+| `REQ-cli-build-inspect` | Provide `build`, `inspect`, and `urls` commands with JSON stdout and non-zero failures | Invocation |
 | `REQ-input-layout` | Discover Markdown content under `INPUT/content/` or `INPUT`, ignore fragments and non-Markdown files | Input Layout |
 | `REQ-config` | Parse supported config keys and apply defaults/toggles | Config Format |
 | `REQ-frontmatter` | Parse supported frontmatter keys and reject invalid supported values | Frontmatter Format |
@@ -16,6 +16,7 @@ Rubric: `rubric.json`
 | `REQ-date-kind` | Derive dates from frontmatter/filename and classify posts vs pages | Date, Posts, And Pages |
 | `REQ-tags` | Extract tags, slugify tag names, and group non-draft posts by tag | Tags, Tag Listings |
 | `REQ-streams` | Extract streams from frontmatter/filename and group non-draft posts by stream | Streams, Stream Listings |
+| `REQ-archives` | Group non-draft posts by archive year and generate archive pages/feeds | Archive Listings, JSON Feeds |
 | `REQ-drafts` | Expose drafts in `inspect` while excluding them from public build outputs | Drafts And Exclusion |
 | `REQ-markdown-html` | Render the defined Markdown subset with escaping and local-link rewriting | Markdown Rendering |
 | `REQ-wikilinks-backlinks` | Resolve known wikilinks, preserve unknown wikilinks, and generate backlinks | Markdown Rendering, Content Pages |
@@ -38,8 +39,9 @@ Rubric: `rubric.json`
 | `REQ-frontmatter` | `src/content.rs` and `src/parser.rs` parse frontmatter | Mini task defines a small YAML-like subset for deterministic scoring. |
 | `REQ-title-slug` | `get_title` and `get_slug` derive title/slug from frontmatter, heading, and filename | Slugification is explicitly simplified and public; recognized date/stream filename patterns provide the slug base when frontmatter `slug` is absent. |
 | `REQ-date-kind` | `README.md` states date differentiates posts/pages; `get_date` reads frontmatter/filename | Date formats are narrowed to fixed literal forms. |
-| `REQ-tags` | Marmite groups posts by tags and generates tag pages/feeds | Authors/series/archives are excluded from first PRD to keep scope focused. |
+| `REQ-tags` | Marmite groups posts by tags and generates tag pages/feeds | Tags remain the primary taxonomy; authors and series are excluded to keep scope focused. |
 | `REQ-streams` | Marmite supports streams from frontmatter and filename patterns; tests cover both | Keep streams with tags to create parallel taxonomy pressure. |
+| `REQ-archives` | `src/site.rs` groups dated posts by archive year and generates archive pages/feeds | Keep year-only archives as a public taxonomy; month/day archives remain out of scope. |
 | `REQ-drafts` | Source filters draft stream content from feeds/search/group listings | Mini task uses a clearer public exclusion rule for all public build outputs. |
 | `REQ-json-feeds` | `src/feed.rs` supports JSON feeds in addition to RSS | JSON is retained; RSS/XML is excluded for scoring simplicity. |
 | `REQ-url-manifest` | `src/site.rs` collects generated URLs and can emit `urls.json`; tests cover `--show-urls` | Manifest grouping and summary counts are made exact for rubric stability. |
@@ -63,8 +65,11 @@ Rubric: `rubric.json`
 | `MMU012` | Index and pages listings are generated with manifest entries | `REQ-list-pages`, `REQ-content-pages` |
 | `MMU013` | JSON feed includes non-draft posts and base-URL-aware URLs | `REQ-json-feeds`, `REQ-config` |
 | `MMU014` | Search index includes non-draft post/page metadata and rendered text | `REQ-search-index`, `REQ-markdown-html` |
-| `MMU015` | URL manifest grouping and summary counts follow PRD grouping rules | `REQ-url-manifest` |
+| `MMU015` | URL manifest grouping and summary counts follow PRD grouping rules including archives | `REQ-archives`, `REQ-url-manifest` |
 | `MMU016` | Invalid config fails without writing public output files | `REQ-cli-build-inspect`, `REQ-error-atomic`, `REQ-config` |
+| `MMU017` | Public wikilinks to draft content remain unresolved and draft pages are not generated | `REQ-drafts`, `REQ-wikilinks-backlinks`, `REQ-content-pages` |
+| `MMU018` | Post dates generate archive year pages, archive feeds, and manifest archive entries | `REQ-date-kind`, `REQ-archives`, `REQ-json-feeds`, `REQ-url-manifest` |
+| `MMU019` | `urls` command prints the would-be manifest without writing output files | `REQ-cli-build-inspect`, `REQ-url-manifest`, `REQ-archives` |
 
 ## System Coverage
 
@@ -78,10 +83,13 @@ Rubric: `rubric.json`
 | `MMS006` | `exclusion_propagation` | draft detection -> absence from rendered pages/listings/feeds/search/manifest | `REQ-drafts`, `REQ-tags`, `REQ-streams`, `REQ-json-feeds`, `REQ-search-index`, `REQ-url-manifest`, `REQ-system-invariants` |
 | `MMS007` | `config_effects` | base URL and toggles -> feed URLs/search presence -> manifest consistency | `REQ-config`, `REQ-json-feeds`, `REQ-search-index`, `REQ-url-manifest`, `REQ-system-invariants` |
 | `MMS008` | `filename_metadata_flow` | filename date/stream parsing -> slug/output path -> stream listing/feed/manifest | `REQ-title-slug`, `REQ-date-kind`, `REQ-streams`, `REQ-content-pages`, `REQ-list-pages`, `REQ-json-feeds`, `REQ-url-manifest` |
-| `MMS009` | `manifest_summary_consistency` | generated pages/listings/feeds/search -> manifest groups -> summary counts | `REQ-list-pages`, `REQ-json-feeds`, `REQ-search-index`, `REQ-url-manifest`, `REQ-system-invariants` |
+| `MMS009` | `manifest_summary_consistency` | generated pages/listings/archives/feeds/search -> manifest groups -> summary counts | `REQ-list-pages`, `REQ-archives`, `REQ-json-feeds`, `REQ-search-index`, `REQ-url-manifest`, `REQ-system-invariants` |
 | `MMS010` | `inspect_build_consistency` | inspect parsed state -> generated files -> listing and manifest entries | `REQ-inspect`, `REQ-content-pages`, `REQ-list-pages`, `REQ-url-manifest`, `REQ-system-invariants` |
 | `MMS011` | `error_atomicity` | duplicate slug detection -> command failure -> no partial public files | `REQ-title-slug`, `REQ-error-atomic` |
 | `MMS012` | `error_atomicity` | invalid frontmatter detection -> command failure -> no partial public files | `REQ-frontmatter`, `REQ-error-atomic` |
+| `MMS013` | `draft_aware_link_exclusion` | inspect-visible drafts -> unresolved public wikilinks -> absence from backlinks/taxonomies/archives/feeds/search/manifest | `REQ-drafts`, `REQ-wikilinks-backlinks`, `REQ-tags`, `REQ-streams`, `REQ-archives`, `REQ-json-feeds`, `REQ-search-index`, `REQ-url-manifest`, `REQ-system-invariants` |
+| `MMS014` | `archive_cross_views` | date classification -> archive pagination -> archive feeds -> search -> manifest | `REQ-date-kind`, `REQ-drafts`, `REQ-archives`, `REQ-json-feeds`, `REQ-search-index`, `REQ-url-manifest`, `REQ-system-invariants` |
+| `MMS015` | `urls_build_manifest_parity` | read-only URL preview -> build manifest -> taxonomies/archives/feeds/search/pagination consistency | `REQ-cli-build-inspect`, `REQ-config`, `REQ-tags`, `REQ-streams`, `REQ-archives`, `REQ-json-feeds`, `REQ-search-index`, `REQ-url-manifest`, `REQ-system-invariants` |
 
 ## Fairness Notes
 
@@ -96,6 +104,10 @@ Rubric: `rubric.json`
   the PRD's explicit group and summary definitions.
 - Draft behavior is a documented mini-task adaptation; tests may rely on it only
   because the PRD states it publicly.
+- Archive behavior is limited to public year pages and JSON feeds; the rubric
+  must not require Marmite's private archive internals or template layout.
 - Marmite rubric JSON subset checks use `*_json_contains_unordered` so arrays
   assert membership, not order, unless a path-specific exact scalar check is
   used.
+- Text absence checks such as `file_not_contains` may only inspect generated
+  files explicitly defined by the PRD.

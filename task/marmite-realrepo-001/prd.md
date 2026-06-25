@@ -30,6 +30,7 @@ Supported commands:
 ```console
 python minisite.py build --input INPUT --output OUTPUT [--config CONFIG]
 python minisite.py inspect --input INPUT [--config CONFIG]
+python minisite.py urls --input INPUT [--config CONFIG]
 ```
 
 `build` reads content from `INPUT`, writes the generated site to `OUTPUT`, and
@@ -38,6 +39,11 @@ prints the same JSON object written to `OUTPUT/urls.json`.
 `inspect` parses the same input state without writing site files and prints a
 compact JSON object with `posts`, `pages`, `tags`, `streams`, and `drafts`
 arrays. This command exists to expose parsing behavior for local verification.
+
+`urls` parses the same input state and prints the same manifest object that
+`build` would write to its `OUTPUT/urls.json`, without creating an output
+directory or writing any site files. It must respect config, taxonomy, archives,
+pagination, draft exclusion, feed/search toggles, and base URL rules.
 
 ## Input Layout
 
@@ -165,6 +171,11 @@ by `inspect` with `draft: true`, but `build` must exclude it from public output:
 no HTML page, listing entry, taxonomy entry, feed item, search item, backlink,
 or URL manifest entry is generated for draft content.
 
+Draft content is not a public wikilink target. If public content links to a
+draft title with `[[Title]]` or `[[Title|Label]]`, that wikilink behaves like an
+unknown wikilink. Draft content also must not appear as a backlink source or
+backlink target in public generated pages.
+
 This is a deterministic mini-task adaptation of Marmite's draft-stream
 filtering behavior.
 
@@ -234,6 +245,16 @@ generate `{stream}-2.html`, `{stream}-3.html`, and so on.
 `streams.html` is generated when at least one non-default stream page is
 generated. It lists all generated non-default stream pages.
 
+### Archive Listings
+
+For every year with at least one non-draft post, generate
+`archive-{YYYY}.html`. If that archive year has more posts than `pagination`,
+also generate `archive-{YYYY}-2.html`, `archive-{YYYY}-3.html`, and so on.
+
+`archive.html` is generated when at least one archive year page is generated.
+It lists all generated archive year pages. Archive pages include only non-draft
+posts and exclude pages. Archive item order follows post order.
+
 ## JSON Feeds
 
 When `json_feed` is true, generate:
@@ -241,6 +262,7 @@ When `json_feed` is true, generate:
 - `feed.json` for non-draft `index` stream posts.
 - `tag-{tag}.json` for each tag.
 - `{stream}.json` for each non-`index`, non-`draft` stream.
+- `archive-{YYYY}.json` for each archive year.
 
 Each feed is a JSON object:
 
@@ -248,11 +270,12 @@ Each feed is a JSON object:
 {"title":"","items":[]}
 ```
 
-`title` is the site name for `feed.json`, `tag:{tag}` for tag feeds, and
-`stream:{stream}` for stream feeds. Each item contains `title`, `slug`, `url`,
-`date`, `tags`, `stream`, and `description`. `url` is `{slug}.html` when
-`base_url` is empty, otherwise `{base_url}/{slug}.html` with exactly one slash
-between base and slug. Feed item order follows the corresponding listing order.
+`title` is the site name for `feed.json`, `tag:{tag}` for tag feeds,
+`stream:{stream}` for stream feeds, and `archive:{YYYY}` for archive feeds.
+Each item contains `title`, `slug`, `url`, `date`, `tags`, `stream`, and
+`description`. `url` is `{slug}.html` when `base_url` is empty, otherwise
+`{base_url}/{slug}.html` with exactly one slash between base and slug. Feed item
+order follows the corresponding listing order.
 
 When `json_feed` is false, no feed files are generated and `urls.json.feeds`
 must be empty.
@@ -280,6 +303,7 @@ The manifest contains arrays of generated paths grouped by kind:
   "index": [],
   "tags": [],
   "streams": [],
+  "archives": [],
   "feeds": [],
   "search": [],
   "misc": [],
@@ -299,6 +323,7 @@ Manifest groups have these meanings:
 - `index`: `index.html` and index pagination files.
 - `tags`: tag listing pages plus `tags.html` when generated.
 - `streams`: stream listing pages plus `streams.html` when generated.
+- `archives`: archive year listing pages plus `archive.html` when generated.
 - `feeds`: generated JSON feed files.
 - `search`: `search_index.json` when generated.
 - `misc`: `urls.json` only, unless a later PRD revision explicitly defines
@@ -352,11 +377,15 @@ generated mini-task output files in that directory.
 - Post/page classification must be consistent across all outputs.
 - Tags and streams must agree across content pages, listing pages, feeds,
   search index, inspect output, and manifest groups.
+- Archive years must agree across post dates, archive listing pages, archive
+  feeds, search index, and manifest groups.
 - Pagination must agree with generated listing files and manifest paths.
 - Wikilink resolution and backlinks must agree with final slugs.
 - Draft content must be visible in `inspect` but absent from all public build
   outputs.
 - Config toggles must affect all relevant outputs consistently.
+- `urls` output must match the manifest that `build` would write for the same
+  input and config, while writing no site files.
 - Re-running `build` on the same input must produce the same public files and
   JSON content, ignoring file modification times.
 
@@ -370,6 +399,6 @@ generated mini-task output files in that directory.
 - No sitemap generation.
 - No server, watch mode, live reload, or network behavior.
 - No shortcodes, comments integration, or interactive prompts.
-- No authors, series, archives, or custom file mappings in the first mini task.
+- No authors, series, or custom file mappings in this mini task.
 - No dependency on Marmite internals, Rust structs, module names, or rendering
   order.
