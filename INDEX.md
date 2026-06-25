@@ -45,10 +45,11 @@ implementation repository.
   wikilink/backlink consistency.
 - Files:
   - `task/marmite-realrepo-001/prd.md`
+  - `task/marmite-realrepo-001/rubric.json`
   - `task/marmite-realrepo-001/doc/source_repo.md`
   - `task/marmite-realrepo-001/doc/requirement_map.md`
-- Status: PRD and requirement map drafted from source-grounding. Rubric is not
-  drafted yet.
+- Status: PRD, requirement map, and rubric drafted from source-grounding.
+  Validation has not started.
 
 ## Review Checklist
 
@@ -81,6 +82,7 @@ cases, weak unit/system separation, and weak source grounding.
 ```console
 python3 -m json.tool task/bitcask-realrepo-001/rubric.json >/dev/null
 python3 -m json.tool task/xitkit-realrepo-001/rubric.json >/dev/null
+python3 -m json.tool task/marmite-realrepo-001/rubric.json >/dev/null
 git ls-files | rg '(^|/)(_reference|score_reports?|runs|candidate|.*score\.py|evaluator|answer|expected[-_ ]output)'
 python3 - <<'PY'
 import json
@@ -90,6 +92,7 @@ bad = {"solution", "reference", "implementation", "test_code", "code", "answer"}
 for rubric_path in [
     Path("task/bitcask-realrepo-001/rubric.json"),
     Path("task/xitkit-realrepo-001/rubric.json"),
+    Path("task/marmite-realrepo-001/rubric.json"),
 ]:
     rubric = json.loads(rubric_path.read_text())
     ids = [case.get("id") for case in rubric]
@@ -125,6 +128,7 @@ task/xitkit-realrepo-001/rubric.json
 task/xitkit-realrepo-001/doc/source_repo.md
 task/xitkit-realrepo-001/doc/requirement_map.md
 task/marmite-realrepo-001/prd.md
+task/marmite-realrepo-001/rubric.json
 task/marmite-realrepo-001/doc/source_repo.md
 task/marmite-realrepo-001/doc/requirement_map.md
 ```

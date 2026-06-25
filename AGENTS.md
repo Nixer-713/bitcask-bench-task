@@ -25,11 +25,12 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 ## 2.1 Task Selection Roadmap
 
 - Current roadmap state: `xitkit` has initial no-gap-observed validation
-  evidence; `marmite` is now the active source-grounding target.
+  evidence; `marmite` now has PRD, requirement map, and rubric drafted, with
+  validation not started.
 - `xitkit` should become a local task-file CLI benchmark focused on parsing `.xit`
   tasks, stable IDs, status/priority/due/tag extraction, writeback, filtering,
   sorting, stats, and cross-file move consistency.
-- `marmite` should become a static-site generator benchmark focused on markdown
+- `marmite` is the active static-site generator benchmark focused on markdown
   frontmatter, post/page classification, taxonomy pages, pagination, feeds,
   search index, URL manifest, and wikilink/backlink consistency.
 - Do not start another source repository unless these two are rejected with

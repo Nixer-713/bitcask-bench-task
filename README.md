@@ -10,7 +10,7 @@ rubric, plus supporting source and requirement mapping docs.
 | --- | --- | --- |
 | `task/bitcask-realrepo-001` | `SarthakMakhija/bitcask` | Candidate with no-gap-observed validation evidence; not core-strong |
 | `task/xitkit-realrepo-001` | `hoechstleistungshaartrockner/xitkit` | Source-grounded candidate with initial no-gap-observed validation evidence; not core-strong |
-| `task/marmite-realrepo-001` | `rochacbruno/marmite` | PRD and requirement map drafted; rubric not started |
+| `task/marmite-realrepo-001` | `rochacbruno/marmite` | PRD, requirement map, and rubric drafted; validation not started |
 
 ## Deliverable Boundary
 
@@ -34,7 +34,7 @@ construction path is:
 
 1. Keep Bitcask and xitkit recorded as candidate/no-gap-observed evidence.
 2. Do not merge validation assets into `main`.
-3. Review `marmite-realrepo-001` PRD and requirement map, then draft rubric
-   only after the public boundary is stable.
+3. Review the drafted `marmite-realrepo-001` rubric and requirement mapping,
+   then move to validation only after the handoff checks pass.
 
 For AI reviewers, start from `PROJECT_CONTEXT.md`, `INDEX.md`, and `AGENTS.md`.

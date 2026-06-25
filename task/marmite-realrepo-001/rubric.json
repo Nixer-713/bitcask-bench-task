@@ -1,0 +1,672 @@
+[
+  {
+    "id": "MMU001",
+    "layer": "unit",
+    "category": "input_layout_inspect",
+    "requirement_refs": ["REQ-cli-build-inspect", "REQ-input-layout", "REQ-inspect"],
+    "description": "inspect reads INPUT/content, ignores underscore fragments and non-Markdown files.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/page.md": "# Visible Page\n\nBody text\n",
+      "site/content/_hero.md": "# Hidden Fragment\n",
+      "site/content/notes.txt": "# Not Markdown\n"
+    },
+    "commands": [["inspect", "--input", "site"]],
+    "checks": {
+      "stdout_json_contains_unordered": {
+        "0": {
+          "pages": [
+            {"title": "Visible Page", "slug": "visible-page", "kind": "page", "source": "page.md"}
+          ],
+          "posts": [],
+          "drafts": []
+        }
+      },
+      "stdout_json_path_length": {"0.pages": 1, "0.posts": 0, "0.drafts": 0}
+    }
+  },
+  {
+    "id": "MMU002",
+    "layer": "unit",
+    "category": "config_toggles",
+    "requirement_refs": ["REQ-config", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest"],
+    "description": "json_feed and enable_search config toggles remove feed/search outputs and manifest entries.",
+    "weight": 4,
+    "setup_files": {
+      "site/marmite.yaml": "site_name: Toggle Site\njson_feed: false\nenable_search: false\n",
+      "site/content/2026-01-01-post.md": "# Toggle Post\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_not_exists": ["out/feed.json", "out/search_index.json"],
+      "stdout_json_contains_unordered": {"0": {"feeds": [], "search": [], "summary": {"feeds": 0, "search": 0, "misc": 1}}},
+      "file_json_contains_unordered": {"out/urls.json": {"feeds": [], "search": []}}
+    }
+  },
+  {
+    "id": "MMU003",
+    "layer": "unit",
+    "category": "frontmatter_parse",
+    "requirement_refs": ["REQ-frontmatter", "REQ-inspect"],
+    "description": "inspect exposes supported frontmatter fields on a post.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/post.md": "---\ntitle: Front Title\nslug: custom-slug\ndate: 2026-02-03\ndescription: Short summary\ntags: [Rust, Web]\nstream: news\n---\n# Ignored Heading\nBody\n"
+    },
+    "commands": [["inspect", "--input", "site"]],
+    "checks": {
+      "stdout_json_contains_unordered": {
+        "0": {
+          "posts": [
+            {
+              "title": "Front Title",
+              "slug": "news-custom-slug",
+              "kind": "post",
+              "date": "2026-02-03",
+              "tags": ["Rust", "Web"],
+              "stream": "news",
+              "description": "Short summary"
+            }
+          ]
+        }
+      },
+      "stdout_json_path_length": {"0.posts": 1}
+    }
+  },
+  {
+    "id": "MMU004",
+    "layer": "unit",
+    "category": "title_slug_derivation",
+    "requirement_refs": ["REQ-title-slug", "REQ-inspect"],
+    "description": "title and slug are derived from heading and filename fallback rules.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/heading.md": "# Heading Title\n\nText\n",
+      "site/content/2026-03-04-filename-only.md": "plain text without heading\n"
+    },
+    "commands": [["inspect", "--input", "site"]],
+    "checks": {
+      "stdout_json_contains_unordered": {
+        "0": {
+          "pages": [{"title": "Heading Title", "slug": "heading-title"}],
+          "posts": [{"title": "filename-only", "slug": "filename-only", "date": "2026-03-04"}]
+        }
+      }
+    }
+  },
+  {
+    "id": "MMU005",
+    "layer": "unit",
+    "category": "date_kind_classification",
+    "requirement_refs": ["REQ-date-kind", "REQ-inspect"],
+    "description": "frontmatter and filename dates classify posts, while undated content is a page.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/from-frontmatter.md": "---\ndate: 2026-04-05 10:11:12\n---\n# Front Date\n",
+      "site/content/2026-04-06-from-file.md": "# File Date\n",
+      "site/content/about.md": "# About\n"
+    },
+    "commands": [["inspect", "--input", "site"]],
+    "checks": {
+      "stdout_json_contains_unordered": {
+        "0": {
+          "posts": [
+            {"slug": "from-file", "date": "2026-04-06", "kind": "post"},
+            {"slug": "front-date", "date": "2026-04-05", "kind": "post"}
+          ],
+          "pages": [{"slug": "about", "kind": "page", "date": null}]
+        }
+      },
+      "stdout_json_path_length": {"0.posts": 2, "0.pages": 1}
+    }
+  },
+  {
+    "id": "MMU006",
+    "layer": "unit",
+    "category": "tags",
+    "requirement_refs": ["REQ-tags", "REQ-inspect"],
+    "description": "tags are parsed, slugified for grouping, and mapped to non-draft post slugs.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/2026-05-01-a.md": "---\ntags: [Rust Lang, testing]\n---\n# A\n",
+      "site/content/2026-05-02-b.md": "---\ntags: rust lang, docs\n---\n# B\n"
+    },
+    "commands": [["inspect", "--input", "site"]],
+    "checks": {
+      "stdout_json_contains_unordered": {
+        "0": {
+          "tags": {
+            "rust-lang": ["a", "b"],
+            "testing": ["a"],
+            "docs": ["b"]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "MMU007",
+    "layer": "unit",
+    "category": "streams",
+    "requirement_refs": ["REQ-streams", "REQ-title-slug", "REQ-inspect"],
+    "description": "streams come from frontmatter and filename patterns and affect final slugs.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/front.md": "---\ndate: 2026-06-01\nstream: news\n---\n# Front Stream\n",
+      "site/content/tutorial-2026-06-02-file-stream.md": "# File Stream\n",
+      "site/content/guide-S-front-date.md": "---\ndate: 2026-06-03\n---\n# Guide Stream\n"
+    },
+    "commands": [["inspect", "--input", "site"]],
+    "checks": {
+      "stdout_json_contains_unordered": {
+        "0": {
+          "posts": [
+            {"slug": "guide-front-date", "stream": "guide"},
+            {"slug": "tutorial-file-stream", "stream": "tutorial"},
+            {"slug": "news-front-stream", "stream": "news"}
+          ],
+          "streams": {
+            "news": ["news-front-stream"],
+            "tutorial": ["tutorial-file-stream"],
+            "guide": ["guide-front-date"]
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "MMU008",
+    "layer": "unit",
+    "category": "draft_recognition",
+    "requirement_refs": ["REQ-drafts", "REQ-inspect"],
+    "description": "draft stream content is visible in inspect drafts but excluded from inspect posts and stream groups.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/draft-2026-07-01-secret.md": "# Secret Draft\n",
+      "site/content/2026-07-02-public.md": "# Public Post\n"
+    },
+    "commands": [["inspect", "--input", "site"]],
+    "checks": {
+      "stdout_json_contains_unordered": {
+        "0": {
+          "posts": [{"slug": "public", "draft": false}],
+          "drafts": [{"slug": "draft-secret", "stream": "draft", "draft": true}],
+          "streams": {"index": ["public"]}
+        }
+      },
+      "stdout_json_path_length": {"0.posts": 1, "0.drafts": 1}
+    }
+  },
+  {
+    "id": "MMU009",
+    "layer": "unit",
+    "category": "markdown_rendering",
+    "requirement_refs": ["REQ-markdown-html", "REQ-content-pages"],
+    "description": "build renders headings, paragraphs, HTML escaping, and local markdown links.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/target.md": "# Target Page\n",
+      "site/content/source.md": "# Source <Page>\n\nSee [Target](target.md)\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_exists": ["out/source-page.html", "out/target-page.html"],
+      "file_contains": {
+        "out/source-page.html": [
+          "<h1 id=\"source-page\">Source &lt;Page&gt;</h1>",
+          "<a href=\"target-page.html\">Target</a>"
+        ]
+      }
+    }
+  },
+  {
+    "id": "MMU010",
+    "layer": "unit",
+    "category": "wikilinks",
+    "requirement_refs": ["REQ-wikilinks-backlinks", "REQ-content-pages"],
+    "description": "known wikilinks resolve to target slugs and unknown wikilinks remain marked missing.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/target.md": "---\ntitle: Target Article\nslug: target-custom\n---\nTarget body\n",
+      "site/content/source.md": "# Source\n\n[[Target Article]] and [[Missing Page|missing label]]\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_contains": {
+        "out/source.html": [
+          "href=\"target-custom.html\"",
+          "Target Article",
+          "data-wikilink=\"missing\"",
+          "missing label"
+        ]
+      }
+    }
+  },
+  {
+    "id": "MMU011",
+    "layer": "unit",
+    "category": "content_pages_backlinks",
+    "requirement_refs": ["REQ-wikilinks-backlinks", "REQ-content-pages"],
+    "description": "target content pages include backlinks from pages that link to them.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/alpha.md": "# Alpha\n\n[[Beta]]\n",
+      "site/content/beta.md": "# Beta\n\nBody\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_contains": {
+        "out/beta.html": ["alpha"]
+      }
+    }
+  },
+  {
+    "id": "MMU012",
+    "layer": "unit",
+    "category": "list_pages",
+    "requirement_refs": ["REQ-list-pages", "REQ-content-pages"],
+    "description": "build generates index.html for posts and pages.html for pages.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/2026-08-01-post.md": "# Post One\n",
+      "site/content/about.md": "# About Page\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_exists": ["out/index.html", "out/pages.html", "out/post.html", "out/about-page.html"],
+      "file_contains": {
+        "out/index.html": ["post.html"],
+        "out/pages.html": ["about-page.html"]
+      },
+      "file_json_contains_unordered": {"out/urls.json": {"index": ["index.html"], "pages": ["about-page.html", "pages.html"]}}
+    }
+  },
+  {
+    "id": "MMU013",
+    "layer": "unit",
+    "category": "json_feed",
+    "requirement_refs": ["REQ-json-feeds", "REQ-config"],
+    "description": "build creates feed.json with post items and base_url-aware URLs.",
+    "weight": 4,
+    "setup_files": {
+      "site/marmite.yaml": "site_name: Feed Site\nbase_url: https://example.test/blog\n",
+      "site/content/2026-09-01-post.md": "---\ndescription: Feed summary\ntags: [news]\n---\n# Feed Post\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_json_contains_unordered": {
+        "out/feed.json": {
+          "title": "Feed Site",
+          "items": [
+            {
+              "title": "Feed Post",
+              "slug": "post",
+              "url": "https://example.test/blog/post.html",
+              "date": "2026-09-01",
+              "tags": ["news"],
+              "description": "Feed summary"
+            }
+          ]
+        },
+        "out/urls.json": {"feeds": ["feed.json"]}
+      }
+    }
+  },
+  {
+    "id": "MMU014",
+    "layer": "unit",
+    "category": "search_index",
+    "requirement_refs": ["REQ-search-index", "REQ-markdown-html"],
+    "description": "build creates search_index.json with plain text for non-draft posts and pages.",
+    "weight": 4,
+    "setup_files": {
+      "site/content/2026-10-01-post.md": "# Search Post\n\nImportant text\n",
+      "site/content/page.md": "# Search Page\n\nPage text\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_json_contains_unordered": {
+        "out/search_index.json": [
+          {"title": "Search Post", "slug": "post", "kind": "post"},
+          {"title": "Search Page", "slug": "search-page", "kind": "page"}
+        ],
+        "out/urls.json": {"search": ["search_index.json"]}
+      },
+      "file_contains": {
+        "out/search_index.json": ["Important text", "Page text"]
+      }
+    }
+  },
+  {
+    "id": "MMU015",
+    "layer": "unit",
+    "category": "url_manifest_counts",
+    "requirement_refs": ["REQ-url-manifest"],
+    "description": "urls.json groups pages.html, tags.html, streams.html, and urls.json into their defined groups with exact summary counts.",
+    "weight": 4,
+    "setup_files": {
+      "site/marmite.yaml": "json_feed: false\nenable_search: false\n",
+      "site/content/2026-11-01-post.md": "---\ntags: [x]\nstream: news\n---\n# Manifest Post\n",
+      "site/content/page.md": "# Manifest Page\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "stdout_json_contains_unordered": {
+        "0": {
+          "posts": ["news-manifest-post.html"],
+          "pages": ["manifest-page.html", "pages.html"],
+          "index": ["index.html"],
+          "tags": ["tag-x.html", "tags.html"],
+          "streams": ["news.html", "streams.html"],
+          "feeds": [],
+          "search": [],
+          "misc": ["urls.json"],
+          "summary": {"posts": 1, "pages": 2, "index": 1, "tags": 2, "streams": 2, "feeds": 0, "search": 0, "misc": 1}
+        }
+      },
+      "stdout_json_path_equals": {"0.summary.total": 8}
+    }
+  },
+  {
+    "id": "MMU016",
+    "layer": "unit",
+    "category": "error_handling",
+    "requirement_refs": ["REQ-cli-build-inspect", "REQ-error-atomic", "REQ-config"],
+    "description": "invalid pagination fails non-zero and creates no mini-task output files.",
+    "weight": 4,
+    "setup_files": {
+      "site/marmite.yaml": "pagination: 0\n",
+      "site/content/page.md": "# Page\n"
+    },
+    "commands": [
+      {"args": ["build", "--input", "site", "--output", "out"], "expect_error": true}
+    ],
+    "checks": {
+      "file_not_exists": ["out/index.html", "out/pages.html", "out/urls.json"]
+    }
+  },
+  {
+    "id": "MMS001",
+    "layer": "system",
+    "system_dimension": "content_graph_fanout",
+    "category": "single_source_state_many_outputs",
+    "requirement_refs": ["REQ-frontmatter", "REQ-content-pages", "REQ-list-pages", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "One source content set fans out to content pages, listings, feed, search, and manifest.",
+    "weight": 8,
+    "setup_files": {
+      "site/marmite.yaml": "site_name: Fanout\npagination: 5\n",
+      "site/content/2026-01-02-alpha.md": "---\ntags: [work]\n---\n# Alpha\nAlpha body\n",
+      "site/content/2026-01-01-beta.md": "---\ntags: [home]\n---\n# Beta\nBeta body\n",
+      "site/content/about.md": "# About\nAbout body\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_exists": ["out/alpha.html", "out/beta.html", "out/about.html", "out/index.html", "out/pages.html", "out/feed.json", "out/search_index.json", "out/urls.json"],
+      "file_contains": {"out/index.html": ["alpha.html", "beta.html"], "out/pages.html": ["about.html"]},
+      "file_json_contains_unordered": {
+        "out/feed.json": {"items": [{"slug": "alpha"}, {"slug": "beta"}]},
+        "out/search_index.json": [{"slug": "alpha"}, {"slug": "beta"}, {"slug": "about"}],
+        "out/urls.json": {"posts": ["alpha.html", "beta.html"], "pages": ["about.html", "pages.html"], "feeds": ["feed.json"], "search": ["search_index.json"]}
+      }
+    }
+  },
+  {
+    "id": "MMS002",
+    "layer": "system",
+    "system_dimension": "classification_propagation",
+    "category": "posts_pages_and_drafts_propagate",
+    "requirement_refs": ["REQ-date-kind", "REQ-drafts", "REQ-list-pages", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "post/page/draft classification propagates consistently to public outputs and inspect.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/2026-02-01-post.md": "# Public Post\n",
+      "site/content/page.md": "# Public Page\n",
+      "site/content/draft-2026-02-02-secret.md": "# Secret Draft\n"
+    },
+    "commands": [
+      ["inspect", "--input", "site"],
+      ["build", "--input", "site", "--output", "out"]
+    ],
+    "checks": {
+      "stdout_json_contains_unordered": {"0": {"posts": [{"slug": "post"}], "pages": [{"slug": "public-page"}], "drafts": [{"slug": "draft-secret"}]}},
+      "file_exists": ["out/post.html", "out/public-page.html", "out/pages.html", "out/feed.json", "out/search_index.json"],
+      "file_not_exists": ["out/draft-secret.html"],
+      "file_json_not_contains": {
+        "out/feed.json": ["draft-secret"],
+        "out/search_index.json": ["draft-secret"],
+        "out/urls.json": ["draft-secret.html"]
+      }
+    }
+  },
+  {
+    "id": "MMS003",
+    "layer": "system",
+    "system_dimension": "taxonomy_cross_views",
+    "category": "tags_streams_pages_feeds_manifest",
+    "requirement_refs": ["REQ-tags", "REQ-streams", "REQ-list-pages", "REQ-json-feeds", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "Tags and streams create consistent listing pages, feed subsets, and manifest entries.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/2026-03-01-a.md": "---\ntags: [rust, web]\nstream: news\n---\n# A\n",
+      "site/content/2026-03-02-b.md": "---\ntags: [rust]\nstream: tutorial\n---\n# B\n",
+      "site/content/2026-03-03-c.md": "---\ntags: [ops]\nstream: news\n---\n# C\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_exists": ["out/tag-rust.html", "out/tag-web.html", "out/tag-ops.html", "out/news.html", "out/tutorial.html", "out/tag-rust.json", "out/news.json"],
+      "file_contains": {"out/tag-rust.html": ["news-a.html", "tutorial-b.html"], "out/news.html": ["news-a.html", "news-c.html"]},
+      "file_json_contains_unordered": {
+        "out/tag-rust.json": {"items": [{"slug": "tutorial-b"}, {"slug": "news-a"}]},
+        "out/news.json": {"items": [{"slug": "news-c"}, {"slug": "news-a"}]},
+        "out/urls.json": {"tags": ["tag-rust.html", "tag-web.html", "tag-ops.html", "tags.html"], "streams": ["news.html", "tutorial.html", "streams.html"]}
+      }
+    }
+  },
+  {
+    "id": "MMS004",
+    "layer": "system",
+    "system_dimension": "pagination_manifest_consistency",
+    "category": "index_and_taxonomy_pagination",
+    "requirement_refs": ["REQ-config", "REQ-list-pages", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "Pagination creates listing files that match manifest pagination-related groups.",
+    "weight": 8,
+    "setup_files": {
+      "site/marmite.yaml": "pagination: 2\n",
+      "site/content/2026-04-01-a.md": "---\ntags: [all]\nstream: news\n---\n# A\n",
+      "site/content/2026-04-02-b.md": "---\ntags: [all]\nstream: news\n---\n# B\n",
+      "site/content/2026-04-03-c.md": "---\ntags: [all]\nstream: news\n---\n# C\n",
+      "site/content/2026-04-04-d.md": "---\ntags: [all]\nstream: news\n---\n# D\n",
+      "site/content/2026-04-05-e.md": "---\ntags: [all]\nstream: news\n---\n# E\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_exists": ["out/index.html", "out/tag-all.html", "out/tag-all-2.html", "out/tag-all-3.html", "out/news.html", "out/news-2.html", "out/news-3.html"],
+      "file_json_contains_unordered": {
+        "out/urls.json": {
+          "index": ["index.html"],
+          "tags": ["tag-all.html", "tag-all-2.html", "tag-all-3.html", "tags.html"],
+          "streams": ["news.html", "news-2.html", "news-3.html", "streams.html"]
+        }
+      }
+    }
+  },
+  {
+    "id": "MMS005",
+    "layer": "system",
+    "system_dimension": "link_graph_consistency",
+    "category": "wikilinks_backlinks_manifest",
+    "requirement_refs": ["REQ-title-slug", "REQ-markdown-html", "REQ-wikilinks-backlinks", "REQ-content-pages", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "Slug derivation, wikilink resolution, backlinks, rendered HTML, and manifest agree.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/alpha.md": "---\ntitle: Alpha Page\n---\nSee [[Beta Page]] and [[Missing Page]].\n",
+      "site/content/beta.md": "---\ntitle: Beta Page\nslug: beta-custom\n---\nBack target\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_contains": {
+        "out/alpha-page.html": ["href=\"beta-custom.html\"", "data-wikilink=\"missing\""],
+        "out/beta-custom.html": ["alpha-page"]
+      },
+      "file_json_contains_unordered": {"out/urls.json": {"pages": ["alpha-page.html", "beta-custom.html", "pages.html"]}}
+    }
+  },
+  {
+    "id": "MMS006",
+    "layer": "system",
+    "system_dimension": "exclusion_propagation",
+    "category": "draft_absent_everywhere_public",
+    "requirement_refs": ["REQ-drafts", "REQ-tags", "REQ-streams", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "Draft content is visible in inspect but absent from all public build outputs.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/draft-2026-06-01-secret.md": "---\ntags: [hidden]\n---\n# Secret Draft\n",
+      "site/content/2026-06-02-public.md": "---\ntags: [visible]\n---\n# Public Post\n"
+    },
+    "commands": [
+      ["inspect", "--input", "site"],
+      ["build", "--input", "site", "--output", "out"]
+    ],
+    "checks": {
+      "stdout_json_contains_unordered": {"0": {"drafts": [{"slug": "draft-secret", "tags": ["hidden"]}]}},
+      "file_not_exists": ["out/draft-secret.html", "out/tag-hidden.html", "out/tag-hidden.json"],
+      "file_json_not_contains": {
+        "out/feed.json": ["draft-secret", "Secret Draft", "hidden"],
+        "out/search_index.json": ["draft-secret", "Secret Draft", "hidden"],
+        "out/urls.json": ["draft-secret.html", "tag-hidden.html", "tag-hidden.json"]
+      },
+      "file_json_contains_unordered": {"out/urls.json": {"posts": ["public.html"], "tags": ["tag-visible.html", "tags.html"]}}
+    }
+  },
+  {
+    "id": "MMS007",
+    "layer": "system",
+    "system_dimension": "config_effects",
+    "category": "base_url_feed_search_toggles",
+    "requirement_refs": ["REQ-config", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "base_url affects item URLs while json_feed and enable_search toggles affect files and manifest consistently.",
+    "weight": 8,
+    "setup_files": {
+      "site/marmite.yaml": "site_name: Configured\nbase_url: https://example.test/root/\njson_feed: true\nenable_search: true\n",
+      "site/content/2026-07-01-post.md": "# Config Post\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_json_contains_unordered": {
+        "out/feed.json": {"items": [{"slug": "post", "url": "https://example.test/root/post.html"}]},
+        "out/search_index.json": [{"slug": "post", "url": "https://example.test/root/post.html"}],
+        "out/urls.json": {"feeds": ["feed.json"], "search": ["search_index.json"]}
+      }
+    }
+  },
+  {
+    "id": "MMS008",
+    "layer": "system",
+    "system_dimension": "filename_metadata_flow",
+    "category": "filename_date_stream_slug_outputs",
+    "requirement_refs": ["REQ-title-slug", "REQ-date-kind", "REQ-streams", "REQ-content-pages", "REQ-list-pages", "REQ-json-feeds", "REQ-url-manifest"],
+    "description": "Filename-derived date, stream, and slug flow into pages, stream listings, feeds, and manifest.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/news-2026-08-01-breaking-story.md": "# Breaking Story\n",
+      "site/content/guide-S-install-rust.md": "---\ndate: 2026-08-02\n---\n# Install Rust\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_exists": ["out/news-breaking-story.html", "out/guide-install-rust.html", "out/news.html", "out/guide.html", "out/news.json", "out/guide.json"],
+      "file_json_contains_unordered": {
+        "out/news.json": {"items": [{"slug": "news-breaking-story", "date": "2026-08-01", "stream": "news"}]},
+        "out/guide.json": {"items": [{"slug": "guide-install-rust", "date": "2026-08-02", "stream": "guide"}]},
+        "out/urls.json": {"posts": ["guide-install-rust.html", "news-breaking-story.html"], "streams": ["guide.html", "news.html", "streams.html"]}
+      }
+    }
+  },
+  {
+    "id": "MMS009",
+    "layer": "system",
+    "system_dimension": "manifest_summary_consistency",
+    "category": "all_manifest_groups_and_total",
+    "requirement_refs": ["REQ-list-pages", "REQ-json-feeds", "REQ-search-index", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "Manifest group membership and summary counts agree across pages, taxonomies, feeds, search, and misc.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/2026-09-01-post.md": "---\ntags: [x]\nstream: news\n---\n# Post\n",
+      "site/content/about.md": "# About\n"
+    },
+    "commands": [["build", "--input", "site", "--output", "out"]],
+    "checks": {
+      "file_json_contains_unordered": {
+        "out/urls.json": {
+          "posts": ["news-post.html"],
+          "pages": ["about.html", "pages.html"],
+          "index": ["index.html"],
+          "tags": ["tag-x.html", "tags.html"],
+          "streams": ["news.html", "streams.html"],
+          "feeds": ["feed.json", "tag-x.json", "news.json"],
+          "search": ["search_index.json"],
+          "misc": ["urls.json"],
+          "summary": {"posts": 1, "pages": 2, "index": 1, "tags": 2, "streams": 2, "feeds": 3, "search": 1, "misc": 1, "total": 12}
+        }
+      }
+    }
+  },
+  {
+    "id": "MMS010",
+    "layer": "system",
+    "system_dimension": "inspect_build_consistency",
+    "category": "inspect_matches_generated_outputs",
+    "requirement_refs": ["REQ-inspect", "REQ-content-pages", "REQ-list-pages", "REQ-url-manifest", "REQ-system-invariants"],
+    "description": "Inspect parser state matches generated content files and manifest groups.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/2026-10-01-a.md": "---\ntags: [x]\n---\n# A\n",
+      "site/content/page.md": "# Page\n"
+    },
+    "commands": [
+      ["inspect", "--input", "site"],
+      ["build", "--input", "site", "--output", "out"]
+    ],
+    "checks": {
+      "stdout_json_contains_unordered": {"0": {"posts": [{"slug": "a"}], "pages": [{"slug": "page"}], "tags": {"x": ["a"]}}},
+      "file_exists": ["out/a.html", "out/page.html", "out/tag-x.html"],
+      "file_json_contains_unordered": {"out/urls.json": {"posts": ["a.html"], "pages": ["page.html", "pages.html"], "tags": ["tag-x.html", "tags.html"]}}
+    }
+  },
+  {
+    "id": "MMS011",
+    "layer": "system",
+    "system_dimension": "error_atomicity",
+    "category": "duplicate_slug_no_partial_output",
+    "requirement_refs": ["REQ-title-slug", "REQ-error-atomic"],
+    "description": "Duplicate non-draft slugs fail and leave no partial mini-task output files.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/a.md": "---\nslug: same\n---\n# A\n",
+      "site/content/b.md": "---\nslug: same\n---\n# B\n"
+    },
+    "commands": [
+      {"args": ["build", "--input", "site", "--output", "out"], "expect_error": true}
+    ],
+    "checks": {
+      "file_not_exists": ["out/same.html", "out/index.html", "out/pages.html", "out/urls.json", "out/feed.json", "out/search_index.json"]
+    }
+  },
+  {
+    "id": "MMS012",
+    "layer": "system",
+    "system_dimension": "error_atomicity",
+    "category": "invalid_frontmatter_no_partial_output",
+    "requirement_refs": ["REQ-frontmatter", "REQ-error-atomic"],
+    "description": "Invalid supported frontmatter values fail without partial build outputs.",
+    "weight": 8,
+    "setup_files": {
+      "site/content/bad.md": "---\ndate: not-a-date\n---\n# Bad\n"
+    },
+    "commands": [
+      {"args": ["build", "--input", "site", "--output", "out"], "expect_error": true}
+    ],
+    "checks": {
+      "file_not_exists": ["out/bad.html", "out/index.html", "out/urls.json", "out/feed.json", "out/search_index.json"]
+    }
+  }
+]
