@@ -10,7 +10,7 @@ rubric, plus supporting source and requirement mapping docs.
 | --- | --- | --- |
 | `task/bitcask-realrepo-001` | `SarthakMakhija/bitcask` | Candidate with no-gap-observed validation evidence; not core-strong |
 | `task/xitkit-realrepo-001` | `hoechstleistungshaartrockner/xitkit` | Source-grounded candidate with initial no-gap-observed validation evidence; not core-strong |
-| `task/marmite-realrepo-001` | `rochacbruno/marmite` | PRD, requirement map, and rubric drafted; validation not started |
+| `task/marmite-realrepo-001` | `rochacbruno/marmite` | Reference-satisfiable on `validation/marmite`; no positive gap observed; not core-strong |
 
 ## Deliverable Boundary
 
@@ -29,12 +29,14 @@ validation package.
 
 Bitcask remains useful as a clean candidate handoff and no-gap evidence, but it
 must not be claimed as `core_strong`. Xitkit is source-grounded and executable,
-but initial validation also produced no observed unit/system gap. The active
-construction path is:
+but initial validation also produced no observed unit/system gap. Marmite is
+reference-satisfiable, but the validation batch did not produce a positive
+unit/system gap. The active construction path is:
 
 1. Keep Bitcask and xitkit recorded as candidate/no-gap-observed evidence.
 2. Do not merge validation assets into `main`.
-3. Review the drafted `marmite-realrepo-001` rubric and requirement mapping,
-   then move to validation only after the handoff checks pass.
+3. Keep Marmite recorded as reference-satisfiable/no-positive-gap-observed
+   evidence unless a future source-grounded hardening pass changes validation
+   results.
 
 For AI reviewers, start from `PROJECT_CONTEXT.md`, `INDEX.md`, and `AGENTS.md`.

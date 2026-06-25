@@ -48,8 +48,8 @@ implementation repository.
   - `task/marmite-realrepo-001/rubric.json`
   - `task/marmite-realrepo-001/doc/source_repo.md`
   - `task/marmite-realrepo-001/doc/requirement_map.md`
-- Status: PRD, requirement map, and rubric drafted from source-grounding.
-  Validation has not started.
+- Status: reference-satisfiable on `validation/marmite`; no positive gap
+  observed in the current validation batch; do not claim `core_strong`.
 
 ## Review Checklist
 

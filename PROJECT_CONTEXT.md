@@ -40,15 +40,18 @@ source-grounded candidate/no-gap-observed evidence. Do not claim
 
 ### Marmite
 
-`task/marmite-realrepo-001` is the active source-grounding target, derived from
-`rochacbruno/marmite`. The expected benchmark direction is a static-site
-generator task where one markdown content graph and configuration produce
-multiple public outputs: rendered pages, taxonomies, pagination, feeds, search
-index, URL manifest, and wikilink/backlink views.
+`task/marmite-realrepo-001` is a complete handoff task derived from
+`rochacbruno/marmite`. It defines a static-site generator task where one
+markdown content graph and configuration produce multiple public outputs:
+rendered pages, taxonomies, pagination, feeds, search index, URL manifest, and
+wikilink/backlink views.
 
-`prd.md` now exists as the model-visible draft, `rubric.json` defines 16 unit
-cases and 12 system cases, and `doc/requirement_map.md` maps public
-requirements to concrete case IDs. Validation has not started yet.
+Validation evidence exists on `validation/marmite`: the reference passed 16/16
+unit and 12/12 system cases. Two independent code-agent candidates also reached
+16/16 unit and 12/12 system, while a third scored 8/16 unit and 9/12 system.
+Treat Marmite as reference-satisfiable/no-positive-gap-observed evidence. Do
+not claim `core_strong`, `confirmed benchmark`, or `gap-producing` from current
+evidence.
 
 ### Roadmap
 
@@ -57,8 +60,8 @@ The active roadmap is fixed unless the user changes it explicitly:
 1. Keep Bitcask as candidate/no-gap-observed evidence.
 2. Keep xitkit as source-grounded candidate/no-gap-observed evidence from
    initial validation.
-3. Review the marmite rubric and requirement mapping, then start validation only
-   after the handoff checks pass.
+3. Keep Marmite as reference-satisfiable/no-positive-gap-observed evidence
+   unless a future source-grounded hardening pass changes validation results.
 
 ## Goal
 
@@ -88,8 +91,8 @@ Review these files first:
 - `task/xitkit-realrepo-001/doc/source_repo.md`: source-grounding evidence.
 - `task/xitkit-realrepo-001/doc/requirement_map.md`: traceability and
   source-grounding map.
-- `task/marmite-realrepo-001/doc/source_repo.md`: active source-grounding notes
-  for the next task.
+- `task/marmite-realrepo-001/doc/source_repo.md`: source-grounding notes for
+  the Marmite task.
 - `task/marmite-realrepo-001/prd.md`: current Marmite model-visible draft.
 - `task/marmite-realrepo-001/rubric.json`: drafted Marmite unit/system cases.
 - `task/marmite-realrepo-001/doc/requirement_map.md`: Marmite public
@@ -105,8 +108,8 @@ Review these files first:
 6. Do all `requirement_refs` map back to `requirement_map.md`?
 7. Is there any answer leakage, reference implementation, scorer, candidate
    output, or score report committed to `main`?
-8. Does xitkit's no-gap-observed validation status stay clearly separated from
-   any `core_strong` or confirmed benchmark claim?
+8. Do xitkit and Marmite validation statuses stay clearly separated from any
+   `core_strong` or confirmed benchmark claim?
 
 ## Non-Goals
 
