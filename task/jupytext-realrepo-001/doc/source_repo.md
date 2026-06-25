@@ -108,6 +108,34 @@ sync result, status report, and error behavior.
 | Concurrent edit detection | Simplify | Use deterministic pre/post version markers rather than monkeypatch/timestamps |
 | Full Jupytext format parity | Exclude | No exact Jupytext internals, full Markdown, MyST, Quarto, Rmd, pandoc, marimo, or metadata filter grammar |
 
+## Resolved Boundary Decisions
+
+These decisions are intended to keep the mini task source-grounded,
+deterministic, and scoreable before `requirement_map.md` or `rubric.json` are
+drafted.
+
+- Format scope: v1 uses only Python `py:percent` scripts plus `.ipynb`.
+  Markdown, MyST, Quarto, Rmd, pandoc, marimo, and non-Python comment
+  conventions are excluded.
+- Freshness: real mtimes are excluded. Sync uses public integer
+  `metadata.minijupy.version` markers, with `--source ipynb|text` as an
+  explicit override.
+- Header keys: percent scripts use exact `minijupy` and `kernelspec` header
+  keys, each serialized as compact JSON.
+- Cell identity: percent markers may include top-level `id`, `tags`, and
+  `name`; `id` is a public cell identifier, not cell metadata.
+- Metadata scope: preserve only `metadata.minijupy`, `metadata.kernelspec`,
+  cell `tags`, and cell `name`.
+- Output policy: percent text strips `execution_count` and `outputs`; sync
+  preserves `.ipynb` execution counts and outputs for matching cells.
+- Pair input: `pair` accepts `.ipynb` input only and writes/updates the
+  percent-script counterpart.
+- Directory mapping: `notebook_dir` and `script_dir` are relative to the config
+  base directory. Inputs outside the configured side's prefix fail non-zero and
+  write nothing.
+- Status semantics: `status.roundtrip_ok` ignores `execution_count` and
+  `outputs`; output preservation is a `sync` invariant.
+
 ## Likely Unit Modules
 
 - CLI argument validation and JSON stdout/stderr behavior.
@@ -135,34 +163,18 @@ sync result, status report, and error behavior.
 | `output_preservation` | text input cells -> `.ipynb` output cells -> sync merge -> rebuilt notebook | Preserving outputs while replacing inputs is a real paired-notebook invariant |
 | `error_atomicity` | validation -> conversion/sync write plan -> file writes -> rollback/no partial outputs | Failures must not leave half-updated pairs or misleading status |
 
-## Open Questions Before PRD
+## Review Points Before Requirement Map
 
-1. Should v1 support percent script only, Markdown only, or both?
-   - Recommendation: percent only for first PRD; it is source-central and less
-     similar to Marmite.
-2. How should sync freshness be deterministic?
-   - Recommendation: avoid real mtimes. Use public integer version markers in
-     notebook metadata and percent header, or explicit `--source ipynb|text`.
-3. Which metadata fields are in scope?
-   - Recommendation: notebook `metadata.jupytext.formats`, optional
-     `metadata.kernelspec.language`, cell `metadata.tags`, and cell
-     `metadata.name`.
-4. Should outputs and execution counts be preserved, stripped, or normalized?
-   - Recommendation: text conversion strips them; sync preserves `.ipynb`
-     outputs/execution counts for matching cells when text supplies newer
-     inputs.
-5. What should `status` report?
-   - Recommendation: JSON with `paired_paths`, `source`, `would_write`,
-     `roundtrip_ok`, `differences`, `missing`, and `errors`.
-6. What file mutation atomicity is fair?
-   - Recommendation: failed `to-*`, `pair`, or `sync` leaves existing paired
-     files unchanged and does not create partial outputs.
-7. Should matching cells use position, id, or metadata name?
-   - Recommendation: start with stable public `id`; if absent, fall back to
-     position and state that explicitly in PRD.
-8. Should config support directory-pair mappings?
-   - Recommendation: include same-directory pairing first; add one simple
-     `notebooks/` to `scripts/` mapping only if needed for system cases.
+- Confirm that percent-only scope is enough to differentiate this task from the
+  previous Marmite static-site task.
+- Confirm that public version markers are acceptable as a deterministic
+  adaptation of Jupytext's mtime-based newest-source behavior.
+- Confirm that `id` in percent marker JSON is fair and visible enough for output
+  preservation tests.
+- Confirm that directory-prefix mismatch should fail rather than falling back
+  to same-directory pairing.
+- Confirm that `status.roundtrip_ok` ignoring outputs/execution counts is
+  explicit enough to avoid hidden rubric assumptions.
 
 ## Initial Judgment
 
@@ -171,6 +183,6 @@ source, and tests around conversion, pairing, sync, roundtrip, metadata, tags,
 paired paths, source freshness, and error handling. The likely mini-task can be
 made source-grounded without requiring full Jupytext parity.
 
-The main risk is scope creep. The next step should be a boundary decision,
-not PRD drafting: choose percent-only or percent-plus-Markdown, decide
-deterministic freshness semantics, and define the exact metadata/output policy.
+The main risk is scope creep. The next step after PRD boundary cleanup should
+be `requirement_map.md`, followed by `rubric.json`; validation assets should
+remain off `main`.
