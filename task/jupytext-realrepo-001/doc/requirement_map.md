@@ -4,7 +4,7 @@ Public packet: `prd.md`
 
 Source grounding: `doc/source_repo.md`
 
-Rubric: not drafted yet.
+Rubric: `rubric.json` (34 cases: 20 unit, 14 system)
 
 ## Public Requirements
 
@@ -46,40 +46,49 @@ Rubric: not drafted yet.
 | `REQ-error-atomic` | CLI tests cover invalid formats/options and synchronous edit/source-newer failures; sync tests assert no counterpart creation on failure | Mini task requires all failed write commands to leave existing files byte-unchanged | Directly source-derived with stronger public atomicity rule |
 | `REQ-system-invariants` | Jupytext's paired notebook design requires multiple representations to agree; roundtrip, pairing, sync, metadata, and path tests cover this | Mini task makes global consistency an explicit benchmark target across public commands and files | Directly source-derived with benchmark framing |
 
-## Planned Unit Coverage
+## Unit Coverage
 
-No rubric cases are drafted yet. Likely unit focuses:
-
-| Focus | Requirements |
-| --- | --- |
-| CLI and command validation | `REQ-cli`, `REQ-error-atomic` |
-| `.ipynb` normalization and duplicate ids | `REQ-notebook-model`, `REQ-error-atomic` |
-| Percent header and marker parsing | `REQ-percent-format`, `REQ-version-marker` |
-| Percent writer | `REQ-percent-format`, `REQ-to-text` |
-| Config parsing and config base directory | `REQ-config`, `REQ-error-atomic` |
-| Paired path derivation | `REQ-paired-paths`, `REQ-config` |
-| `to-text` conversion | `REQ-to-text`, `REQ-notebook-model`, `REQ-percent-format` |
-| `to-ipynb` conversion | `REQ-to-ipynb`, `REQ-percent-format`, `REQ-notebook-model` |
-| `pair` command | `REQ-pair`, `REQ-paired-paths`, `REQ-version-marker` |
-| `sync` source selection | `REQ-sync`, `REQ-version-marker` |
-| Output preservation local rule | `REQ-output-preservation`, `REQ-sync` |
-| `inspect` output | `REQ-inspect`, `REQ-notebook-model`, `REQ-paired-paths` |
-| `status` output | `REQ-status`, `REQ-paired-paths`, `REQ-version-marker` |
-| Error atomicity | `REQ-error-atomic`, `REQ-cli` |
-
-## Planned System Coverage
-
-No rubric cases are drafted yet. Planned system dimensions:
-
-| Dimension | Crossed modules | Why system-level |
+| Case | Focus | Requirement refs |
 | --- | --- | --- |
-| `roundtrip_consistency` | `.ipynb` normalization -> percent writer -> percent parser -> `.ipynb` writer/status comparison | Requires conversion in both directions to preserve the same public model fields, not just one parser or writer |
-| `sync_conflict_resolution` | paired path derivation -> version/source decision -> conversion -> pair writes -> sync stdout/status | A single source-choice decision must drive files, metadata versions, stdout, and status consistently |
-| `metadata_fanout` | notebook metadata/cell ids/tags/name -> percent header/markers -> rebuilt notebook -> inspect/status | Metadata must survive multiple public representations and reports without unsupported-field leakage |
-| `multi_file_pairing` | config base directory -> directory-mapped paired paths -> pair/sync -> inspect/status | Directory mapping connects config parsing, path derivation, file writes, and no-write reports across multiple files |
-| `status_report_consistency` | parse both representations -> compare representable model -> version source choice -> would-write/missing/differences report | `status` must predict `sync` behavior while writing nothing, so reports must match actual command semantics |
-| `output_preservation` | text authoritative input -> existing `.ipynb` outputs/execution counts -> cell-id matching -> rebuilt `.ipynb` | Correctness depends on combining inputs from one representation with outputs from another representation |
-| `error_atomicity` | validation -> path/config/source resolution -> planned writes -> rollback/no partial files | A failure must leave all paired files and reports consistent across commands, not merely raise an error locally |
+| `JTU001` | `inspect` command public JSON for an `.ipynb` input | `REQ-cli`, `REQ-inspect`, `REQ-notebook-model` |
+| `JTU002` | Missing `.ipynb` cell ids normalize to `c1`, `c2`, ... | `REQ-notebook-model`, `REQ-inspect` |
+| `JTU003` | Duplicate `.ipynb` cell ids fail before output creation | `REQ-notebook-model`, `REQ-error-atomic` |
+| `JTU004` | Percent header parses `minijupy` version and `kernelspec` | `REQ-percent-format`, `REQ-version-marker`, `REQ-inspect` |
+| `JTU005` | Percent markers parse cell type, `id`, `tags`, and `name` | `REQ-percent-format`, `REQ-notebook-model`, `REQ-inspect` |
+| `JTU006` | Percent writer emits header/markers and strips execution outputs | `REQ-percent-format`, `REQ-to-text`, `REQ-output-preservation` |
+| `JTU007` | Config base directory controls mapped paired paths | `REQ-config`, `REQ-paired-paths`, `REQ-inspect` |
+| `JTU008` | Default same-directory paired path derivation | `REQ-paired-paths`, `REQ-inspect` |
+| `JTU009` | Directory-mapped paired path derivation from the text side | `REQ-config`, `REQ-paired-paths`, `REQ-inspect` |
+| `JTU010` | `to-text` conversion strips `.ipynb` execution state | `REQ-to-text`, `REQ-percent-format`, `REQ-output-preservation` |
+| `JTU011` | `to-ipynb` conversion emits normalized notebook cells | `REQ-to-ipynb`, `REQ-percent-format`, `REQ-notebook-model` |
+| `JTU012` | `pair` sets metadata and creates the percent counterpart | `REQ-pair`, `REQ-version-marker`, `REQ-paired-paths` |
+| `JTU013` | `pair` rejects text input without writing | `REQ-pair`, `REQ-error-atomic` |
+| `JTU014` | `sync` chooses source by greater version | `REQ-sync`, `REQ-version-marker` |
+| `JTU015` | `sync --source` overrides version comparison | `REQ-sync`, `REQ-version-marker` |
+| `JTU016` | Local output preservation by matching cell id | `REQ-output-preservation`, `REQ-sync`, `REQ-notebook-model` |
+| `JTU017` | Unsupported percent fields are dropped from normalized cells | `REQ-inspect`, `REQ-percent-format`, `REQ-notebook-model` |
+| `JTU018` | `status` reports missing counterpart without writing files | `REQ-status`, `REQ-paired-paths`, `REQ-version-marker` |
+| `JTU019` | Malformed percent marker fails without notebook output | `REQ-percent-format`, `REQ-error-atomic` |
+| `JTU020` | Directory mapping mismatch fails without fallback writes | `REQ-config`, `REQ-paired-paths`, `REQ-error-atomic` |
+
+## System Coverage
+
+| Case | Dimension | Crossed modules | Requirement refs |
+| --- | --- | --- | --- |
+| `JTS001` | `roundtrip_consistency` | `.ipynb` normalization -> percent writer -> percent parser -> `.ipynb` writer -> inspect | `REQ-notebook-model`, `REQ-percent-format`, `REQ-to-text`, `REQ-to-ipynb`, `REQ-system-invariants` |
+| `JTS002` | `sync_conflict_resolution` | status source prediction -> text-authoritative sync -> output preservation -> clean status | `REQ-sync`, `REQ-version-marker`, `REQ-status`, `REQ-output-preservation`, `REQ-system-invariants` |
+| `JTS003` | `sync_conflict_resolution` | ipynb-authoritative sync -> percent writer -> status no-write report | `REQ-sync`, `REQ-version-marker`, `REQ-percent-format`, `REQ-status`, `REQ-system-invariants` |
+| `JTS004` | `metadata_fanout` | notebook metadata/cell metadata -> percent header/markers -> rebuilt notebook -> inspect/status | `REQ-notebook-model`, `REQ-percent-format`, `REQ-to-text`, `REQ-to-ipynb`, `REQ-inspect`, `REQ-status`, `REQ-system-invariants` |
+| `JTS005` | `multi_file_pairing` | config base directory -> mapped pair paths -> pair -> status -> sync | `REQ-config`, `REQ-paired-paths`, `REQ-pair`, `REQ-sync`, `REQ-status`, `REQ-system-invariants` |
+| `JTS006` | `status_report_consistency` | version comparison -> status `would_write` -> sync writes -> clean status | `REQ-status`, `REQ-sync`, `REQ-version-marker`, `REQ-system-invariants` |
+| `JTS007` | `output_preservation` | text authoritative model -> cell id matching -> reordered notebook output preservation | `REQ-sync`, `REQ-output-preservation`, `REQ-notebook-model`, `REQ-system-invariants` |
+| `JTS008` | `status_report_consistency` | equal versions -> status source `none` -> sync no-op | `REQ-sync`, `REQ-status`, `REQ-version-marker`, `REQ-system-invariants` |
+| `JTS009` | `sync_conflict_resolution` | `--source` override -> percent rewrite -> clean status | `REQ-sync`, `REQ-version-marker`, `REQ-status`, `REQ-system-invariants` |
+| `JTS010` | `multi_file_pairing` | missing counterpart status -> pair creation -> status/sync no-op | `REQ-pair`, `REQ-status`, `REQ-sync`, `REQ-paired-paths`, `REQ-system-invariants` |
+| `JTS011` | `output_preservation` | missing ids -> public id assignment -> positional output preservation -> inspect | `REQ-notebook-model`, `REQ-percent-format`, `REQ-sync`, `REQ-output-preservation`, `REQ-system-invariants` |
+| `JTS012` | `metadata_fanout` | unsupported metadata filtering -> inspect -> text conversion -> rebuilt notebook | `REQ-notebook-model`, `REQ-percent-format`, `REQ-inspect`, `REQ-to-text`, `REQ-to-ipynb`, `REQ-system-invariants` |
+| `JTS013` | `error_atomicity` | malformed `.ipynb` validation -> sync failure -> paired files unchanged | `REQ-error-atomic`, `REQ-sync`, `REQ-system-invariants` |
+| `JTS014` | `error_atomicity` | config/path validation -> sync failure -> existing files unchanged | `REQ-config`, `REQ-paired-paths`, `REQ-error-atomic`, `REQ-system-invariants` |
 
 ## Fairness Notes
 

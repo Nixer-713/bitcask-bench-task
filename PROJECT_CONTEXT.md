@@ -60,6 +60,19 @@ issues, not positive unit/system gap evidence. Treat Marmite as hardened
 reference-satisfiable/no-positive-gap-observed evidence. Do not claim
 `core_strong`, `confirmed benchmark`, or `gap-producing` from current evidence.
 
+### Jupytext
+
+`task/jupytext-realrepo-001` is a source-grounded handoff draft derived from
+`mwouts/jupytext`. It abstracts paired notebook behavior into a deterministic
+local CLI where one notebook model must remain consistent across `.ipynb`,
+`py:percent` text, pairing metadata, version-based sync, output preservation,
+and status reports.
+
+The current handoff contains `prd.md`, `rubric.json`, `doc/source_repo.md`, and
+`doc/requirement_map.md`. The rubric has 34 cases: 20 unit and 14 system.
+Validation has not started. Do not claim `core_strong`, `confirmed benchmark`,
+or `gap-producing` from current evidence.
+
 ### Roadmap
 
 The active roadmap is fixed unless the user changes it explicitly:
@@ -69,6 +82,7 @@ The active roadmap is fixed unless the user changes it explicitly:
    initial validation.
 3. Keep Marmite as hardened reference-satisfiable/no-positive-gap-observed
    evidence unless future source-grounded work changes validation results.
+4. Validate Jupytext next on a validation branch/workspace after handoff review.
 
 ## Goal
 
@@ -104,6 +118,12 @@ Review these files first:
 - `task/marmite-realrepo-001/rubric.json`: drafted Marmite unit/system cases.
 - `task/marmite-realrepo-001/doc/requirement_map.md`: Marmite public
   requirements and concrete unit/system coverage.
+- `task/jupytext-realrepo-001/prd.md`: Jupytext model-visible requirements.
+- `task/jupytext-realrepo-001/rubric.json`: drafted Jupytext unit/system cases.
+- `task/jupytext-realrepo-001/doc/source_repo.md`: Jupytext source-grounding
+  evidence.
+- `task/jupytext-realrepo-001/doc/requirement_map.md`: Jupytext requirements
+  and concrete unit/system coverage.
 
 ## Review Questions
 
@@ -115,7 +135,7 @@ Review these files first:
 6. Do all `requirement_refs` map back to `requirement_map.md`?
 7. Is there any answer leakage, reference implementation, scorer, candidate
    output, or score report committed to `main`?
-8. Do xitkit and Marmite validation statuses stay clearly separated from any
+8. Do xitkit, Marmite, and Jupytext statuses stay clearly separated from any
    `core_strong` or confirmed benchmark claim?
 
 ## Non-Goals

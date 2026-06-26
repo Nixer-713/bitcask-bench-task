@@ -24,18 +24,15 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 
 ## 2.1 Task Selection Roadmap
 
-- Current roadmap state: `xitkit` has initial no-gap-observed validation
-  evidence; `marmite` is hardened reference-satisfiable on
-  `validation/marmite-hardened`, with no positive unit/system gap observed and
-  no `core_strong` claim.
-- `xitkit` should become a local task-file CLI benchmark focused on parsing `.xit`
-  tasks, stable IDs, status/priority/due/tag extraction, writeback, filtering,
-  sorting, stats, and cross-file move consistency.
-- `marmite` is the active static-site generator benchmark focused on markdown
-  frontmatter, post/page classification, taxonomy pages, pagination, feeds,
-  search index, URL manifest, and wikilink/backlink consistency.
-- Do not start another source repository unless these two are rejected with
-  concrete validation evidence or the user explicitly changes priority.
+- Current roadmap state: `bitcask`, `xitkit`, and `marmite` have no-positive-gap
+  evidence and no `core_strong` claim.
+- `jupytext` is the active source-grounded paired-notebook benchmark candidate.
+  It focuses on `.ipynb` / `py:percent` conversion, pairing config,
+  deterministic version-based sync, output preservation, status reports, and
+  roundtrip consistency.
+- Do not start another source repository unless Jupytext is rejected or marked
+  no-gap-observed with concrete validation evidence, or the user explicitly
+  changes priority.
 
 ## 2.2 Case-Like Difficulty Requirements
 

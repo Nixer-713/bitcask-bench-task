@@ -11,6 +11,7 @@ rubric, plus supporting source and requirement mapping docs.
 | `task/bitcask-realrepo-001` | `SarthakMakhija/bitcask` | Candidate with no-gap-observed validation evidence; not core-strong |
 | `task/xitkit-realrepo-001` | `hoechstleistungshaartrockner/xitkit` | Source-grounded candidate with initial no-gap-observed validation evidence; not core-strong |
 | `task/marmite-realrepo-001` | `rochacbruno/marmite` | Hardened reference-satisfiable on `validation/marmite-hardened`; no positive unit/system gap observed; not core-strong |
+| `task/jupytext-realrepo-001` | `mwouts/jupytext` | Source-grounded handoff draft with PRD, requirement map, and rubric; validation not started |
 
 ## Deliverable Boundary
 
@@ -40,5 +41,7 @@ unit/system gap evidence. The active construction path is:
 2. Do not merge validation assets into `main`.
 3. Treat Marmite as hardened reference-satisfiable/no-positive-gap-observed
    evidence unless future source-grounded work changes the validation result.
+4. Treat Jupytext as the active source-grounded candidate ready for validation
+   planning; do not claim `core_strong` before reference/candidate evidence.
 
 For AI reviewers, start from `PROJECT_CONTEXT.md`, `INDEX.md`, and `AGENTS.md`.

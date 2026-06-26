@@ -258,9 +258,11 @@ Synchronize the pair from the authoritative source. Source selection is
 deterministic:
 
 1. If `--source ipynb|text` is given, that representation is authoritative.
-2. Otherwise the representation with the strictly greater
+2. If exactly one paired representation exists, the existing representation is
+   authoritative and the missing counterpart is rebuilt.
+3. Otherwise the representation with the strictly greater
    `metadata.minijupy.version` is authoritative.
-3. If both versions are equal and no `--source` is given, the pair is already in
+4. If both versions are equal and no `--source` is given, the pair is already in
    sync: write nothing and report `synced: true` with no changes.
 
 Sync algorithm when a source is authoritative:
@@ -323,6 +325,9 @@ writing files and print:
   when versions are equal.
 - `would_write` lists the counterpart paths `sync` would rewrite (empty when in
   sync).
+- If exactly one paired representation exists, `source` is the existing side,
+  `missing` lists the absent counterpart, `would_write` lists that absent
+  counterpart, and `roundtrip_ok` is `false`.
 - `roundtrip_ok` is true when the two representations are model-equal for
   everything the text format can represent. This comparison ignores
   `execution_count` and `outputs`, because percent text cannot represent them.

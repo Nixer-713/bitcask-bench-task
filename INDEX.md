@@ -56,6 +56,21 @@ implementation repository.
   local filename metadata / stream parsing issues, not positive unit/system gap
   evidence. Do not claim `core_strong`.
 
+### `jupytext-realrepo-001`
+
+- Source project: `mwouts/jupytext`
+- Abstracted task direction: paired notebook conversion and synchronization
+  across `.ipynb` and `py:percent` scripts, with deterministic version markers,
+  pairing config, output preservation, and status reports.
+- Files:
+  - `task/jupytext-realrepo-001/prd.md`
+  - `task/jupytext-realrepo-001/rubric.json`
+  - `task/jupytext-realrepo-001/doc/source_repo.md`
+  - `task/jupytext-realrepo-001/doc/requirement_map.md`
+- Status: source-grounded handoff draft. The rubric has 34 cases
+  (20 unit / 14 system). Validation has not started; do not claim
+  `core_strong`, `confirmed benchmark`, or `gap-producing`.
+
 ## Review Checklist
 
 - PRD contains user-visible requirements only.
@@ -88,6 +103,7 @@ cases, weak unit/system separation, and weak source grounding.
 python3 -m json.tool task/bitcask-realrepo-001/rubric.json >/dev/null
 python3 -m json.tool task/xitkit-realrepo-001/rubric.json >/dev/null
 python3 -m json.tool task/marmite-realrepo-001/rubric.json >/dev/null
+python3 -m json.tool task/jupytext-realrepo-001/rubric.json >/dev/null
 git ls-files | rg '(^|/)(_reference|score_reports?|runs|candidate|.*score\.py|evaluator|answer|expected[-_ ]output)'
 python3 - <<'PY'
 import json
@@ -98,6 +114,7 @@ for rubric_path in [
     Path("task/bitcask-realrepo-001/rubric.json"),
     Path("task/xitkit-realrepo-001/rubric.json"),
     Path("task/marmite-realrepo-001/rubric.json"),
+    Path("task/jupytext-realrepo-001/rubric.json"),
 ]:
     rubric = json.loads(rubric_path.read_text())
     ids = [case.get("id") for case in rubric]
@@ -136,4 +153,8 @@ task/marmite-realrepo-001/prd.md
 task/marmite-realrepo-001/rubric.json
 task/marmite-realrepo-001/doc/source_repo.md
 task/marmite-realrepo-001/doc/requirement_map.md
+task/jupytext-realrepo-001/prd.md
+task/jupytext-realrepo-001/rubric.json
+task/jupytext-realrepo-001/doc/source_repo.md
+task/jupytext-realrepo-001/doc/requirement_map.md
 ```
