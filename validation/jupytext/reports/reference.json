@@ -1,0 +1,253 @@
+{
+  "summary": {
+    "total_cases": 34,
+    "unit_pass": 20,
+    "unit_total": 20,
+    "system_pass": 14,
+    "system_total": 14,
+    "unit_score": 100.0,
+    "system_score": 100.0,
+    "gap_pp": 0.0,
+    "failed_case_ids": []
+  },
+  "cases": [
+    {
+      "id": "JTU001",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU002",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU003",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU004",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU005",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU006",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU007",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU008",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU009",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU010",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU011",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU012",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU013",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU014",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU015",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU016",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU017",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU018",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU019",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTU020",
+      "layer": "unit",
+      "system_dimension": null,
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS001",
+      "layer": "system",
+      "system_dimension": "roundtrip_consistency",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS002",
+      "layer": "system",
+      "system_dimension": "sync_conflict_resolution",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS003",
+      "layer": "system",
+      "system_dimension": "sync_conflict_resolution",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS004",
+      "layer": "system",
+      "system_dimension": "metadata_fanout",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS005",
+      "layer": "system",
+      "system_dimension": "multi_file_pairing",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS006",
+      "layer": "system",
+      "system_dimension": "status_report_consistency",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS007",
+      "layer": "system",
+      "system_dimension": "output_preservation",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS008",
+      "layer": "system",
+      "system_dimension": "status_report_consistency",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS009",
+      "layer": "system",
+      "system_dimension": "sync_conflict_resolution",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS010",
+      "layer": "system",
+      "system_dimension": "multi_file_pairing",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS011",
+      "layer": "system",
+      "system_dimension": "output_preservation",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS012",
+      "layer": "system",
+      "system_dimension": "metadata_fanout",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS013",
+      "layer": "system",
+      "system_dimension": "error_atomicity",
+      "passed": true,
+      "error": null
+    },
+    {
+      "id": "JTS014",
+      "layer": "system",
+      "system_dimension": "error_atomicity",
+      "passed": true,
+      "error": null
+    }
+  ]
+}
