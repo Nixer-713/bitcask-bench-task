@@ -78,6 +78,13 @@ more alternative representations and triggers creation/update of paired files
 pairing adds a `"jupytext": {"formats": ...}` entry to notebook metadata
 (`website/src/content/docs/using/paired-notebooks.md`, lines 19-27).
 
+In the CLI implementation, `jupytext_single_file` derives the output path from
+the input path and requested output format (`src/jupytext/cli.py`, lines
+521-540), loads project config before reading/writing (`src/jupytext/cli.py`,
+lines 542-559), and lets `--set-formats` influence sync formats when the user
+combines it with `--sync` (`src/jupytext/cli.py`, lines 632-639). This makes
+pairing a stateful file workflow, not only a serializer flag.
+
 ### Sync And Freshness
 
 The public CLI has `--sync`, which updates paired representations; the docs say
@@ -98,6 +105,14 @@ raises errors (`tests/functional/cli/test_source_is_newer.py`, lines 12-70).
 Real mtimes are unsuitable for a deterministic benchmark, but the public
 behavior to adapt is source freshness, stale-source rejection, and explicit
 source choice.
+
+The source-level decision is implemented in `latest_inputs_and_outputs`: it
+walks paired paths, tracks the newest text input and newest `.ipynb` output,
+uses the newest text for inputs unless the `.ipynb` output is newer, and returns
+separate input/output notebook files (`src/jupytext/pairs.py`, lines 15-55).
+The CLI then loads the selected pair during `--sync`
+(`src/jupytext/cli.py`, lines 629-660), and `write_pair` writes the `.ipynb`
+member first and then text members (`src/jupytext/sync_pairs.py`, lines 40-80).
 
 ### Paired Path Derivation
 
@@ -159,6 +174,10 @@ This behavior is more system-like than plain conversion: a candidate can pass
 local `to-text` and `to-ipynb` tests but still lose or attach outputs to the
 wrong cells during sync.
 
+The public CLI also exposes this preservation path through `--update`:
+conversion to an existing `.ipynb` destination checks version compatibility and
+calls `combine_inputs_with_outputs` (`src/jupytext/cli.py`, lines 954-959).
+
 ### Roundtrip And Status-Like Checks
 
 CLI docs emphasize roundtrip stability and expose `--test` / `--test-strict`
@@ -170,6 +189,11 @@ both flags (`src/jupytext/cli.py`, lines 214-223). Roundtrip tests exercise
 The mini-task should not reproduce full Jupytext `--test`, but a deterministic
 `status` / `check` report is a fair adaptation of public roundtrip and
 freshness checking behavior.
+
+Jupytext also has a public `--paired-paths` command that lists alternative
+representations for a notebook (`src/jupytext/cli.py`, lines 173-177 and
+1038-1045). For 002, this is source evidence for exposing paired-path and
+status/check reports as first-class public outputs.
 
 ### Error Atomicity And Concurrent Modification
 
@@ -183,6 +207,66 @@ new `.ipynb` output (`tests/functional/cli/test_synchronous_changes.py`, lines
 This is a strong source-derived basis for mini-task atomicity: failed sync,
 malformed input, stale-source rejection, path mismatch, or conflict detection
 must not half-update paired files or reports.
+
+The implementation supports that behavior with `lazy_write`: it writes changed
+content to a temporary sibling file, checks all previously read input
+timestamps before replacing the destination, removes the temp file on
+`SynchronousModificationError`, and then uses `os.replace`
+(`src/jupytext/cli.py`, lines 814-919). This gives code-level evidence for an
+observable "no partial writes on detected unsafe update" requirement.
+
+## Source-Derived Behavior Classification
+
+This section classifies the requested Jupytext behaviors before any PRD is
+written. It is intentionally about public behavior and artifact state, not
+private functions.
+
+| Behavior area | Classification | Source evidence | 002 implication |
+| --- | --- | --- | --- |
+| Paired notebooks | Source-derived | Paired docs define inputs from newest paired file, outputs from `.ipynb`, and saving all pair files (`website/src/content/docs/using/paired-notebooks.md`, lines 12-15). FAQ says text contains inputs/selected metadata while `.ipynb` restores outputs/filtered metadata (`website/src/content/docs/reference/faq.md`, lines 44-46). | Keep paired `.ipynb` + `py:percent` artifacts as the core state model. |
+| `--set-formats` | Source-derived | CLI help says it creates/updates all paired files (`src/jupytext/cli.py`, lines 153-159). Docs show `jupytext --set-formats ipynb,py notebook.ipynb` (`website/src/content/docs/using/cli.md`, lines 28-31). | Keep a public pairing command that writes pairing metadata and creates/updates the counterpart. |
+| `--sync` | Source-derived | CLI docs say sync updates whichever paired representation is outdated (`website/src/content/docs/using/cli.md`, lines 28-32). Parser help says inputs come from last-modified file and outputs from `.ipynb` (`src/jupytext/cli.py`, lines 163-170). | Keep sync as mutation workflow; later PRD should make its source choice deterministic. |
+| Paired paths | Source-derived | Config docs show global and subfolder pairing (`website/src/content/docs/using/config.md`, lines 10-43). `paired_paths.py` derives bases/paths and rejects unmatched/duplicate pairs (`src/jupytext/paired_paths.py`, lines 86-191 and 234-332). Tests cover simple, tree, config boundary, prefix/suffix, duplicate, and separator behavior (`tests/unit/test_paired_paths.py`, lines 23-240). | Keep same-directory pairing and one directory-mapping subset; require mismatch errors to be public. |
+| Newest source decision | Source-derived concept, deterministic adaptation required | `latest_inputs_and_outputs` chooses newest text input / newest `.ipynb` output by timestamp (`src/jupytext/pairs.py`, lines 15-55). Source-newer tests reject stale sources (`tests/functional/cli/test_source_is_newer.py`, lines 12-70). | Preserve the behavior shape, but replace real mtimes with public deterministic version/hash/state semantics. |
+| Output preservation | Source-derived | Docs and FAQ state text stores inputs while `.ipynb` stores/restores outputs (`website/src/content/docs/using/paired-notebooks.md`, lines 8-17; `website/src/content/docs/reference/faq.md`, lines 44-46). `combine_inputs_with_outputs` and `map_outputs_to_inputs` merge source cells with output cells (`src/jupytext/combine.py`, lines 36-177). | Keep output/execution-count preservation as a system invariant during sync/update. |
+| Conflict / simultaneous changes | Source-derived concept, deterministic adaptation required | Paired docs warn about simultaneous Jupyter/text saves and ask the user to choose/reload (`website/src/content/docs/using/paired-notebooks.md`, lines 29-41). FAQ describes both sides edited and `.ipynb` newer safeguards (`website/src/content/docs/reference/faq.md`, lines 90-98). Tests simulate synchronous modification and require errors/no counterpart writes (`tests/functional/cli/test_synchronous_changes.py`, lines 15-111). | Keep conflict/stale-source handling, but expose deterministic conflict state rather than timing races. |
+| Status / test behavior | Source-derived concept, deterministic adaptation required | `--test` / `--test-strict` are public roundtrip checks (`website/src/content/docs/using/cli.md`, lines 86-99; `src/jupytext/cli.py`, lines 214-223). `--paired-paths` lists derived pair locations (`src/jupytext/cli.py`, lines 173-177 and 1038-1045). | A JSON `status`/`check` command is a fair mini-task adaptation of public checks and pair reporting. |
+| Failure atomicity | Source-derived | `lazy_write` uses temp file + timestamp recheck + temp cleanup + `os.replace` (`src/jupytext/cli.py`, lines 814-919). Synchronous-change tests assert failed sync/conversion avoids partial counterpart creation (`tests/functional/cli/test_synchronous_changes.py`, lines 15-111). | Require failed public commands to leave existing paired artifacts unchanged. |
+| Cell tags and marker metadata | Source-derived | Percent docs expose cell metadata in markers (`website/src/content/docs/formats/scripts.md`, lines 8-28). Tests require tags to survive supported formats (`tests/functional/others/test_cell_tags_are_preserved.py`, lines 18-29). | Keep `id`/`tags`/`name` marker metadata as public representable cell state. |
+
+## Deterministic Mini-Task Adaptations
+
+These adaptations are allowed because they make source-derived behavior
+deterministic and scoreable. They must be written into any future PRD before
+rubric cases rely on them.
+
+| Adaptation | Source behavior being adapted | Reason |
+| --- | --- | --- |
+| Replace real mtimes with public freshness markers, hashes, or a state file | Jupytext chooses newest source by filesystem timestamps (`src/jupytext/pairs.py`, lines 15-55). | Real mtimes are flaky for benchmark scoring and hard for code agents to reason about reproducibly. |
+| Add JSON `status` / `check` output | Source has `--test`, `--test-strict`, `--paired-paths`, source-newer checks, and logs/errors, but not one stable JSON status schema. | A stable public report lets system tests compare source choice, pair paths, missing files, conflicts, and roundtrip state without inspecting internals. |
+| Restrict paired formats to `.ipynb` and `py:percent` | Jupytext supports many text notebook formats. | Keeps the task focused on paired state flow rather than broad serializer parity. |
+| Restrict directory mapping to one explicit `notebook_dir` / `script_dir` style subset | Source supports richer prefix/suffix/root formats. | Preserves paired-path pressure while avoiding path grammar noise. |
+| Define a small notebook/cell metadata subset | Source has metadata filters and richer nbformat behavior. | Keeps tests public and deterministic while retaining metadata fanout pressure. |
+| Define deterministic conflict resolution with explicit `--source` or equivalent | Source handles user conflict through mtimes/Jupyter reload prompts and synchronous-modification errors. | Makes conflict behavior observable without relying on concurrent editors or timing races. |
+| Define all-or-nothing writes for mini-task sync/check operations | Source uses temp files and timestamp checks for safety, but full multi-file transactions are not a universal Jupytext guarantee. | Gives a clear system invariant for benchmark scoring; must remain public if included. |
+
+## Explicit Exclusions For 002
+
+These source behaviors are intentionally out of scope unless a later user
+decision explicitly changes the boundary.
+
+| Excluded behavior | Reason |
+| --- | --- |
+| Real filesystem mtime ordering as the benchmark oracle | Non-deterministic; replaced by public deterministic freshness semantics. |
+| Exact Jupytext private serialization, module structure, or internal function names | Benchmark should test public behavior, not implementation shape. |
+| Full nbformat validation and every notebook metadata field | Too broad; mini-task should define a small public notebook model. |
+| Markdown, MyST, Quarto, Rmd, light, nomarker, sphinx, spin, marimo, and non-Python formats | Format breadth would measure parser coverage rather than paired state composition. |
+| Full metadata filter grammar | High noise and not needed for paired sync/status pressure. |
+| Jupyter server, ContentsManager, collaborative editing, browser reload prompts | Environment-heavy; only their public state concepts are reused. |
+| Notebook execution, kernels, nbconvert, pipes, black, papermill, external tools | External dependency behavior is not part of the mini benchmark. |
+| Git/pre-commit index semantics | Useful source signal for project checks, but exact Git index behavior is not needed. |
+| Image/binary outputs or rich MIME rendering fidelity | The relevant source behavior is output preservation, not rendering. |
+| Background watchers or automatic sync daemons | Not necessary for a deterministic CLI task. |
 
 ## Capability Map
 
