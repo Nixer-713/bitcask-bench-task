@@ -10,12 +10,12 @@ rubric, plus supporting source and requirement mapping docs.
 | --- | --- | --- |
 | `task/bitcask-realrepo-001` | `SarthakMakhija/bitcask` | Candidate with no-gap-observed validation evidence; not core-strong |
 | `task/xitkit-realrepo-001` | `hoechstleistungshaartrockner/xitkit` | Source-grounded candidate with initial no-gap-observed validation evidence; not core-strong |
-| `task/marmite-realrepo-001` | `rochacbruno/marmite` | Hardened reference-satisfiable on `validation/marmite-hardened`; no positive unit/system gap observed; not core-strong |
-| `task/jupytext-realrepo-001` | `mwouts/jupytext` | Source-grounded handoff draft with PRD, requirement map, and rubric; validation not started |
+| `task/marmite-realrepo-001` | `rochacbruno/marmite` | Prior handoff archived as no-positive-gap-observed evidence; active task reset for redesign |
+| `task/jupytext-realrepo-001` | `mwouts/jupytext` | Prior handoff archived as no-gap-observed evidence; active task reset for redesign |
 
 ## Deliverable Boundary
 
-For each task, the core deliverables are:
+For each active handoff task, the core deliverables are:
 
 - `prd.md`: public product requirement document shown to model/code agents.
 - `rubric.json`: hidden unit/system evaluation definition.
@@ -30,18 +30,18 @@ validation package.
 
 Bitcask remains useful as a clean candidate handoff and no-gap evidence, but it
 must not be claimed as `core_strong`. Xitkit is source-grounded and executable,
-but initial validation also produced no observed unit/system gap. Marmite's
-hardened rubric has been validated on `validation/marmite-hardened`: the
-reference passed 19/19 unit and 15/15 system cases, one candidate passed all
-cases, and two candidates passed 17/19 unit and 14/15 system cases. Those
-failures were local filename metadata / stream parsing issues, not positive
-unit/system gap evidence. The active construction path is:
+but initial validation also produced no observed unit/system gap. The prior
+Marmite and Jupytext handoff packets have been archived under
+`archive/no-gap-observed/` because validation did not show positive unit/system
+gap evidence. Their active task directories now keep source-grounding material
+and rewrite notes only. The active construction path is:
 
 1. Keep Bitcask and xitkit recorded as candidate/no-gap-observed evidence.
 2. Do not merge validation assets into `main`.
-3. Treat Marmite as hardened reference-satisfiable/no-positive-gap-observed
-   evidence unless future source-grounded work changes the validation result.
-4. Treat Jupytext as the active source-grounded candidate ready for validation
-   planning; do not claim `core_strong` before reference/candidate evidence.
+3. Treat archived Marmite and Jupytext packets as evidence/history, not current
+   handoff deliverables.
+4. Redesign Marmite and Jupytext from public behavior inventory, capability
+   modules, state/artifact models, and system invariants before drafting new
+   PRDs or rubrics.
 
 For AI reviewers, start from `PROJECT_CONTEXT.md`, `INDEX.md`, and `AGENTS.md`.

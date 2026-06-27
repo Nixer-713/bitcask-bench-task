@@ -24,15 +24,16 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 
 ## 2.1 Task Selection Roadmap
 
-- Current roadmap state: `bitcask`, `xitkit`, and `marmite` have no-positive-gap
-  evidence and no `core_strong` claim.
-- `jupytext` is the active source-grounded paired-notebook benchmark candidate.
-  It focuses on `.ipynb` / `py:percent` conversion, pairing config,
-  deterministic version-based sync, output preservation, status reports, and
-  roundtrip consistency.
-- Do not start another source repository unless Jupytext is rejected or marked
-  no-gap-observed with concrete validation evidence, or the user explicitly
-  changes priority.
+- Current roadmap state: `bitcask`, `xitkit`, `marmite`, and `jupytext` have
+  no-positive-gap or no-gap-observed evidence and no `core_strong` claim.
+- Prior Marmite and Jupytext PRD/rubric packets are archived under
+  `archive/no-gap-observed/`; their active task directories are reset for
+  redesign and keep source-grounding plus rewrite notes only.
+- The active work is to redesign Marmite and Jupytext from public behavior
+  inventory, capability modules, state/artifact models, and system invariants
+  before drafting new PRDs or rubrics.
+- Do not start another source repository unless Marmite/Jupytext rewrite is
+  rejected with concrete reasoning or the user explicitly changes priority.
 
 ## 2.2 Case-Like Difficulty Requirements
 

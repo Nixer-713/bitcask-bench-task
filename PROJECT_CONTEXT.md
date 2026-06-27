@@ -40,9 +40,9 @@ source-grounded candidate/no-gap-observed evidence. Do not claim
 
 ### Marmite
 
-`task/marmite-realrepo-001` is a complete handoff task derived from
-`rochacbruno/marmite`. It defines a static-site generator task where one
-markdown content graph and configuration produce multiple public outputs:
+`task/marmite-realrepo-001` is reset for redesign from `rochacbruno/marmite`.
+The prior handoff packet defined a static-site generator task where one
+markdown content graph and configuration produced multiple public outputs:
 rendered pages, taxonomies, pagination, feeds, search index, URL manifest, and
 wikilink/backlink views.
 
@@ -51,26 +51,37 @@ no-positive-gap-observed. After that, a small source-grounded hardening pass
 added draft-aware link exclusion, archive-year taxonomy, and a read-only URL
 manifest preview command.
 
-Hardened validation evidence now exists on `validation/marmite-hardened`. The
-hardened rubric has 34 cases: 19 unit and 15 system. The reference passed 19/19
+Hardened validation evidence exists on `validation/marmite-hardened`. The
+hardened rubric had 34 cases: 19 unit and 15 system. The reference passed 19/19
 unit and 15/15 system cases. `codex_agent_001` also passed 19/19 unit and 15/15
 system. `codex_agent_002` and `codex_agent_003` each passed 17/19 unit and
 14/15 system; their failures were local filename metadata / stream parsing
-issues, not positive unit/system gap evidence. Treat Marmite as hardened
-reference-satisfiable/no-positive-gap-observed evidence. Do not claim
-`core_strong`, `confirmed benchmark`, or `gap-producing` from current evidence.
+issues, not positive unit/system gap evidence.
+
+The prior PRD/rubric/requirement map is archived under
+`archive/no-gap-observed/marmite-realrepo-001/`. The active task directory keeps
+`doc/source_repo.md` and `doc/rewrite_note.md` only. Treat Marmite as archived
+reference-satisfiable/no-positive-gap-observed evidence until a fresh redesign
+produces a new PRD/rubric. Do not claim `core_strong`, `confirmed benchmark`,
+or `gap-producing` from current evidence.
 
 ### Jupytext
 
-`task/jupytext-realrepo-001` is a source-grounded handoff draft derived from
-`mwouts/jupytext`. It abstracts paired notebook behavior into a deterministic
-local CLI where one notebook model must remain consistent across `.ipynb`,
-`py:percent` text, pairing metadata, version-based sync, output preservation,
-and status reports.
+`task/jupytext-realrepo-001` is reset for redesign from `mwouts/jupytext`. The
+prior handoff abstracted paired notebook behavior into a deterministic local CLI
+where one notebook model stayed consistent across `.ipynb`, `py:percent` text,
+pairing metadata, version-based sync, output preservation, and status reports.
 
-The current handoff contains `prd.md`, `rubric.json`, `doc/source_repo.md`, and
-`doc/requirement_map.md`. The rubric has 34 cases: 20 unit and 14 system.
-Validation has not started. Do not claim `core_strong`, `confirmed benchmark`,
+Validation evidence exists on `validation/jupytext`: the reference and three
+independent candidates all passed 20/20 unit and 14/14 system cases. This is
+reference-satisfiable/no-gap-observed evidence, not positive unit/system gap
+evidence.
+
+The prior PRD/rubric/requirement map is archived under
+`archive/no-gap-observed/jupytext-realrepo-001/`. The active task directory
+keeps `doc/source_repo.md` and `doc/rewrite_note.md` only. Treat Jupytext as
+archived reference-satisfiable/no-gap-observed evidence until a fresh redesign
+produces a new PRD/rubric. Do not claim `core_strong`, `confirmed benchmark`,
 or `gap-producing` from current evidence.
 
 ### Roadmap
@@ -80,9 +91,12 @@ The active roadmap is fixed unless the user changes it explicitly:
 1. Keep Bitcask as candidate/no-gap-observed evidence.
 2. Keep xitkit as source-grounded candidate/no-gap-observed evidence from
    initial validation.
-3. Keep Marmite as hardened reference-satisfiable/no-positive-gap-observed
-   evidence unless future source-grounded work changes validation results.
-4. Validate Jupytext next on a validation branch/workspace after handoff review.
+3. Keep archived Marmite as hardened reference-satisfiable/no-positive-gap
+   evidence.
+4. Keep archived Jupytext as reference-satisfiable/no-gap-observed evidence.
+5. Redesign Marmite and Jupytext from public behavior inventory, capability
+   modules, state/artifact models, and system-testable cross-feature workflows
+   before drafting new PRDs or rubrics.
 
 ## Goal
 
@@ -113,17 +127,13 @@ Review these files first:
 - `task/xitkit-realrepo-001/doc/requirement_map.md`: traceability and
   source-grounding map.
 - `task/marmite-realrepo-001/doc/source_repo.md`: source-grounding notes for
-  the Marmite task.
-- `task/marmite-realrepo-001/prd.md`: current Marmite model-visible draft.
-- `task/marmite-realrepo-001/rubric.json`: drafted Marmite unit/system cases.
-- `task/marmite-realrepo-001/doc/requirement_map.md`: Marmite public
-  requirements and concrete unit/system coverage.
-- `task/jupytext-realrepo-001/prd.md`: Jupytext model-visible requirements.
-- `task/jupytext-realrepo-001/rubric.json`: drafted Jupytext unit/system cases.
+  the Marmite redesign.
+- `task/marmite-realrepo-001/doc/rewrite_note.md`: Marmite reset boundary.
 - `task/jupytext-realrepo-001/doc/source_repo.md`: Jupytext source-grounding
   evidence.
-- `task/jupytext-realrepo-001/doc/requirement_map.md`: Jupytext requirements
-  and concrete unit/system coverage.
+- `task/jupytext-realrepo-001/doc/rewrite_note.md`: Jupytext reset boundary.
+- `archive/no-gap-observed/marmite-realrepo-001/`: archived Marmite handoff.
+- `archive/no-gap-observed/jupytext-realrepo-001/`: archived Jupytext handoff.
 
 ## Review Questions
 
