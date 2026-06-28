@@ -34,6 +34,9 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
   before drafting new PRDs or rubrics.
 - Do not start another source repository unless Marmite/Jupytext rewrite is
   rejected with concrete reasoning or the user explicitly changes priority.
+- `copier-realrepo-001` is the active draft handoff for the current source-task
+  generation pass. Keep validation assets on a validation branch and do not
+  claim `core_strong` without positive unit/system gap evidence.
 
 ## 2.2 Case-Like Difficulty Requirements
 

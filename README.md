@@ -12,6 +12,7 @@ rubric, plus supporting source and requirement mapping docs.
 | `task/xitkit-realrepo-001` | `hoechstleistungshaartrockner/xitkit` | Source-grounded candidate with initial no-gap-observed validation evidence; not core-strong |
 | `task/marmite-realrepo-001` | `rochacbruno/marmite` | Prior handoff archived as no-positive-gap-observed evidence; active task reset for redesign |
 | `task/jupytext-realrepo-001` | `mwouts/jupytext` | Prior handoff archived as no-gap-observed evidence; active task reset for redesign |
+| `task/copier-realrepo-001` | `copier-org/copier` | Draft handoff created; pending validation on a validation branch |
 
 ## Deliverable Boundary
 
@@ -43,5 +44,8 @@ and rewrite notes only. The active construction path is:
 4. Redesign Marmite and Jupytext from public behavior inventory, capability
    modules, state/artifact models, and system invariants before drafting new
    PRDs or rubrics.
+5. Build and validate `copier-realrepo-001` as the next active candidate. Its
+   current `main` packet is a draft handoff, not a confirmed or core-strong
+   benchmark.
 
 For AI reviewers, start from `PROJECT_CONTEXT.md`, `INDEX.md`, and `AGENTS.md`.

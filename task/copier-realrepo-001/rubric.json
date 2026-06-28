@@ -1,0 +1,588 @@
+[
+  {
+    "id": "CPU001",
+    "layer": "unit",
+    "category": "config_parse",
+    "requirement_refs": ["REQ-config"],
+    "description": "copy parses supported copier.yml settings and question defaults.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "_answers_file: .answers.yml\n_templates_suffix: .tmpl\nproject_name: Demo\nauthor:\n  default: Ada\n",
+      "tpl/README.md.tmpl": "# {{ project_name }}\nBy {{ author }}\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"]}
+    ],
+    "checks": {
+      "file_exists": ["dst/README.md", "dst/.answers.yml"],
+      "file_contains": {
+        "dst/README.md": ["# Demo", "By Ada"],
+        "dst/.answers.yml": ["project_name: Demo", "author: Ada"]
+      }
+    }
+  },
+  {
+    "id": "CPU002",
+    "layer": "unit",
+    "category": "data_precedence",
+    "requirement_refs": ["REQ-answers", "REQ-render"],
+    "description": "data file values override defaults and repeated --data values override data file values.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "name: Default\ncolor: blue\n",
+      "tpl/out.txt.jinja": "{{ name }} {{ color }}\n",
+      "answers.yml": "name: FileName\ncolor: green\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--data-file", "answers.yml", "--data", "color=red"]}
+    ],
+    "checks": {
+      "file_contains": {
+        "dst/out.txt": ["FileName red"],
+        "dst/.copier-answers.yml": ["name: FileName", "color: red"]
+      }
+    }
+  },
+  {
+    "id": "CPU003",
+    "layer": "unit",
+    "category": "answers_file_secret",
+    "requirement_refs": ["REQ-answers-file", "REQ-answers"],
+    "description": "custom answers file is written and secret answers render files without being stored.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "_answers_file: .meta/answers.yml\n_secret_questions:\n  - token\nname: Demo\ntoken: hidden\n",
+      "tpl/secret.txt.jinja": "{{ name }} {{ token }}\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"]}
+    ],
+    "checks": {
+      "file_contains": {
+        "dst/secret.txt": ["Demo hidden"],
+        "dst/.meta/answers.yml": ["name: Demo", "_src_path:"]
+      },
+      "file_not_contains": {
+        "dst/.meta/answers.yml": ["token", "hidden"]
+      }
+    }
+  },
+  {
+    "id": "CPU004",
+    "layer": "unit",
+    "category": "render_content",
+    "requirement_refs": ["REQ-render"],
+    "description": "template content supports simple variable substitution and missing variables render empty.",
+    "weight": 3,
+    "setup_files": {
+      "tpl/copier.yml": "name: Ada\n",
+      "tpl/msg.txt.jinja": "Hello {{ name }} from {{ missing }}!\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"]}
+    ],
+    "checks": {
+      "file_contains": {"dst/msg.txt": ["Hello Ada from !"]}
+    }
+  },
+  {
+    "id": "CPU005",
+    "layer": "unit",
+    "category": "render_path",
+    "requirement_refs": ["REQ-render"],
+    "description": "template path segments render with answer variables and template suffix is removed.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "pkg: demo_pkg\n",
+      "tpl/src/{{ pkg }}/__init__.py.jinja": "NAME = \"{{ pkg }}\"\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"]}
+    ],
+    "checks": {
+      "file_exists": ["dst/src/demo_pkg/__init__.py"],
+      "file_contains": {"dst/src/demo_pkg/__init__.py": ["NAME = \"demo_pkg\""]}
+    }
+  },
+  {
+    "id": "CPU006",
+    "layer": "unit",
+    "category": "exclude",
+    "requirement_refs": ["REQ-exclude-skip"],
+    "description": "config and CLI exclude patterns prevent files from being rendered.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "_exclude:\n  - secret.txt\nname: Demo\n",
+      "tpl/keep.txt.jinja": "{{ name }}\n",
+      "tpl/secret.txt": "secret\n",
+      "tpl/tmp.log": "tmp\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--exclude", "*.log"]}
+    ],
+    "checks": {
+      "file_exists": ["dst/keep.txt"],
+      "file_not_exists": ["dst/secret.txt", "dst/tmp.log"]
+    }
+  },
+  {
+    "id": "CPU007",
+    "layer": "unit",
+    "category": "skip_if_exists",
+    "requirement_refs": ["REQ-exclude-skip"],
+    "description": "skip-if-exists preserves existing destination files while allowing missing files to be created.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "_skip_if_exists:\n  - keep.txt\nname: New\n",
+      "tpl/keep.txt.jinja": "{{ name }}\n",
+      "tpl/fresh.txt.jinja": "{{ name }}\n",
+      "dst/keep.txt": "Old\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {
+        "dst/keep.txt": ["Old"],
+        "dst/fresh.txt": ["New"]
+      }
+    }
+  },
+  {
+    "id": "CPU008",
+    "layer": "unit",
+    "category": "pretend_no_write",
+    "requirement_refs": ["REQ-pretend", "REQ-error-atomic"],
+    "description": "copy --pretend reports planned files but writes no destination artifacts.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "name: Demo\n",
+      "tpl/out.txt.jinja": "{{ name }}\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--pretend"]}
+    ],
+    "checks": {
+      "stdout_json_contains": {
+        "0": {"ok": true, "command": "copy", "pretend": true, "written": ["out.txt"]}
+      },
+      "file_not_exists": ["dst/out.txt", "dst/.copier-answers.yml"]
+    }
+  },
+  {
+    "id": "CPU009",
+    "layer": "unit",
+    "category": "git_vcs_ref",
+    "requirement_refs": ["REQ-local-git", "REQ-copy"],
+    "description": "copy --vcs-ref selects a specific local Git template tag.",
+    "weight": 5,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "version: one\n", "version.txt.jinja": "{{ version }}\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "version: two\n", "version.txt.jinja": "{{ version }}\n"}}
+      ]
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--vcs-ref", "v1.0.0"]}
+    ],
+    "checks": {
+      "file_contains": {
+        "dst/version.txt": ["one"],
+        "dst/.copier-answers.yml": ["_commit: v1.0.0"]
+      }
+    }
+  },
+  {
+    "id": "CPU010",
+    "layer": "unit",
+    "category": "check_update_json",
+    "requirement_refs": ["REQ-check-update", "REQ-local-git"],
+    "description": "check-update --json reports current and latest local Git template refs without writing files.",
+    "weight": 4,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "name: v1\n", "name.txt.jinja": "{{ name }}\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "name: v2\n", "name.txt.jinja": "{{ name }}\n"}}
+      ]
+    },
+    "setup_files": {
+      "dst/.copier-answers.yml": "_src_path: tpl\n_commit: v1.0.0\nname: v1\n"
+    },
+    "steps": [
+      {"args": ["check-update", "dst", "--json"]}
+    ],
+    "checks": {
+      "stdout_json_contains": {
+        "0": {"ok": true, "current": "v1.0.0", "latest": "v2.0.0", "update_available": true}
+      },
+      "file_contains": {"dst/.copier-answers.yml": ["_commit: v1.0.0"]}
+    }
+  },
+  {
+    "id": "CPU011",
+    "layer": "unit",
+    "category": "trust_gate_tasks",
+    "requirement_refs": ["REQ-tasks-migrations", "REQ-error-atomic"],
+    "description": "templates with tasks fail without --trust and do not write task effects.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "_tasks:\n  - write task.log copied\nname: Demo\n",
+      "tpl/out.txt.jinja": "{{ name }}\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"], "expect_error": true}
+    ],
+    "checks": {
+      "file_not_exists": ["dst/out.txt", "dst/task.log", "dst/.copier-answers.yml"]
+    }
+  },
+  {
+    "id": "CPU012",
+    "layer": "unit",
+    "category": "subdirectory",
+    "requirement_refs": ["REQ-subdirectory", "REQ-render"],
+    "description": "_subdirectory renders only the selected sub-tree while root config still supplies answers.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "_subdirectory: skeleton\nname: Demo\n",
+      "tpl/skeleton/app.txt.jinja": "{{ name }}\n",
+      "tpl/other/ignored.txt.jinja": "ignored\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"]}
+    ],
+    "checks": {
+      "file_contains": {"dst/app.txt": ["Demo"]},
+      "file_not_exists": ["dst/other/ignored.txt", "dst/ignored.txt"]
+    }
+  },
+  {
+    "id": "CPU013",
+    "layer": "unit",
+    "category": "malformed_config_atomicity",
+    "requirement_refs": ["REQ-config", "REQ-error-atomic"],
+    "description": "malformed config fails without creating destination files.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "name: [broken\n",
+      "tpl/out.txt.jinja": "x\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"], "expect_error": true}
+    ],
+    "checks": {
+      "file_not_exists": ["dst/out.txt", "dst/.copier-answers.yml"]
+    }
+  },
+  {
+    "id": "CPU014",
+    "layer": "unit",
+    "category": "overwrite_atomicity",
+    "requirement_refs": ["REQ-copy", "REQ-error-atomic"],
+    "description": "copy refuses to overwrite an existing destination file without --overwrite and leaves it unchanged.",
+    "weight": 4,
+    "setup_files": {
+      "tpl/copier.yml": "name: New\n",
+      "tpl/out.txt.jinja": "{{ name }}\n",
+      "dst/out.txt": "Old\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"], "expect_error": true}
+    ],
+    "checks": {
+      "file_contains": {"dst/out.txt": ["Old"]},
+      "file_not_contains": {"dst/out.txt": ["New"]}
+    }
+  },
+  {
+    "id": "CPU015",
+    "layer": "unit",
+    "category": "inline_conflict",
+    "requirement_refs": ["REQ-update", "REQ-conflict"],
+    "description": "update --conflict inline writes public conflict markers for a locally edited file.",
+    "weight": 5,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "name: Demo\n", "file.txt.jinja": "old {{ name }}\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "name: Demo\n", "file.txt.jinja": "new {{ name }}\n"}}
+      ]
+    },
+    "setup_files": {
+      "dst/file.txt": "local Demo\n",
+      "dst/.copier-answers.yml": "_src_path: tpl\n_commit: v1.0.0\nname: Demo\n"
+    },
+    "steps": [
+      {"args": ["update", "dst", "--vcs-ref", "v2.0.0", "--conflict", "inline", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {"dst/file.txt": ["<<<<<<< local", "local Demo", "=======", "new Demo", ">>>>>>> template"]},
+      "stdout_json_contains": {"0": {"conflicts": ["file.txt"]}}
+    }
+  },
+  {
+    "id": "CPU016",
+    "layer": "unit",
+    "category": "reject_conflict",
+    "requirement_refs": ["REQ-update", "REQ-conflict"],
+    "description": "update --conflict rej preserves the local file and writes a .rej file with template content.",
+    "weight": 5,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "name: Demo\n", "file.txt.jinja": "old {{ name }}\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "name: Demo\n", "file.txt.jinja": "new {{ name }}\n"}}
+      ]
+    },
+    "setup_files": {
+      "dst/file.txt": "local Demo\n",
+      "dst/.copier-answers.yml": "_src_path: tpl\n_commit: v1.0.0\nname: Demo\n"
+    },
+    "steps": [
+      {"args": ["update", "dst", "--vcs-ref", "v2.0.0", "--conflict", "rej", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {"dst/file.txt": ["local Demo"], "dst/file.txt.rej": ["new Demo"]},
+      "file_not_contains": {"dst/file.txt": ["<<<<<<<", "new Demo"]},
+      "stdout_json_contains": {"0": {"conflicts": ["file.txt"]}}
+    }
+  },
+  {
+    "id": "CPS001",
+    "layer": "system",
+    "category": "copy_answers_check_update",
+    "system_dimension": "cross_feature_dataflow",
+    "requirement_refs": ["REQ-copy", "REQ-render", "REQ-answers-file", "REQ-check-update", "REQ-invariants"],
+    "description": "copy renders files and answers, then check-update reads the answers file to report a newer template tag.",
+    "weight": 8,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "name: App\n", "README.md.jinja": "# {{ name }} v1\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "name: App\n", "README.md.jinja": "# {{ name }} v2\n"}}
+      ]
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--vcs-ref", "v1.0.0"]},
+      {"args": ["check-update", "dst", "--json"]}
+    ],
+    "checks": {
+      "file_contains": {
+        "dst/README.md": ["# App v1"],
+        "dst/.copier-answers.yml": ["_src_path: tpl", "_commit: v1.0.0", "name: App"]
+      },
+      "stdout_json_contains": {"1": {"update_available": true, "current": "v1.0.0", "latest": "v2.0.0"}}
+    }
+  },
+  {
+    "id": "CPS002",
+    "layer": "system",
+    "category": "copy_update_v2",
+    "system_dimension": "state_accumulation",
+    "requirement_refs": ["REQ-local-git", "REQ-copy", "REQ-update", "REQ-answers-file"],
+    "description": "copy v1 then update to v2 advances rendered files and answers file commit.",
+    "weight": 8,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "name: App\n", "app.txt.jinja": "v1 {{ name }}\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "name: App\n", "app.txt.jinja": "v2 {{ name }}\n", "new.txt.jinja": "new {{ name }}\n"}}
+      ]
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--vcs-ref", "v1.0.0"]},
+      {"args": ["update", "dst", "--vcs-ref", "v2.0.0", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {
+        "dst/app.txt": ["v2 App"],
+        "dst/new.txt": ["new App"],
+        "dst/.copier-answers.yml": ["_commit: v2.0.0", "name: App"]
+      }
+    }
+  },
+  {
+    "id": "CPS003",
+    "layer": "system",
+    "category": "local_edit_update_conflict",
+    "system_dimension": "operation_order_sensitivity",
+    "requirement_refs": ["REQ-update", "REQ-conflict", "REQ-error-atomic"],
+    "description": "after copy and local edit, update detects conflict instead of silently overwriting local content.",
+    "weight": 8,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "name: App\n", "app.txt.jinja": "template v1 {{ name }}\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "name: App\n", "app.txt.jinja": "template v2 {{ name }}\n"}}
+      ]
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--vcs-ref", "v1.0.0"]},
+      {"write_file": {"path": "dst/app.txt", "content": "local edit\n"}},
+      {"args": ["update", "dst", "--vcs-ref", "v2.0.0", "--conflict", "rej", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {"dst/app.txt": ["local edit"], "dst/app.txt.rej": ["template v2 App"]},
+      "file_contains_any_order": {"dst/.copier-answers.yml": ["_commit: v2.0.0"]},
+      "stdout_json_contains": {"2": {"conflicts": ["app.txt"]}}
+    }
+  },
+  {
+    "id": "CPS004",
+    "layer": "system",
+    "category": "recopy_discards_local_evolution",
+    "system_dimension": "state_accumulation",
+    "requirement_refs": ["REQ-copy", "REQ-recopy", "REQ-answers-file"],
+    "description": "recopy uses stored answers and template source to discard local evolution.",
+    "weight": 8,
+    "setup_files": {
+      "tpl/copier.yml": "name: Peach\n",
+      "tpl/name.txt.jinja": "This is {{ name }}.\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"]},
+      {"write_file": {"path": "dst/name.txt", "content": "This is Peach. Local edit.\n"}},
+      {"args": ["recopy", "dst", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {"dst/name.txt": ["This is Peach."]},
+      "file_not_contains": {"dst/name.txt": ["Local edit"]}
+    }
+  },
+  {
+    "id": "CPS005",
+    "layer": "system",
+    "category": "data_render_answers_recopy",
+    "system_dimension": "global_invariant",
+    "requirement_refs": ["REQ-answers", "REQ-render", "REQ-recopy", "REQ-invariants"],
+    "description": "data file and CLI data drive rendered output, stored answers, and later recopy behavior consistently.",
+    "weight": 8,
+    "setup_files": {
+      "tpl/copier.yml": "name: Default\nlang: py\n",
+      "tpl/{{ name }}.txt.jinja": "{{ name }} uses {{ lang }}\n",
+      "data.yml": "name: FromFile\nlang: js\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--data-file", "data.yml", "--data", "lang=go"]},
+      {"write_file": {"path": "dst/FromFile.txt", "content": "changed\n"}},
+      {"args": ["recopy", "dst", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {
+        "dst/FromFile.txt": ["FromFile uses go"],
+        "dst/.copier-answers.yml": ["name: FromFile", "lang: go"]
+      }
+    }
+  },
+  {
+    "id": "CPS006",
+    "layer": "system",
+    "category": "exclude_skip_pretend_update",
+    "system_dimension": "boundary_crossing",
+    "requirement_refs": ["REQ-exclude-skip", "REQ-pretend", "REQ-update"],
+    "description": "exclude, skip, and pretend remain consistent across copy and update.",
+    "weight": 8,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "_skip_if_exists:\n  - keep.txt\nname: App\n", "keep.txt.jinja": "v1 {{ name }}\n", "drop.log": "drop\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "_skip_if_exists:\n  - keep.txt\nname: App\n", "keep.txt.jinja": "v2 {{ name }}\n", "new.txt.jinja": "new {{ name }}\n", "drop.log": "drop2\n"}}
+      ]
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--vcs-ref", "v1.0.0", "--exclude", "*.log"]},
+      {"write_file": {"path": "dst/keep.txt", "content": "local keep\n"}},
+      {"args": ["update", "dst", "--vcs-ref", "v2.0.0", "--overwrite", "--exclude", "*.log", "--pretend"]}
+    ],
+    "checks": {
+      "stdout_json_contains": {"2": {"pretend": true}},
+      "file_contains": {"dst/keep.txt": ["local keep"]},
+      "file_not_exists": ["dst/new.txt", "dst/drop.log"]
+    }
+  },
+  {
+    "id": "CPS007",
+    "layer": "system",
+    "category": "tasks_migrations_trust_skip",
+    "system_dimension": "boundary_crossing",
+    "requirement_refs": ["REQ-tasks-migrations", "REQ-copy", "REQ-update"],
+    "description": "trusted tasks and migrations apply safe actions while skip-tasks suppresses ordinary tasks.",
+    "weight": 8,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "_tasks:\n  - append log.txt task-v1\nname: App\n", "app.txt.jinja": "v1 {{ name }}\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "_tasks:\n  - append log.txt task-v2\n_migrations:\n  - version: v2.0.0\n    before:\n      - append log.txt before-v2\n    after:\n      - append log.txt after-v2\nname: App\n", "app.txt.jinja": "v2 {{ name }}\n"}}
+      ]
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--vcs-ref", "v1.0.0", "--trust"]},
+      {"args": ["update", "dst", "--vcs-ref", "v2.0.0", "--trust", "--skip-tasks", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {"dst/log.txt": ["task-v1", "before-v2", "after-v2"]},
+      "file_not_contains": {"dst/log.txt": ["task-v2"]},
+      "file_contains_any_order": {"dst/app.txt": ["v2 App"]}
+    }
+  },
+  {
+    "id": "CPS008",
+    "layer": "system",
+    "category": "subdirectory_copy_update",
+    "system_dimension": "boundary_crossing",
+    "requirement_refs": ["REQ-subdirectory", "REQ-local-git", "REQ-update"],
+    "description": "subdirectory setting controls generated paths during both copy and update.",
+    "weight": 8,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "_subdirectory: skeleton\nname: App\n", "skeleton/app.txt.jinja": "v1 {{ name }}\n", "outside.txt.jinja": "outside\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "_subdirectory: skeleton\nname: App\n", "skeleton/app.txt.jinja": "v2 {{ name }}\n", "skeleton/extra.txt.jinja": "extra\n", "outside.txt.jinja": "outside2\n"}}
+      ]
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--vcs-ref", "v1.0.0"]},
+      {"args": ["update", "dst", "--vcs-ref", "v2.0.0", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {"dst/app.txt": ["v2 App"], "dst/extra.txt": ["extra"]},
+      "file_not_exists": ["dst/outside.txt"]
+    }
+  },
+  {
+    "id": "CPS009",
+    "layer": "system",
+    "category": "secret_render_answers_invariant",
+    "system_dimension": "global_invariant",
+    "requirement_refs": ["REQ-answers", "REQ-answers-file", "REQ-render"],
+    "description": "secret answers affect rendered output but never appear in the persisted answers file.",
+    "weight": 8,
+    "setup_files": {
+      "tpl/copier.yml": "_secret_questions:\n  - password\nuser: ada\npassword: swordfish\n",
+      "tpl/auth.txt.jinja": "{{ user }}:{{ password }}\n"
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults"]},
+      {"args": ["recopy", "dst", "--overwrite"]}
+    ],
+    "checks": {
+      "file_contains": {"dst/auth.txt": ["ada:swordfish"], "dst/.copier-answers.yml": ["user: ada"]},
+      "file_not_contains": {"dst/.copier-answers.yml": ["password", "swordfish"]}
+    }
+  },
+  {
+    "id": "CPS010",
+    "layer": "system",
+    "category": "malformed_update_atomicity",
+    "system_dimension": "error_atomicity",
+    "requirement_refs": ["REQ-update", "REQ-error-atomic", "REQ-invariants"],
+    "description": "a malformed new template config makes update fail without changing existing project files or answers.",
+    "weight": 8,
+    "setup_git": {
+      "tpl": [
+        {"tag": "v1.0.0", "files": {"copier.yml": "name: App\n", "app.txt.jinja": "v1 {{ name }}\n"}},
+        {"tag": "v2.0.0", "files": {"copier.yml": "name: [broken\n", "app.txt.jinja": "v2 {{ name }}\n"}}
+      ]
+    },
+    "steps": [
+      {"args": ["copy", "tpl", "dst", "--defaults", "--vcs-ref", "v1.0.0"]},
+      {"args": ["update", "dst", "--vcs-ref", "v2.0.0", "--overwrite"], "expect_error": true}
+    ],
+    "checks": {
+      "file_contains": {"dst/app.txt": ["v1 App"], "dst/.copier-answers.yml": ["_commit: v1.0.0"]},
+      "file_not_contains": {"dst/app.txt": ["v2"], "dst/.copier-answers.yml": ["v2.0.0"]}
+    }
+  }
+]

@@ -84,6 +84,21 @@ archived reference-satisfiable/no-gap-observed evidence until a fresh redesign
 produces a new PRD/rubric. Do not claim `core_strong`, `confirmed benchmark`,
 or `gap-producing` from current evidence.
 
+### Copier
+
+`task/copier-realrepo-001` is a draft handoff derived from `copier-org/copier`
+at commit `454ec4244132bce478e60c4707ee418312ca8922`. It abstracts Copier into
+a compact local CLI, `minicopier.py`, covering copy, recopy, update,
+check-update, answers files, local Git refs/tags, exclude/skip, pretend mode,
+safe tasks/migrations, subdirectory rendering, update conflicts, and
+atomicity.
+
+The task is source-grounded and has PRD, requirement map, rubric, boundary
+decisions, and review docs on `main`. Validation evidence has not been accepted
+into `main`. Treat Copier as draft/pending validation until a validation branch
+shows reference 100/100 and candidate results. Do not claim `core_strong`,
+`confirmed benchmark`, or `gap-producing`.
+
 ### Roadmap
 
 The active roadmap is fixed unless the user changes it explicitly:
@@ -97,6 +112,8 @@ The active roadmap is fixed unless the user changes it explicitly:
 5. Redesign Marmite and Jupytext from public behavior inventory, capability
    modules, state/artifact models, and system-testable cross-feature workflows
    before drafting new PRDs or rubrics.
+6. Validate `copier-realrepo-001` on a validation branch. Keep reference,
+   scorer, candidate outputs, reports, and summaries out of `main`.
 
 ## Goal
 
@@ -132,6 +149,11 @@ Review these files first:
 - `task/jupytext-realrepo-001/doc/source_repo.md`: Jupytext source-grounding
   evidence.
 - `task/jupytext-realrepo-001/doc/rewrite_note.md`: Jupytext reset boundary.
+- `task/copier-realrepo-001/prd.md`: Copier model-visible requirements.
+- `task/copier-realrepo-001/rubric.json`: Copier draft unit/system cases.
+- `task/copier-realrepo-001/doc/source_repo.md`: Copier source evidence and
+  Source Evidence Matrix.
+- `task/copier-realrepo-001/doc/requirement_map.md`: Copier traceability map.
 - `archive/no-gap-observed/marmite-realrepo-001/`: archived Marmite handoff.
 - `archive/no-gap-observed/jupytext-realrepo-001/`: archived Jupytext handoff.
 

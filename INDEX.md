@@ -71,6 +71,23 @@ implementation repository.
   `validation/jupytext`; reference and three candidates passed all 34 cases.
   Do not claim `core_strong`, `confirmed benchmark`, or `gap-producing`.
 
+### `copier-realrepo-001`
+
+- Source project: `copier-org/copier`
+- Checked source revision: `454ec4244132bce478e60c4707ee418312ca8922`
+- Abstracted task: local project-template generator/updater CLI,
+  `minicopier.py`.
+- Files:
+  - `task/copier-realrepo-001/prd.md`
+  - `task/copier-realrepo-001/rubric.json`
+  - `task/copier-realrepo-001/doc/source_repo.md`
+  - `task/copier-realrepo-001/doc/boundary_decisions.md`
+  - `task/copier-realrepo-001/doc/requirement_map.md`
+  - `task/copier-realrepo-001/doc/review_structure.md`
+  - `task/copier-realrepo-001/doc/review_fairness.md`
+- Status: draft handoff created. Validation has not been merged into `main`;
+  do not claim `core_strong`, `confirmed benchmark`, or `gap-producing`.
+
 ## Archive Index
 
 Archived packets under `archive/no-gap-observed/` are design history and
@@ -111,6 +128,7 @@ python3 -m json.tool task/bitcask-realrepo-001/rubric.json >/dev/null
 python3 -m json.tool task/xitkit-realrepo-001/rubric.json >/dev/null
 python3 -m json.tool archive/no-gap-observed/marmite-realrepo-001/rubric.json >/dev/null
 python3 -m json.tool archive/no-gap-observed/jupytext-realrepo-001/rubric.json >/dev/null
+python3 -m json.tool task/copier-realrepo-001/rubric.json >/dev/null
 git ls-files | rg '(^|/)(_reference|score_reports?|runs|candidate|.*score\.py|evaluator|answer|expected[-_ ]output)'
 python3 - <<'PY'
 import json
@@ -122,6 +140,7 @@ for rubric_path in [
     Path("task/xitkit-realrepo-001/rubric.json"),
     Path("archive/no-gap-observed/marmite-realrepo-001/rubric.json"),
     Path("archive/no-gap-observed/jupytext-realrepo-001/rubric.json"),
+    Path("task/copier-realrepo-001/rubric.json"),
 ]:
     rubric = json.loads(rubric_path.read_text())
     ids = [case.get("id") for case in rubric]
@@ -168,4 +187,11 @@ archive/no-gap-observed/jupytext-realrepo-001/prd.md
 archive/no-gap-observed/jupytext-realrepo-001/rubric.json
 archive/no-gap-observed/jupytext-realrepo-001/doc/source_repo.md
 archive/no-gap-observed/jupytext-realrepo-001/doc/requirement_map.md
+task/copier-realrepo-001/prd.md
+task/copier-realrepo-001/rubric.json
+task/copier-realrepo-001/doc/source_repo.md
+task/copier-realrepo-001/doc/boundary_decisions.md
+task/copier-realrepo-001/doc/requirement_map.md
+task/copier-realrepo-001/doc/review_structure.md
+task/copier-realrepo-001/doc/review_fairness.md
 ```
