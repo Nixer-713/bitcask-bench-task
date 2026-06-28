@@ -1,0 +1,13 @@
+{
+  "program": "/Users/nixer/\u9879\u76ee/benchmark/validation/jupytext-002/candidates/codex_agent_004/minijupy.py",
+  "total_cases": 24,
+  "unit_pass": 14,
+  "unit_total": 14,
+  "system_pass": 10,
+  "system_total": 10,
+  "unit_score": 100.0,
+  "system_score": 100.0,
+  "gap_pp": 0.0,
+  "failed_case_ids": [],
+  "failed": []
+}

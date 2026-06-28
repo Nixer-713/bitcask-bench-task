@@ -311,7 +311,9 @@
     "description": "check reports roundtrip_ok for a representable clean pair and writes no files.",
     "weight": 4,
     "setup_files": {
-      "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 1\n# ---\n# %% {\"id\":\"a\",\"tags\":[\"t\"],\"name\":\"n\"}\nx=1\n# %% [markdown] {\"id\":\"m\"}\n# hello\n"
+      "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{\"tags\":[\"t\"],\"name\":\"n\"},\"execution_count\":null,\"outputs\":[]},{\"id\":\"m\",\"cell_type\":\"markdown\",\"source\":\"hello\\n\",\"metadata\":{}}]}",
+      "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 1\n# ---\n# %% {\"id\":\"a\",\"tags\":[\"t\"],\"name\":\"n\"}\nx=1\n# %% [markdown] {\"id\":\"m\"}\n# hello\n",
+      ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h\",\"text_hash\":\"h\"}}}}"
     },
     "commands": [["check", "--input", "demo.py"]],
     "checks": {
@@ -322,7 +324,7 @@
           "summary": {"errors": 0}
         }
       },
-      "file_not_exists": [".minijupy-state.json", "demo.ipynb"]
+      "file_exists": [".minijupy-state.json", "demo.ipynb"]
     }
   },
   {

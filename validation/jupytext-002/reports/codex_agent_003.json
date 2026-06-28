@@ -1,0 +1,42 @@
+{
+  "program": "/Users/nixer/\u9879\u76ee/benchmark/validation/jupytext-002/candidates/codex_agent_003/minijupy.py",
+  "total_cases": 24,
+  "unit_pass": 12,
+  "unit_total": 14,
+  "system_pass": 9,
+  "system_total": 10,
+  "unit_score": 85.71,
+  "system_score": 90.0,
+  "gap_pp": -4.29,
+  "failed_case_ids": [
+    "JTU002",
+    "JTU003",
+    "JTS010"
+  ],
+  "failed": [
+    {
+      "id": "JTU002",
+      "layer": "unit",
+      "passed": false,
+      "diagnostics": [
+        "stdout 0 json does not contain {'ok': True, 'format': 'py:percent', 'version': 4, 'notebook': {'metadata': {'kernelspec': {'name': 'python3'}, 'minijupy': {'formats': 'ipynb,py:percent', 'version': 4}}, 'cells': [{'id': 'load', 'cell_type': 'code', 'source': 'x = 1\\n', 'metadata': {'tags': ['data'], 'name': 'loader'}}, {'id': 'intro', 'cell_type': 'markdown', 'source': '# Heading\\ntext\\n', 'metadata': {'tags': ['doc']}}, {'id': 'raw1', 'cell_type': 'raw', 'source': 'raw text\\n'}]}}; got {'command': 'inspect', 'format': 'text', 'notebook': {'cells': [{'cell_type': 'code', 'execution_count': None, 'id': 'load', 'metadata': {'name': 'loader', 'tags': ['data']}, 'outputs': [], 'source': 'x = 1\\n'}, {'cell_type': 'markdown', 'id': 'intro', 'metadata': {'tags': ['doc']}, 'source': '# Heading\\ntext\\n'}, {'cell_type': 'raw', 'id': 'raw1', 'metadata': {}, 'source': 'raw text\\n'}], 'metadata': {'kernelspec': {'name': 'python3'}, 'language_info': {}, 'minijupy': {'formats': 'ipynb,py:percent', 'version': 4}}, 'nbformat': 4, 'nbformat_minor': 5}, 'ok': True, 'path': 'script.py', 'version': 4}"
+      ]
+    },
+    {
+      "id": "JTU003",
+      "layer": "unit",
+      "passed": false,
+      "diagnostics": [
+        "run.py missing substring '# %% {\"id\":\"run\"'"
+      ]
+    },
+    {
+      "id": "JTS010",
+      "layer": "system",
+      "passed": false,
+      "diagnostics": [
+        "demo.py missing substring '# %% {\"id\":\"a\"'"
+      ]
+    }
+  ]
+}
