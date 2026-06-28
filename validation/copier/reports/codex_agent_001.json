@@ -1,0 +1,658 @@
+{
+  "summary": {
+    "entrypoint": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py",
+    "total_cases": 26,
+    "unit_passed": 16,
+    "unit_total": 16,
+    "system_passed": 9,
+    "system_total": 10,
+    "total_passed": 25,
+    "failed_case_ids": [
+      "CPS001"
+    ],
+    "unit_score": 100.0,
+    "system_score": 90.0,
+    "gap_pp": 10.0
+  },
+  "cases": [
+    {
+      "id": "CPU001",
+      "layer": "unit",
+      "category": "config_parse",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-config"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"README.md\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU002",
+      "layer": "unit",
+      "category": "data_precedence",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-answers",
+        "REQ-render"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"out.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU003",
+      "layer": "unit",
+      "category": "answers_file_secret",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-answers-file",
+        "REQ-answers"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".meta/answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"secret.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU004",
+      "layer": "unit",
+      "category": "render_content",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-render"
+      ],
+      "weight": 3,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"msg.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU005",
+      "layer": "unit",
+      "category": "render_path",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-render"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"src/demo_pkg/__init__.py\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU006",
+      "layer": "unit",
+      "category": "exclude",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-exclude-skip"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [\"secret.txt\", \"tmp.log\"], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"keep.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU007",
+      "layer": "unit",
+      "category": "skip_if_exists",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-exclude-skip"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [\"keep.txt\"], \"written\": [\"fresh.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU008",
+      "layer": "unit",
+      "category": "pretend_no_write",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-pretend",
+        "REQ-error-atomic"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"pretend\": true, \"skipped\": [], \"written\": [\"out.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU009",
+      "layer": "unit",
+      "category": "git_vcs_ref",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-local-git",
+        "REQ-copy"
+      ],
+      "weight": 5,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"commit\": \"v1.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"version.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        }
+      ]
+    },
+    {
+      "id": "CPU010",
+      "layer": "unit",
+      "category": "check_update_json",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-check-update",
+        "REQ-local-git"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"command\": \"check-update\", \"current\": \"v1.0.0\", \"latest\": \"v2.0.0\", \"ok\": true, \"update_available\": true}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU011",
+      "layer": "unit",
+      "category": "trust_gate_tasks",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-tasks-migrations",
+        "REQ-error-atomic"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "template tasks require --trust or --skip-tasks\n"
+        }
+      ]
+    },
+    {
+      "id": "CPU012",
+      "layer": "unit",
+      "category": "subdirectory",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-subdirectory",
+        "REQ-render"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"app.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU013",
+      "layer": "unit",
+      "category": "malformed_config_atomicity",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-config",
+        "REQ-error-atomic"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "malformed YAML in copier.yml: while parsing a flow sequence\n  in \"<unicode string>\", line 1, column 7:\n    name: [broken\n          ^\nexpected ',' or ']', but got '<stream end>'\n  in \"<unicode string>\", line 2, column 1:\n    \n    ^\n"
+        }
+      ]
+    },
+    {
+      "id": "CPU014",
+      "layer": "unit",
+      "category": "overwrite_atomicity",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-copy",
+        "REQ-error-atomic"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "destination file exists; use --overwrite: out.txt\n"
+        }
+      ]
+    },
+    {
+      "id": "CPU015",
+      "layer": "unit",
+      "category": "inline_conflict",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-update",
+        "REQ-conflict"
+      ],
+      "weight": 5,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"update\", \"commit\": \"v2.0.0\", \"conflicts\": [\"file.txt\"], \"excluded\": [], \"ok\": true, \"operation\": \"update\", \"skipped\": [], \"written\": [\"file.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        }
+      ]
+    },
+    {
+      "id": "CPU016",
+      "layer": "unit",
+      "category": "reject_conflict",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-update",
+        "REQ-conflict"
+      ],
+      "weight": 5,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"update\", \"commit\": \"v2.0.0\", \"conflicts\": [\"file.txt\"], \"excluded\": [], \"ok\": true, \"operation\": \"update\", \"skipped\": [], \"written\": []}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        }
+      ]
+    },
+    {
+      "id": "CPS001",
+      "layer": "system",
+      "category": "copy_answers_check_update",
+      "system_dimension": "cross_feature_dataflow",
+      "requirement_refs": [
+        "REQ-copy",
+        "REQ-render",
+        "REQ-answers-file",
+        "REQ-check-update",
+        "REQ-invariants"
+      ],
+      "weight": 8,
+      "passed": false,
+      "failure_reason": "dst/.copier-answers.yml missing content '_src_path: tpl'",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"commit\": \"v1.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"README.md\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"command\": \"check-update\", \"current\": \"v1.0.0\", \"latest\": \"v2.0.0\", \"ok\": true, \"update_available\": true}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS002",
+      "layer": "system",
+      "category": "copy_update_v2",
+      "system_dimension": "state_accumulation",
+      "requirement_refs": [
+        "REQ-local-git",
+        "REQ-copy",
+        "REQ-update",
+        "REQ-answers-file"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"commit\": \"v1.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"app.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"update\", \"commit\": \"v2.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"update\", \"skipped\": [], \"written\": [\"app.txt\", \"new.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        }
+      ]
+    },
+    {
+      "id": "CPS003",
+      "layer": "system",
+      "category": "local_edit_update_conflict",
+      "system_dimension": "operation_order_sensitivity",
+      "requirement_refs": [
+        "REQ-update",
+        "REQ-conflict",
+        "REQ-error-atomic"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"commit\": \"v1.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"app.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        },
+        {
+          "kind": "write_file",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"update\", \"commit\": \"v2.0.0\", \"conflicts\": [\"app.txt\"], \"excluded\": [], \"ok\": true, \"operation\": \"update\", \"skipped\": [], \"written\": []}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        }
+      ]
+    },
+    {
+      "id": "CPS004",
+      "layer": "system",
+      "category": "recopy_discards_local_evolution",
+      "system_dimension": "state_accumulation",
+      "requirement_refs": [
+        "REQ-copy",
+        "REQ-recopy",
+        "REQ-answers-file"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"name.txt\"]}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "write_file",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"recopy\", \"commit\": null, \"excluded\": [], \"ok\": true, \"operation\": \"recopy\", \"skipped\": [], \"written\": [\"name.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS005",
+      "layer": "system",
+      "category": "data_render_answers_recopy",
+      "system_dimension": "global_invariant",
+      "requirement_refs": [
+        "REQ-answers",
+        "REQ-render",
+        "REQ-recopy",
+        "REQ-invariants"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"FromFile.txt\"]}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "write_file",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"recopy\", \"commit\": null, \"excluded\": [], \"ok\": true, \"operation\": \"recopy\", \"skipped\": [], \"written\": [\"FromFile.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS006",
+      "layer": "system",
+      "category": "exclude_skip_pretend_update",
+      "system_dimension": "boundary_crossing",
+      "requirement_refs": [
+        "REQ-exclude-skip",
+        "REQ-pretend",
+        "REQ-update"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"commit\": \"v1.0.0\", \"excluded\": [\"drop.log\"], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"keep.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        },
+        {
+          "kind": "write_file",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"update\", \"commit\": \"v2.0.0\", \"excluded\": [\"drop.log\"], \"ok\": true, \"operation\": \"update\", \"pretend\": true, \"skipped\": [\"keep.txt\"], \"written\": [\"new.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        }
+      ]
+    },
+    {
+      "id": "CPS007",
+      "layer": "system",
+      "category": "tasks_migrations_trust_skip",
+      "system_dimension": "boundary_crossing",
+      "requirement_refs": [
+        "REQ-tasks-migrations",
+        "REQ-copy",
+        "REQ-update"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"commit\": \"v1.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"app.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"update\", \"commit\": \"v2.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"update\", \"skipped\": [], \"written\": [\"app.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        }
+      ]
+    },
+    {
+      "id": "CPS008",
+      "layer": "system",
+      "category": "subdirectory_copy_update",
+      "system_dimension": "boundary_crossing",
+      "requirement_refs": [
+        "REQ-subdirectory",
+        "REQ-local-git",
+        "REQ-update"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"commit\": \"v1.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"app.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"update\", \"commit\": \"v2.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"update\", \"skipped\": [], \"written\": [\"app.txt\", \"extra.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        }
+      ]
+    },
+    {
+      "id": "CPS009",
+      "layer": "system",
+      "category": "secret_render_answers_invariant",
+      "system_dimension": "global_invariant",
+      "requirement_refs": [
+        "REQ-answers",
+        "REQ-answers-file",
+        "REQ-render"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"auth.txt\"]}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"recopy\", \"commit\": null, \"excluded\": [], \"ok\": true, \"operation\": \"recopy\", \"skipped\": [], \"written\": [\"auth.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS010",
+      "layer": "system",
+      "category": "malformed_update_atomicity",
+      "system_dimension": "error_atomicity",
+      "requirement_refs": [
+        "REQ-update",
+        "REQ-error-atomic",
+        "REQ-invariants"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"answers_file\": \".copier-answers.yml\", \"command\": \"copy\", \"commit\": \"v1.0.0\", \"excluded\": [], \"ok\": true, \"operation\": \"copy\", \"skipped\": [], \"written\": [\"app.txt\"]}\n",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n"
+        },
+        {
+          "kind": "command",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\n/Users/nixer/\u9879\u76ee/benchmark/validation/copier/candidates/codex_agent_001/minicopier.py:247: DeprecationWarning: Python 3.14 will, by default, filter extracted tar archives and reject files or modify their metadata. Use the filter argument to control this behavior.\n  tar.extractall(tmp.name)\nmalformed YAML in copier.yml: while parsing a flow sequence\n  in \"<unicode string>\", line 1, column 7:\n    name: [broken\n          ^\nexpected ',' or ']', but got '<stream end>'\n  in \"<unicode string>\", line 2, column 1:\n    \n    ^\n"
+        }
+      ]
+    }
+  ]
+}

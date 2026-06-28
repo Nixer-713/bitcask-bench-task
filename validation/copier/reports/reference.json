@@ -1,0 +1,656 @@
+{
+  "summary": {
+    "entrypoint": "/Users/nixer/\u9879\u76ee/benchmark/validation/copier/reference/minicopier.py",
+    "total_cases": 26,
+    "unit_passed": 16,
+    "unit_total": 16,
+    "system_passed": 10,
+    "system_total": 10,
+    "total_passed": 26,
+    "failed_case_ids": [],
+    "unit_score": 100.0,
+    "system_score": 100.0,
+    "gap_pp": 0.0
+  },
+  "cases": [
+    {
+      "id": "CPU001",
+      "layer": "unit",
+      "category": "config_parse",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-config"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".answers.yml\", \"commit\": null, \"written\": [\".answers.yml\", \"README.md\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU002",
+      "layer": "unit",
+      "category": "data_precedence",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-answers",
+        "REQ-render"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": null, \"written\": [\".copier-answers.yml\", \"out.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU003",
+      "layer": "unit",
+      "category": "answers_file_secret",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-answers-file",
+        "REQ-answers"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".meta/answers.yml\", \"commit\": null, \"written\": [\".meta/answers.yml\", \"secret.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU004",
+      "layer": "unit",
+      "category": "render_content",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-render"
+      ],
+      "weight": 3,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": null, \"written\": [\".copier-answers.yml\", \"msg.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU005",
+      "layer": "unit",
+      "category": "render_path",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-render"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": null, \"written\": [\".copier-answers.yml\", \"src/demo_pkg/__init__.py\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU006",
+      "layer": "unit",
+      "category": "exclude",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-exclude-skip"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": null, \"written\": [\".copier-answers.yml\", \"keep.txt\"], \"skipped\": [], \"excluded\": [\"secret.txt\", \"tmp.log\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU007",
+      "layer": "unit",
+      "category": "skip_if_exists",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-exclude-skip"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": null, \"written\": [\".copier-answers.yml\", \"fresh.txt\"], \"skipped\": [\"keep.txt\"], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU008",
+      "layer": "unit",
+      "category": "pretend_no_write",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-pretend",
+        "REQ-error-atomic"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"pretend\": true, \"written\": [\".copier-answers.yml\", \"out.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU009",
+      "layer": "unit",
+      "category": "git_vcs_ref",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-local-git",
+        "REQ-copy"
+      ],
+      "weight": 5,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": \"v1.0.0\", \"written\": [\".copier-answers.yml\", \"version.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU010",
+      "layer": "unit",
+      "category": "check_update_json",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-check-update",
+        "REQ-local-git"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"check-update\", \"current\": \"v1.0.0\", \"latest\": \"v2.0.0\", \"update_available\": true}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU011",
+      "layer": "unit",
+      "category": "trust_gate_tasks",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-tasks-migrations",
+        "REQ-error-atomic"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "tasks require trust\n"
+        }
+      ]
+    },
+    {
+      "id": "CPU012",
+      "layer": "unit",
+      "category": "subdirectory",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-subdirectory",
+        "REQ-render"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": null, \"written\": [\".copier-answers.yml\", \"app.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU013",
+      "layer": "unit",
+      "category": "malformed_config_atomicity",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-config",
+        "REQ-error-atomic"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "invalid yaml: while parsing a flow sequence\n  in \"<unicode string>\", line 1, column 7:\n    name: [broken\n          ^\nexpected ',' or ']', but got '<stream end>'\n  in \"<unicode string>\", line 2, column 1:\n    \n    ^\n"
+        }
+      ]
+    },
+    {
+      "id": "CPU014",
+      "layer": "unit",
+      "category": "overwrite_atomicity",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-copy",
+        "REQ-error-atomic"
+      ],
+      "weight": 4,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "refusing to overwrite out.txt\n"
+        }
+      ]
+    },
+    {
+      "id": "CPU015",
+      "layer": "unit",
+      "category": "inline_conflict",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-update",
+        "REQ-conflict"
+      ],
+      "weight": 5,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"update\", \"operation\": \"update\", \"commit\": \"v2.0.0\", \"written\": [\".copier-answers.yml\", \"file.txt\"], \"skipped\": [], \"excluded\": [], \"conflicts\": [\"file.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPU016",
+      "layer": "unit",
+      "category": "reject_conflict",
+      "system_dimension": null,
+      "requirement_refs": [
+        "REQ-update",
+        "REQ-conflict"
+      ],
+      "weight": 5,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"update\", \"operation\": \"update\", \"commit\": \"v2.0.0\", \"written\": [\".copier-answers.yml\", \"file.txt.rej\"], \"skipped\": [], \"excluded\": [], \"conflicts\": [\"file.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS001",
+      "layer": "system",
+      "category": "copy_answers_check_update",
+      "system_dimension": "cross_feature_dataflow",
+      "requirement_refs": [
+        "REQ-copy",
+        "REQ-render",
+        "REQ-answers-file",
+        "REQ-check-update",
+        "REQ-invariants"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": \"v1.0.0\", \"written\": [\".copier-answers.yml\", \"README.md\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"check-update\", \"current\": \"v1.0.0\", \"latest\": \"v2.0.0\", \"update_available\": true}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS002",
+      "layer": "system",
+      "category": "copy_update_v2",
+      "system_dimension": "state_accumulation",
+      "requirement_refs": [
+        "REQ-local-git",
+        "REQ-copy",
+        "REQ-update",
+        "REQ-answers-file"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": \"v1.0.0\", \"written\": [\".copier-answers.yml\", \"app.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"update\", \"operation\": \"update\", \"commit\": \"v2.0.0\", \"written\": [\".copier-answers.yml\", \"app.txt\", \"new.txt\"], \"skipped\": [], \"excluded\": [], \"conflicts\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS003",
+      "layer": "system",
+      "category": "local_edit_update_conflict",
+      "system_dimension": "operation_order_sensitivity",
+      "requirement_refs": [
+        "REQ-update",
+        "REQ-conflict",
+        "REQ-error-atomic"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": \"v1.0.0\", \"written\": [\".copier-answers.yml\", \"app.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "write_file",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"update\", \"operation\": \"update\", \"commit\": \"v2.0.0\", \"written\": [\".copier-answers.yml\", \"app.txt.rej\"], \"skipped\": [], \"excluded\": [], \"conflicts\": [\"app.txt\"]}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS004",
+      "layer": "system",
+      "category": "recopy_discards_local_evolution",
+      "system_dimension": "state_accumulation",
+      "requirement_refs": [
+        "REQ-copy",
+        "REQ-recopy",
+        "REQ-answers-file"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": null, \"written\": [\".copier-answers.yml\", \"name.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "write_file",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"recopy\", \"operation\": \"recopy\", \"written\": [\".copier-answers.yml\", \"name.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS005",
+      "layer": "system",
+      "category": "data_render_answers_recopy",
+      "system_dimension": "global_invariant",
+      "requirement_refs": [
+        "REQ-answers",
+        "REQ-render",
+        "REQ-recopy",
+        "REQ-invariants"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": null, \"written\": [\".copier-answers.yml\", \"FromFile.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "write_file",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"recopy\", \"operation\": \"recopy\", \"written\": [\".copier-answers.yml\", \"FromFile.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS006",
+      "layer": "system",
+      "category": "exclude_skip_pretend_update",
+      "system_dimension": "boundary_crossing",
+      "requirement_refs": [
+        "REQ-exclude-skip",
+        "REQ-pretend",
+        "REQ-update"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": \"v1.0.0\", \"written\": [\".copier-answers.yml\", \"keep.txt\"], \"skipped\": [], \"excluded\": [\"drop.log\"]}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "write_file",
+          "returncode": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"update\", \"operation\": \"update\", \"pretend\": true, \"written\": [\".copier-answers.yml\", \"new.txt\"], \"skipped\": [\"keep.txt\"], \"excluded\": [\"drop.log\"], \"conflicts\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS007",
+      "layer": "system",
+      "category": "tasks_migrations_trust_skip",
+      "system_dimension": "boundary_crossing",
+      "requirement_refs": [
+        "REQ-tasks-migrations",
+        "REQ-copy",
+        "REQ-update"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": \"v1.0.0\", \"written\": [\".copier-answers.yml\", \"app.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"update\", \"operation\": \"update\", \"commit\": \"v2.0.0\", \"written\": [\".copier-answers.yml\", \"app.txt\"], \"skipped\": [], \"excluded\": [], \"conflicts\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS008",
+      "layer": "system",
+      "category": "subdirectory_copy_update",
+      "system_dimension": "boundary_crossing",
+      "requirement_refs": [
+        "REQ-subdirectory",
+        "REQ-local-git",
+        "REQ-update"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": \"v1.0.0\", \"written\": [\".copier-answers.yml\", \"app.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"update\", \"operation\": \"update\", \"commit\": \"v2.0.0\", \"written\": [\".copier-answers.yml\", \"app.txt\", \"extra.txt\"], \"skipped\": [], \"excluded\": [], \"conflicts\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS009",
+      "layer": "system",
+      "category": "secret_render_answers_invariant",
+      "system_dimension": "global_invariant",
+      "requirement_refs": [
+        "REQ-answers",
+        "REQ-answers-file",
+        "REQ-render"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": null, \"written\": [\".copier-answers.yml\", \"auth.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"recopy\", \"operation\": \"recopy\", \"written\": [\".copier-answers.yml\", \"auth.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        }
+      ]
+    },
+    {
+      "id": "CPS010",
+      "layer": "system",
+      "category": "malformed_update_atomicity",
+      "system_dimension": "error_atomicity",
+      "requirement_refs": [
+        "REQ-update",
+        "REQ-error-atomic",
+        "REQ-invariants"
+      ],
+      "weight": 8,
+      "passed": true,
+      "failure_reason": "",
+      "outputs": [
+        {
+          "kind": "command",
+          "returncode": 0,
+          "stdout": "{\"ok\": true, \"command\": \"copy\", \"operation\": \"copy\", \"answers_file\": \".copier-answers.yml\", \"commit\": \"v1.0.0\", \"written\": [\".copier-answers.yml\", \"app.txt\"], \"skipped\": [], \"excluded\": []}\n",
+          "stderr": ""
+        },
+        {
+          "kind": "command",
+          "returncode": 1,
+          "stdout": "",
+          "stderr": "invalid yaml: while parsing a flow sequence\n  in \"<unicode string>\", line 1, column 7:\n    name: [broken\n          ^\nexpected ',' or ']', but got '<stream end>'\n  in \"<unicode string>\", line 2, column 1:\n    \n    ^\n"
+        }
+      ]
+    }
+  ]
+}

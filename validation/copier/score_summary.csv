@@ -1,0 +1,5 @@
+run,unit_passed,unit_total,system_passed,system_total,unit_score,system_score,gap_pp,failed_case_ids,status
+reference,16,16,10,10,100.00,100.00,0.00,,satisfiable
+codex_agent_001,16,16,9,10,100.00,90.00,10.00,CPS001,positive_gap_observed
+codex_agent_002,16,16,9,10,100.00,90.00,10.00,CPS001,positive_gap_observed
+codex_agent_003,14,16,8,10,87.50,80.00,7.50,CPU015;CPU016;CPS001;CPS003,weak_local_and_system
