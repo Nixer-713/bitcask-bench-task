@@ -9,9 +9,10 @@
 | `REQ-notebook-model` | Parses and normalizes the public notebook model: nbformat, metadata, cell order, ids, cell types, source, tags/name, execution counts, and outputs. |
 | `REQ-percent-format` | Parses and writes the PRD-defined percent header, `# %%` markers, cell type markers, and marker JSON for id/tags/name. |
 | `REQ-pair-paths` | Derives paired `.ipynb` / `.py` paths consistently for same-directory and directory-mapped configs; rejects path mismatch or duplicate mappings. |
+| `REQ-paths` | `paths` is read-only and reports the paired `.ipynb` / `.py` paths and existence flags using the same path rules as pair/status/check/sync. |
 | `REQ-state-file` | Creates and updates `.minijupy-state.json` with pair paths, last synced versions, and stable equality tokens after successful pair/sync. |
 | `REQ-version` | Reads public versions from `.ipynb` metadata and percent headers; missing version is `1`; invalid versions fail. |
-| `REQ-convert` | `to-text` strips outputs/execution counts while preserving representable public fields; `to-ipynb` creates normalized notebooks with no outputs. |
+| `REQ-convert` | `to-text` strips outputs/execution counts while preserving representable public fields; `to-ipynb` creates normalized notebooks and `to-ipynb --update` preserves matching outputs from an existing output notebook. |
 | `REQ-pair` | `pair` creates or updates counterpart files, writes pairing metadata, preserves existing `.ipynb` outputs, and initializes state. |
 | `REQ-inspect` | `inspect` is read-only and prints the normalized public notebook model for one `.ipynb` or `py:percent` file. |
 | `REQ-status` | `status` is read-only and reports paths, existence, versions, source, conflict, missing files, planned writes, differences, errors, and summary. |
@@ -34,7 +35,9 @@
 | `REQ-notebook-model` | Jupytext reads/writes notebooks and preserves cells/metadata/outputs. | Public model is reduced to fields needed for paired sync. |
 | `REQ-percent-format` | Jupytext `py:percent` docs and reader/writer support cell markers and metadata. | Only Python percent format is required. |
 | `REQ-pair-paths` | `paired_paths.py` derives base/full paired paths and rejects mismatches. | Only same-directory and one directory mapping are required. |
+| `REQ-paths` | Jupytext exposes `--paired-paths` in the CLI and computes paired paths through the same paired-path machinery. | MiniJupy uses a stable JSON `paths` command instead of textual CLI output. |
 | `REQ-state-file`, `REQ-version`, `REQ-conflict` | Jupytext uses mtimes/newest source and stale-source checks. | Real mtimes are replaced by public versions and `.minijupy-state.json`. |
+| `REQ-convert` | Jupytext CLI exposes conversion and `--update`; `combine.py` preserves outputs when updating an existing `.ipynb`. | The mini-task narrows this to `to-text`, `to-ipynb`, and `to-ipynb --update`. |
 | `REQ-output-preservation` | `combine.py` merges text inputs with `.ipynb` outputs. | Matching order is explicitly public and deterministic. |
 | `REQ-status`, `REQ-check` | `--paired-paths`, `--test`, `--test-strict`, and stale-source checks are public. | Stable JSON report replaces logs and timing behavior. |
 | `REQ-sync-all` | Project config and pre-commit flows imply multi-file sync/check workflows. | All-or-nothing project sync is a public deterministic strengthening. |
@@ -58,6 +61,8 @@
 | `JTU012` | Single-pair check report | `REQ-check`, `REQ-convert`, `REQ-invariants` |
 | `JTU013` | Malformed percent atomicity | `REQ-percent-format`, `REQ-error-atomic` |
 | `JTU014` | Malformed notebook atomicity | `REQ-notebook-model`, `REQ-error-atomic` |
+| `JTU015` | Read-only paired path report | `REQ-paths`, `REQ-pair-paths`, `REQ-error-atomic` |
+| `JTU016` | `to-ipynb --update` output preservation | `REQ-convert`, `REQ-output-preservation`, `REQ-notebook-model` |
 
 ## System Coverage
 
@@ -73,6 +78,9 @@
 | `JTS008` | `directory_pair_mapping_workflow` | config mapping -> pair -> status -> sync across directories | `REQ-files-config`, `REQ-pair-paths`, `REQ-pair`, `REQ-sync` |
 | `JTS009` | `state_drives_status_after_manual_changes` | manual version changes -> state comparison -> status planned writes | `REQ-state-file`, `REQ-version`, `REQ-status` |
 | `JTS010` | `source_override_updates_files_and_state` | conflict/source override -> output preservation -> both files/state agree | `REQ-conflict`, `REQ-sync`, `REQ-output-preservation`, `REQ-state-file` |
+| `JTS011` | `paired_path_report_consistency` | paths -> pair -> paths -> status across mapped nested directories | `REQ-paths`, `REQ-files-config`, `REQ-pair-paths`, `REQ-pair`, `REQ-status` |
+| `JTS012` | `conversion_update_pair_status_consistency` | to-ipynb update -> output preservation -> pair state -> status clean | `REQ-convert`, `REQ-output-preservation`, `REQ-pair`, `REQ-state-file`, `REQ-status` |
+| `JTS013` | `text_pair_metadata_roundtrip_fanout` | text-side pair -> created ipynb -> inspect -> check -> status/state | `REQ-percent-format`, `REQ-pair`, `REQ-inspect`, `REQ-check`, `REQ-status`, `REQ-state-file` |
 
 ## Fairness Notes
 

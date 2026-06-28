@@ -24,8 +24,9 @@ python minijupy.py COMMAND [OPTIONS]
 Supported commands:
 
 - `inspect --input FILE [--config CONFIG]`
+- `paths --input FILE [--config CONFIG]`
 - `to-text --input NOTEBOOK.ipynb --output SCRIPT.py [--config CONFIG]`
-- `to-ipynb --input SCRIPT.py --output NOTEBOOK.ipynb [--config CONFIG]`
+- `to-ipynb --input SCRIPT.py --output NOTEBOOK.ipynb [--config CONFIG] [--update]`
 - `pair --input FILE [--config CONFIG]`
 - `status --input FILE [--config CONFIG]`
 - `status --all --config CONFIG`
@@ -317,7 +318,35 @@ Mutation rules:
 
 `notebook` is the normalized notebook model. The command writes no files.
 
-### 9.2 `to-text`
+### 9.2 `paths`
+
+`paths` is read-only. It derives and reports the pair paths for one `.ipynb`
+or `.py` file using the same config/path rules as `pair`, `status`, `check`,
+and `sync`.
+
+The command prints:
+
+```json
+{
+  "ok": true,
+  "command": "paths",
+  "root": ".",
+  "input": "notebooks/demo.ipynb",
+  "ipynb": "notebooks/demo.ipynb",
+  "text": "scripts/demo.py",
+  "exists": {"ipynb": true, "text": false}
+}
+```
+
+Rules:
+
+- `paths` does not parse notebook or percent cell content.
+- `paths` writes no files.
+- It fails on invalid config, path mismatch, or duplicate paired paths.
+- The `ipynb` and `text` paths must match the paths that `pair`, `status`,
+  `check`, and `sync` would use for the same input/config.
+
+### 9.3 `to-text`
 
 `to-text` converts one `.ipynb` file into one `py:percent` file.
 
@@ -330,7 +359,7 @@ Rules:
   version are preserved.
 - The command does not update `.minijupy-state.json`.
 
-### 9.3 `to-ipynb`
+### 9.4 `to-ipynb`
 
 `to-ipynb` converts one `py:percent` file into one `.ipynb` file.
 
@@ -342,9 +371,14 @@ Rules:
 - Cells created from text have no outputs and `execution_count: null`.
 - Cell ids, tags, names, cell types, source, supported metadata, formats, and
   version are preserved.
+- With `--update`, if the output `.ipynb` already exists, inputs are read from
+  the text source while matching outputs and execution counts are preserved from
+  the existing output notebook according to the output preservation rules.
+- Without `--update`, an existing output path may be overwritten by the newly
+  converted notebook and no outputs are preserved from that old output.
 - The command does not update `.minijupy-state.json`.
 
-### 9.4 `pair`
+### 9.5 `pair`
 
 `pair` creates or updates a pair.
 
@@ -361,7 +395,7 @@ Rules:
 - `pair` fails on malformed files, invalid config, path mismatch, duplicate
   mapping, or invalid versions.
 
-### 9.5 `status`
+### 9.6 `status`
 
 `status` is read-only. It reports pair state, selected source, conflicts,
 missing counterparts, planned writes, and summary counts.
@@ -419,7 +453,7 @@ Rules:
   also make the command exit nonzero.
 - `status` writes no files.
 
-### 9.6 `check`
+### 9.7 `check`
 
 `check` is read-only. It uses the same output schema as `status`, with
 `command: "check"`.
@@ -438,7 +472,7 @@ Additional rules:
   `roundtrip_ok: false` and include `state` in `differences`.
 - `check` never writes files.
 
-### 9.7 `sync`
+### 9.8 `sync`
 
 `sync` updates one pair.
 
@@ -470,7 +504,7 @@ When source is text:
 The command prints the same pair object as `status`, plus actual writes in
 `planned_writes`.
 
-### 9.8 `sync --all`
+### 9.9 `sync --all`
 
 `sync --all --config CONFIG` applies sync to every pair reachable from the
 config root.
@@ -593,6 +627,8 @@ MiniJupy does not need to implement:
 - The same normalized notebook model drives inspect, conversion, pair, status,
   check, sync, state hashes, and output preservation.
 - The same pair path rules apply to pair, status, check, and sync.
+- `paths`, `pair`, `status`, `check`, and `sync` report or use the same paired
+  paths for the same input/config.
 - `status` predicts `sync` writes for the same input state.
 - `check` roundtrip results are consistent with actual conversion behavior.
 - Successful pair/sync updates `.minijupy-state.json` consistently with the

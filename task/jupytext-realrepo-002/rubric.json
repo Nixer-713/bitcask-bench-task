@@ -350,6 +350,62 @@
     "checks": {"file_not_exists": ["bad.py", ".minijupy-state.json"]}
   },
   {
+    "id": "JTU015",
+    "layer": "unit",
+    "category": "paths_command",
+    "requirement_refs": ["REQ-paths", "REQ-pair-paths", "REQ-error-atomic"],
+    "description": "paths reports the paired ipynb/text paths and existence flags without parsing or writing counterparts.",
+    "weight": 3,
+    "setup_files": {
+      "minijupy.toml": "formats = \"ipynb,py:percent\"\nnotebook_dir = \"notebooks\"\nscript_dir = \"scripts\"\n",
+      "notebooks/demo.ipynb": "{\"nbformat\":4,\"cells\":[{\"cell_type\":\"code\",\"source\":\"x=1\\n\"}]}"
+    },
+    "commands": [["paths", "--input", "notebooks/demo.ipynb", "--config", "minijupy.toml"]],
+    "checks": {
+      "stdout_json_contains": {
+        "0": {
+          "ok": true,
+          "command": "paths",
+          "input": "notebooks/demo.ipynb",
+          "ipynb": "notebooks/demo.ipynb",
+          "text": "scripts/demo.py",
+          "exists": {"ipynb": true, "text": false}
+        }
+      },
+      "file_not_exists": ["scripts/demo.py", ".minijupy-state.json"]
+    }
+  },
+  {
+    "id": "JTU016",
+    "layer": "unit",
+    "category": "to_ipynb_update_preserves_outputs",
+    "requirement_refs": ["REQ-convert", "REQ-output-preservation", "REQ-notebook-model"],
+    "description": "to-ipynb --update reads inputs from text while preserving matching outputs from the existing ipynb output.",
+    "weight": 5,
+    "setup_files": {
+      "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"calc\",\"tags\":[\"run\"]}\nanswer = 43\n",
+      "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"calc\",\"cell_type\":\"code\",\"source\":\"answer = 42\\n\",\"metadata\":{\"tags\":[\"old\"]},\"execution_count\":6,\"outputs\":[{\"output_type\":\"execute_result\",\"data\":{\"text/plain\":\"42\"}}]}]}"
+    },
+    "commands": [["to-ipynb", "--input", "demo.py", "--output", "demo.ipynb", "--update"]],
+    "checks": {
+      "file_json_contains_unordered": {
+        "demo.ipynb": {
+          "metadata": {"minijupy": {"version": 2}},
+          "cells": [
+            {
+              "id": "calc",
+              "source": "answer = 43\n",
+              "metadata": {"tags": ["run"]},
+              "execution_count": 6,
+              "outputs": [{"data": {"text/plain": "42"}}]
+            }
+          ]
+        }
+      },
+      "file_not_exists": [".minijupy-state.json"]
+    }
+  },
+  {
     "id": "JTS001",
     "layer": "system",
     "category": "pair_status_sync_clean_loop",
@@ -626,6 +682,140 @@
       },
       "stdout_json_contains": {
         "1": {"pairs": [{"source": "none", "conflict": false, "planned_writes": []}]}
+      }
+    }
+  },
+  {
+    "id": "JTS011",
+    "layer": "system",
+    "category": "paths_pair_status_consistency",
+    "system_dimension": "paired_path_report_consistency",
+    "requirement_refs": ["REQ-paths", "REQ-files-config", "REQ-pair-paths", "REQ-pair", "REQ-status"],
+    "description": "paths, pair, and status agree on directory-mapped nested pair paths and existence after creation.",
+    "weight": 7,
+    "setup_files": {
+      "minijupy.toml": "formats = \"ipynb,py:percent\"\nnotebook_dir = \"notebooks\"\nscript_dir = \"scripts\"\n",
+      "notebooks/reports/demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{\"tags\":[\"path\"],\"name\":\"setup\"},\"execution_count\":null,\"outputs\":[]}]}"
+    },
+    "commands": [
+      ["paths", "--input", "notebooks/reports/demo.ipynb", "--config", "minijupy.toml"],
+      ["pair", "--input", "notebooks/reports/demo.ipynb", "--config", "minijupy.toml"],
+      ["paths", "--input", "scripts/reports/demo.py", "--config", "minijupy.toml"],
+      ["status", "--input", "scripts/reports/demo.py", "--config", "minijupy.toml"]
+    ],
+    "checks": {
+      "stdout_json_contains": {
+        "0": {
+          "ipynb": "notebooks/reports/demo.ipynb",
+          "text": "scripts/reports/demo.py",
+          "exists": {"ipynb": true, "text": false}
+        },
+        "2": {
+          "ipynb": "notebooks/reports/demo.ipynb",
+          "text": "scripts/reports/demo.py",
+          "exists": {"ipynb": true, "text": true}
+        },
+        "3": {
+          "pairs": [
+            {
+              "ipynb": "notebooks/reports/demo.ipynb",
+              "text": "scripts/reports/demo.py",
+              "source": "none",
+              "planned_writes": []
+            }
+          ]
+        }
+      },
+      "file_exists": ["scripts/reports/demo.py", ".minijupy-state.json"]
+    }
+  },
+  {
+    "id": "JTS012",
+    "layer": "system",
+    "category": "update_pair_status_output_preservation",
+    "system_dimension": "conversion_update_pair_status_consistency",
+    "requirement_refs": ["REQ-convert", "REQ-output-preservation", "REQ-pair", "REQ-state-file", "REQ-status"],
+    "description": "to-ipynb --update preserves outputs, then pair records the updated versions and status reports a clean pair.",
+    "weight": 8,
+    "setup_files": {
+      "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 3\n# ---\n# %% {\"id\":\"calc\",\"tags\":[\"run\"],\"name\":\"calc\"}\nanswer = 43\n",
+      "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":2}},\"cells\":[{\"id\":\"calc\",\"cell_type\":\"code\",\"source\":\"answer = 42\\n\",\"metadata\":{\"tags\":[\"old\"]},\"execution_count\":9,\"outputs\":[{\"output_type\":\"stream\",\"text\":\"42\\n\"}]}]}"
+    },
+    "commands": [
+      ["to-ipynb", "--input", "demo.py", "--output", "demo.ipynb", "--update"],
+      ["pair", "--input", "demo.ipynb"],
+      ["status", "--input", "demo.py"]
+    ],
+    "checks": {
+      "file_json_contains_unordered": {
+        "demo.ipynb": {
+          "metadata": {"minijupy": {"version": 3}},
+          "cells": [
+            {
+              "id": "calc",
+              "source": "answer = 43\n",
+              "metadata": {"tags": ["run"], "name": "calc"},
+              "execution_count": 9,
+              "outputs": [{"text": "42\n"}]
+            }
+          ]
+        },
+        ".minijupy-state.json": {
+          "pairs": {
+            "demo.ipynb": {
+              "last_synced": {"ipynb_version": 3, "text_version": 3}
+            }
+          }
+        }
+      },
+      "stdout_json_contains": {
+        "2": {"pairs": [{"source": "none", "conflict": false, "planned_writes": []}]}
+      }
+    }
+  },
+  {
+    "id": "JTS013",
+    "layer": "system",
+    "category": "text_side_pair_metadata_fanout",
+    "system_dimension": "text_pair_metadata_roundtrip_fanout",
+    "requirement_refs": ["REQ-percent-format", "REQ-pair", "REQ-inspect", "REQ-check", "REQ-status", "REQ-state-file"],
+    "description": "Pairing from the text side preserves cell ids/tags/name across created ipynb, inspect, check, state, and status.",
+    "weight": 8,
+    "setup_files": {
+      "notebook.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 5\n# kernelspec:\n#   name: python3\n# ---\n# %% {\"id\":\"setup\",\"tags\":[\"parameters\"],\"name\":\"setup\"}\nalpha = 1\n# %% [markdown] {\"id\":\"notes\",\"tags\":[\"doc\"]}\n# Notes\n# %% [raw] {\"id\":\"raw\"}\nraw text\n"
+    },
+    "commands": [
+      ["pair", "--input", "notebook.py"],
+      ["inspect", "--input", "notebook.ipynb"],
+      ["check", "--input", "notebook.py"],
+      ["status", "--input", "notebook.ipynb"]
+    ],
+    "checks": {
+      "file_exists": ["notebook.ipynb", ".minijupy-state.json"],
+      "stdout_json_contains": {
+        "1": {
+          "notebook": {
+            "metadata": {"kernelspec": {"name": "python3"}},
+            "cells": [
+              {"id": "setup", "cell_type": "code", "metadata": {"tags": ["parameters"], "name": "setup"}},
+              {"id": "notes", "cell_type": "markdown", "metadata": {"tags": ["doc"]}},
+              {"id": "raw", "cell_type": "raw"}
+            ]
+          }
+        },
+        "2": {"pairs": [{"roundtrip_ok": true, "differences": [], "errors": []}]},
+        "3": {"pairs": [{"source": "none", "conflict": false, "planned_writes": []}]}
+      },
+      "file_json_contains_unordered": {
+        ".minijupy-state.json": {
+          "pairs": {
+            "notebook.ipynb": {
+              "ipynb": "notebook.ipynb",
+              "text": "notebook.py",
+              "last_synced": {"ipynb_version": 5, "text_version": 5}
+            }
+          }
+        }
       }
     }
   }
