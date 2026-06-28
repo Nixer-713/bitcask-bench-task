@@ -3,6 +3,7 @@
 ## Scope
 
 - Branch: `validation/copier`
+- Evidence commit: `2889ba1`
 - Task: `task/copier-realrepo-001`
 - Program: `minicopier.py`
 - Rubric size: 26 cases, 16 unit / 10 system
