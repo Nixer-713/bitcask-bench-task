@@ -262,9 +262,12 @@ Rules:
 - `last_synced.ipynb_version` and `last_synced.text_version` are the public
   versions observed at the last successful pair/sync.
 - Hash values are stable equality tokens derived from the normalized public
-  model. The exact algorithm is implementation-defined, but equal normalized
-  public content must produce equal tokens and different public content should
-  produce different tokens.
+  model. The exact algorithm is implementation-defined. Freshness, conflict,
+  and source-selection decisions are driven by public versions, not by the
+  literal hash strings stored in the state file. Implementations must tolerate
+  existing arbitrary hash strings in `.minijupy-state.json`; a command must not
+  fail solely because an existing hash token does not match its own hash
+  algorithm.
 - Successful `pair`, `sync`, and `sync --all` update the state file.
 - `inspect`, `status`, and `check` do not write the state file.
 
@@ -407,6 +410,8 @@ Rules:
 
 - `source` is `"ipynb"`, `"text"`, or `"none"`.
 - `source` is `"none"` when both sides match the last synced state.
+- `source` is also `"none"` when `conflict` is `true`, because no automatic
+  source can be selected safely.
 - `planned_writes` lists files that `sync` would write for the same input.
 - The state file counts as a planned write when sync would update it.
 - Missing counterpart files are reported in `missing`.
@@ -423,10 +428,14 @@ Additional rules:
 
 - `roundtrip_ok` reports whether `.ipynb -> py:percent -> .ipynb` or
   `py:percent -> .ipynb -> py:percent` preserves all representable public
-  fields.
+  fields and whether the state file is consistent with the public file
+  versions.
 - `differences` lists public mismatch categories such as `cell_count`,
   `cell_type`, `source`, `id`, `tags`, `name`, `version`, `formats`, or
   `outputs`.
+- If `.minijupy-state.json` records last synced versions greater than the
+  current public versions of the paired files, `check` must report
+  `roundtrip_ok: false` and include `state` in `differences`.
 - `check` never writes files.
 
 ### 9.7 `sync`
