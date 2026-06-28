@@ -1,0 +1,1538 @@
+Handoff validation log
+Task: /Users/nixer/项目/benchmark/task/jupytext-realrepo-002
+Date: 2026-06-28T10:04:46+08:00
+
+
+===== COMMAND =====
+test -f /Users/nixer/项目/benchmark/task/jupytext-realrepo-002/prd.md
+===== OUTPUT =====
+===== EXIT 0 =====
+
+===== COMMAND =====
+test -f /Users/nixer/项目/benchmark/task/jupytext-realrepo-002/rubric.json
+===== OUTPUT =====
+===== EXIT 0 =====
+
+===== COMMAND =====
+test -f /Users/nixer/项目/benchmark/task/jupytext-realrepo-002/doc/source_repo.md
+===== OUTPUT =====
+===== EXIT 0 =====
+
+===== COMMAND =====
+test -f /Users/nixer/项目/benchmark/task/jupytext-realrepo-002/doc/boundary_decisions.md
+===== OUTPUT =====
+===== EXIT 0 =====
+
+===== COMMAND =====
+test -f /Users/nixer/项目/benchmark/task/jupytext-realrepo-002/doc/requirement_map.md
+===== OUTPUT =====
+===== EXIT 0 =====
+
+===== COMMAND =====
+python3 -m json.tool /Users/nixer/项目/benchmark/task/jupytext-realrepo-002/rubric.json
+===== OUTPUT =====
+[
+    {
+        "id": "JTU001",
+        "layer": "unit",
+        "category": "parse_ipynb",
+        "requirement_refs": [
+            "REQ-notebook-model",
+            "REQ-inspect"
+        ],
+        "description": "inspect normalizes an ipynb notebook with missing ids, source arrays, supported metadata, execution counts, and outputs.",
+        "weight": 4,
+        "setup_files": {
+            "nb.ipynb": "{\"nbformat\":4,\"metadata\":{\"kernelspec\":{\"name\":\"python3\"},\"minijupy\":{\"version\":3}},\"cells\":[{\"cell_type\":\"code\",\"source\":[\"x = 1\\n\",\"print(x)\\n\"],\"metadata\":{\"tags\":[\"run\"],\"name\":\"main\",\"drop\":true},\"execution_count\":7,\"outputs\":[{\"output_type\":\"stream\",\"text\":\"1\\n\"}]},{\"id\":\"note\",\"cell_type\":\"markdown\",\"source\":\"# Title\\n\",\"metadata\":{\"tags\":[\"doc\"]},\"outputs\":[{\"ignored\":true}]}]}"
+        },
+        "commands": [
+            [
+                "inspect",
+                "--input",
+                "nb.ipynb"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "ok": true,
+                    "command": "inspect",
+                    "format": "ipynb",
+                    "version": 3,
+                    "notebook": {
+                        "nbformat": 4,
+                        "nbformat_minor": 5,
+                        "cells": [
+                            {
+                                "id": "c1",
+                                "cell_type": "code",
+                                "source": "x = 1\nprint(x)\n",
+                                "metadata": {
+                                    "tags": [
+                                        "run"
+                                    ],
+                                    "name": "main"
+                                },
+                                "execution_count": 7,
+                                "outputs": [
+                                    {
+                                        "output_type": "stream",
+                                        "text": "1\n"
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "note",
+                                "cell_type": "markdown",
+                                "source": "# Title\n",
+                                "metadata": {
+                                    "tags": [
+                                        "doc"
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTU002",
+        "layer": "unit",
+        "category": "parse_percent",
+        "requirement_refs": [
+            "REQ-percent-format",
+            "REQ-version",
+            "REQ-notebook-model",
+            "REQ-inspect"
+        ],
+        "description": "inspect parses percent headers, code/markdown/raw markers, ids, tags, names, and public version.",
+        "weight": 4,
+        "setup_files": {
+            "script.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 4\n# kernelspec:\n#   name: python3\n# ---\n# %% {\"id\":\"load\",\"tags\":[\"data\"],\"name\":\"loader\"}\nx = 1\n# %% [markdown] {\"id\":\"intro\",\"tags\":[\"doc\"]}\n# # Heading\n# text\n# %% [raw] {\"id\":\"raw1\"}\nraw text\n"
+        },
+        "commands": [
+            [
+                "inspect",
+                "--input",
+                "script.py"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "ok": true,
+                    "format": "py:percent",
+                    "version": 4,
+                    "notebook": {
+                        "metadata": {
+                            "kernelspec": {
+                                "name": "python3"
+                            },
+                            "minijupy": {
+                                "formats": "ipynb,py:percent",
+                                "version": 4
+                            }
+                        },
+                        "cells": [
+                            {
+                                "id": "load",
+                                "cell_type": "code",
+                                "source": "x = 1\n",
+                                "metadata": {
+                                    "tags": [
+                                        "data"
+                                    ],
+                                    "name": "loader"
+                                }
+                            },
+                            {
+                                "id": "intro",
+                                "cell_type": "markdown",
+                                "source": "# Heading\ntext\n",
+                                "metadata": {
+                                    "tags": [
+                                        "doc"
+                                    ]
+                                }
+                            },
+                            {
+                                "id": "raw1",
+                                "cell_type": "raw",
+                                "source": "raw text\n"
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTU003",
+        "layer": "unit",
+        "category": "write_percent_strip_outputs",
+        "requirement_refs": [
+            "REQ-convert",
+            "REQ-percent-format",
+            "REQ-output-preservation"
+        ],
+        "description": "to-text writes percent markers and supported metadata while stripping outputs and execution counts.",
+        "weight": 4,
+        "setup_files": {
+            "run.ipynb": "{\"nbformat\":4,\"nbformat_minor\":5,\"metadata\":{\"kernelspec\":{\"name\":\"python3\"},\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":2}},\"cells\":[{\"id\":\"run\",\"cell_type\":\"code\",\"source\":\"print(1)\\n\",\"metadata\":{\"tags\":[\"keep\"],\"name\":\"runner\"},\"execution_count\":9,\"outputs\":[{\"output_type\":\"stream\",\"text\":\"1\\n\"}]},{\"id\":\"md\",\"cell_type\":\"markdown\",\"source\":\"# Note\\n\",\"metadata\":{}}]}"
+        },
+        "commands": [
+            [
+                "to-text",
+                "--input",
+                "run.ipynb",
+                "--output",
+                "run.py"
+            ]
+        ],
+        "checks": {
+            "file_exists": [
+                "run.py"
+            ],
+            "file_contains": {
+                "run.py": [
+                    "minijupy:",
+                    "version: 2",
+                    "# %% {\"id\":\"run\"",
+                    "\"tags\":[\"keep\"]",
+                    "\"name\":\"runner\"",
+                    "# %% [markdown]"
+                ]
+            },
+            "file_not_contains": {
+                "run.py": [
+                    "execution_count",
+                    "outputs",
+                    "1\\n\"}"
+                ]
+            }
+        }
+    },
+    {
+        "id": "JTU004",
+        "layer": "unit",
+        "category": "same_directory_pair_path",
+        "requirement_refs": [
+            "REQ-pair-paths",
+            "REQ-status"
+        ],
+        "description": "status derives a same-directory missing percent counterpart for an ipynb file.",
+        "weight": 3,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}"
+        },
+        "commands": [
+            [
+                "status",
+                "--input",
+                "demo.ipynb"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "ok": true,
+                    "pairs": [
+                        {
+                            "ipynb": "demo.ipynb",
+                            "text": "demo.py",
+                            "exists": {
+                                "ipynb": true,
+                                "text": false
+                            },
+                            "source": "ipynb",
+                            "missing": [
+                                "demo.py"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "file_not_exists": [
+                "demo.py"
+            ]
+        }
+    },
+    {
+        "id": "JTU005",
+        "layer": "unit",
+        "category": "directory_mapped_pair_path",
+        "requirement_refs": [
+            "REQ-files-config",
+            "REQ-pair-paths",
+            "REQ-status"
+        ],
+        "description": "status uses notebook_dir/script_dir config to derive the paired path across directories.",
+        "weight": 3,
+        "setup_files": {
+            "minijupy.toml": "formats = \"ipynb,py:percent\"\nnotebook_dir = \"notebooks\"\nscript_dir = \"scripts\"\n",
+            "notebooks/a/demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}"
+        },
+        "commands": [
+            [
+                "status",
+                "--input",
+                "notebooks/a/demo.ipynb",
+                "--config",
+                "minijupy.toml"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "pairs": [
+                        {
+                            "ipynb": "notebooks/a/demo.ipynb",
+                            "text": "scripts/a/demo.py",
+                            "missing": [
+                                "scripts/a/demo.py"
+                            ],
+                            "source": "ipynb"
+                        }
+                    ]
+                }
+            },
+            "file_not_exists": [
+                "scripts/a/demo.py"
+            ]
+        }
+    },
+    {
+        "id": "JTU006",
+        "layer": "unit",
+        "category": "create_state_file",
+        "requirement_refs": [
+            "REQ-pair",
+            "REQ-state-file",
+            "REQ-version"
+        ],
+        "description": "pair creates the percent counterpart and initializes .minijupy-state.json with paths and public versions.",
+        "weight": 5,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"version\":2}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}"
+        },
+        "commands": [
+            [
+                "pair",
+                "--input",
+                "demo.ipynb"
+            ]
+        ],
+        "checks": {
+            "file_exists": [
+                "demo.py",
+                ".minijupy-state.json"
+            ],
+            "file_json_contains_unordered": {
+                ".minijupy-state.json": {
+                    "pairs": {
+                        "demo.ipynb": {
+                            "ipynb": "demo.ipynb",
+                            "text": "demo.py",
+                            "last_synced": {
+                                "ipynb_version": 2,
+                                "text_version": 2
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTU007",
+        "layer": "unit",
+        "category": "detect_version_stale_text",
+        "requirement_refs": [
+            "REQ-status",
+            "REQ-version",
+            "REQ-state-file"
+        ],
+        "description": "status detects that the text side is newer than the last synced state.",
+        "weight": 4,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"a\"}\nx = 2\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"old\",\"text_hash\":\"old\"}}}}"
+        },
+        "commands": [
+            [
+                "status",
+                "--input",
+                "demo.py"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "pairs": [
+                        {
+                            "source": "text",
+                            "conflict": false,
+                            "versions": {
+                                "ipynb": 1,
+                                "text": 2,
+                                "last_ipynb": 1,
+                                "last_text": 1
+                            },
+                            "planned_writes": [
+                                "demo.ipynb",
+                                ".minijupy-state.json"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "id": "JTU008",
+        "layer": "unit",
+        "category": "detect_conflict",
+        "requirement_refs": [
+            "REQ-conflict",
+            "REQ-status",
+            "REQ-state-file"
+        ],
+        "description": "status reports conflict when both sides have versions greater than the last synced versions.",
+        "weight": 4,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":2}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=10\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"a\"}\nx = 20\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"old\",\"text_hash\":\"old\"}}}}"
+        },
+        "commands": [
+            [
+                "status",
+                "--input",
+                "demo.ipynb"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "pairs": [
+                        {
+                            "source": "none",
+                            "conflict": true,
+                            "versions": {
+                                "ipynb": 2,
+                                "text": 2,
+                                "last_ipynb": 1,
+                                "last_text": 1
+                            },
+                            "planned_writes": []
+                        }
+                    ],
+                    "summary": {
+                        "conflicts": 1
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTU009",
+        "layer": "unit",
+        "category": "output_preservation_by_id",
+        "requirement_refs": [
+            "REQ-sync",
+            "REQ-output-preservation"
+        ],
+        "description": "sync --source text preserves outputs and execution_count by matching the public cell id.",
+        "weight": 5,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"nbformat_minor\":5,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"cell-a\",\"cell_type\":\"code\",\"source\":\"x = 1\\n\",\"metadata\":{},\"execution_count\":5,\"outputs\":[{\"output_type\":\"stream\",\"text\":\"old\\n\"}]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"cell-a\"}\nx = 2\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"old\",\"text_hash\":\"old\"}}}}"
+        },
+        "commands": [
+            [
+                "sync",
+                "--input",
+                "demo.py",
+                "--source",
+                "text"
+            ]
+        ],
+        "checks": {
+            "file_json_contains_unordered": {
+                "demo.ipynb": {
+                    "metadata": {
+                        "minijupy": {
+                            "version": 2
+                        }
+                    },
+                    "cells": [
+                        {
+                            "id": "cell-a",
+                            "source": "x = 2\n",
+                            "execution_count": 5,
+                            "outputs": [
+                                {
+                                    "output_type": "stream",
+                                    "text": "old\n"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                ".minijupy-state.json": {
+                    "pairs": {
+                        "demo.ipynb": {
+                            "last_synced": {
+                                "ipynb_version": 2,
+                                "text_version": 2
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTU010",
+        "layer": "unit",
+        "category": "output_preservation_fallback",
+        "requirement_refs": [
+            "REQ-sync",
+            "REQ-output-preservation"
+        ],
+        "description": "sync --source text preserves outputs by same cell type and same source when ids differ.",
+        "weight": 5,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"old-id\",\"cell_type\":\"code\",\"source\":\"print(value)\\n\",\"metadata\":{},\"execution_count\":8,\"outputs\":[{\"output_type\":\"stream\",\"text\":\"42\\n\"}]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"new-id\"}\nprint(value)\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"old\",\"text_hash\":\"old\"}}}}"
+        },
+        "commands": [
+            [
+                "sync",
+                "--input",
+                "demo.py",
+                "--source",
+                "text"
+            ]
+        ],
+        "checks": {
+            "file_json_contains_unordered": {
+                "demo.ipynb": {
+                    "cells": [
+                        {
+                            "id": "new-id",
+                            "cell_type": "code",
+                            "source": "print(value)\n",
+                            "execution_count": 8,
+                            "outputs": [
+                                {
+                                    "output_type": "stream",
+                                    "text": "42\n"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "id": "JTU011",
+        "layer": "unit",
+        "category": "status_single_pair",
+        "requirement_refs": [
+            "REQ-status",
+            "REQ-invariants"
+        ],
+        "description": "status reports a clean pair with source none and no planned writes.",
+        "weight": 4,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 1\n# ---\n# %% {\"id\":\"a\"}\nx=1\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h1\",\"text_hash\":\"h1\"}}}}"
+        },
+        "commands": [
+            [
+                "status",
+                "--input",
+                "demo.ipynb"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "pairs": [
+                        {
+                            "source": "none",
+                            "conflict": false,
+                            "planned_writes": [],
+                            "errors": []
+                        }
+                    ],
+                    "summary": {
+                        "pairs": 1,
+                        "conflicts": 0,
+                        "missing": 0,
+                        "planned_writes": 0,
+                        "errors": 0
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTU012",
+        "layer": "unit",
+        "category": "check_single_pair",
+        "requirement_refs": [
+            "REQ-check",
+            "REQ-convert",
+            "REQ-invariants"
+        ],
+        "description": "check reports roundtrip_ok for a representable clean pair and writes no files.",
+        "weight": 4,
+        "setup_files": {
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 1\n# ---\n# %% {\"id\":\"a\",\"tags\":[\"t\"],\"name\":\"n\"}\nx=1\n# %% [markdown] {\"id\":\"m\"}\n# hello\n"
+        },
+        "commands": [
+            [
+                "check",
+                "--input",
+                "demo.py"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "command": "check",
+                    "pairs": [
+                        {
+                            "roundtrip_ok": true,
+                            "differences": [],
+                            "errors": []
+                        }
+                    ],
+                    "summary": {
+                        "errors": 0
+                    }
+                }
+            },
+            "file_not_exists": [
+                ".minijupy-state.json",
+                "demo.ipynb"
+            ]
+        }
+    },
+    {
+        "id": "JTU013",
+        "layer": "unit",
+        "category": "malformed_percent_atomicity",
+        "requirement_refs": [
+            "REQ-percent-format",
+            "REQ-error-atomic"
+        ],
+        "description": "Malformed percent marker JSON fails without creating the requested ipynb output.",
+        "weight": 4,
+        "setup_files": {
+            "bad.py": "# %% {bad json}\nprint('bad')\n"
+        },
+        "commands": [
+            {
+                "args": [
+                    "to-ipynb",
+                    "--input",
+                    "bad.py",
+                    "--output",
+                    "bad.ipynb"
+                ],
+                "expect_error": true
+            }
+        ],
+        "checks": {
+            "file_not_exists": [
+                "bad.ipynb",
+                ".minijupy-state.json"
+            ]
+        }
+    },
+    {
+        "id": "JTU014",
+        "layer": "unit",
+        "category": "malformed_ipynb_atomicity",
+        "requirement_refs": [
+            "REQ-notebook-model",
+            "REQ-error-atomic"
+        ],
+        "description": "Malformed ipynb JSON fails without creating the requested percent output.",
+        "weight": 4,
+        "setup_files": {
+            "bad.ipynb": "{\"nbformat\":4,\"cells\":["
+        },
+        "commands": [
+            {
+                "args": [
+                    "to-text",
+                    "--input",
+                    "bad.ipynb",
+                    "--output",
+                    "bad.py"
+                ],
+                "expect_error": true
+            }
+        ],
+        "checks": {
+            "file_not_exists": [
+                "bad.py",
+                ".minijupy-state.json"
+            ]
+        }
+    },
+    {
+        "id": "JTS001",
+        "layer": "system",
+        "category": "pair_status_sync_clean_loop",
+        "system_dimension": "pair_status_sync_clean_loop",
+        "requirement_refs": [
+            "REQ-pair",
+            "REQ-state-file",
+            "REQ-status",
+            "REQ-sync",
+            "REQ-invariants"
+        ],
+        "description": "A notebook can be paired, reported as clean, synced as a no-op, and then reported clean again.",
+        "weight": 7,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}"
+        },
+        "commands": [
+            [
+                "pair",
+                "--input",
+                "demo.ipynb"
+            ],
+            [
+                "status",
+                "--input",
+                "demo.ipynb"
+            ],
+            [
+                "sync",
+                "--input",
+                "demo.ipynb"
+            ],
+            [
+                "status",
+                "--input",
+                "demo.py"
+            ]
+        ],
+        "checks": {
+            "file_exists": [
+                "demo.py",
+                ".minijupy-state.json"
+            ],
+            "stdout_json_contains": {
+                "1": {
+                    "pairs": [
+                        {
+                            "source": "none",
+                            "conflict": false,
+                            "planned_writes": []
+                        }
+                    ]
+                },
+                "3": {
+                    "pairs": [
+                        {
+                            "source": "none",
+                            "conflict": false,
+                            "planned_writes": []
+                        }
+                    ],
+                    "summary": {
+                        "planned_writes": 0
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTS002",
+        "layer": "system",
+        "category": "edit_text_status_sync_notebook_updated",
+        "system_dimension": "text_edit_sync_updates_notebook",
+        "requirement_refs": [
+            "REQ-version",
+            "REQ-status",
+            "REQ-sync",
+            "REQ-state-file"
+        ],
+        "description": "A newer text side is reported as source text; sync updates the notebook and state; status is clean afterwards.",
+        "weight": 8,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"a\"}\nx=2\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h1\",\"text_hash\":\"h1\"}}}}"
+        },
+        "commands": [
+            [
+                "status",
+                "--input",
+                "demo.py"
+            ],
+            [
+                "sync",
+                "--input",
+                "demo.py"
+            ],
+            [
+                "status",
+                "--input",
+                "demo.ipynb"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "pairs": [
+                        {
+                            "source": "text",
+                            "planned_writes": [
+                                "demo.ipynb",
+                                ".minijupy-state.json"
+                            ]
+                        }
+                    ]
+                },
+                "2": {
+                    "pairs": [
+                        {
+                            "source": "none",
+                            "planned_writes": []
+                        }
+                    ]
+                }
+            },
+            "file_json_contains_unordered": {
+                "demo.ipynb": {
+                    "metadata": {
+                        "minijupy": {
+                            "version": 2
+                        }
+                    },
+                    "cells": [
+                        {
+                            "id": "a",
+                            "source": "x=2\n"
+                        }
+                    ]
+                },
+                ".minijupy-state.json": {
+                    "pairs": {
+                        "demo.ipynb": {
+                            "last_synced": {
+                                "ipynb_version": 2,
+                                "text_version": 2
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTS003",
+        "layer": "system",
+        "category": "conflict_source_override",
+        "system_dimension": "conflict_resolution_workflow",
+        "requirement_refs": [
+            "REQ-conflict",
+            "REQ-sync",
+            "REQ-error-atomic",
+            "REQ-state-file"
+        ],
+        "description": "Both sides edited causes conflict and failed sync; --source text resolves and updates state.",
+        "weight": 8,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":2}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x='ipynb'\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"a\"}\nx='text'\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"old\",\"text_hash\":\"old\"}}}}"
+        },
+        "commands": [
+            [
+                "status",
+                "--input",
+                "demo.ipynb"
+            ],
+            {
+                "args": [
+                    "sync",
+                    "--input",
+                    "demo.ipynb"
+                ],
+                "expect_error": true
+            },
+            [
+                "sync",
+                "--input",
+                "demo.ipynb",
+                "--source",
+                "text"
+            ],
+            [
+                "status",
+                "--input",
+                "demo.ipynb"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "pairs": [
+                        {
+                            "conflict": true,
+                            "source": "none"
+                        }
+                    ]
+                },
+                "3": {
+                    "pairs": [
+                        {
+                            "conflict": false,
+                            "source": "none",
+                            "planned_writes": []
+                        }
+                    ]
+                }
+            },
+            "file_json_contains_unordered": {
+                "demo.ipynb": {
+                    "cells": [
+                        {
+                            "id": "a",
+                            "source": "x='text'\n"
+                        }
+                    ]
+                },
+                ".minijupy-state.json": {
+                    "pairs": {
+                        "demo.ipynb": {
+                            "last_synced": {
+                                "ipynb_version": 2,
+                                "text_version": 2
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTS004",
+        "layer": "system",
+        "category": "sync_all_mixed_states",
+        "system_dimension": "sync_all_mixed_states",
+        "requirement_refs": [
+            "REQ-files-config",
+            "REQ-pair-paths",
+            "REQ-sync-all",
+            "REQ-missing",
+            "REQ-conflict"
+        ],
+        "description": "status --all and sync --all handle mixed clean, stale, missing, and conflict states; conflict blocks all writes.",
+        "weight": 8,
+        "setup_files": {
+            "minijupy.toml": "formats = \"ipynb,py:percent\"\nnotebook_dir = \"notebooks\"\nscript_dir = \"scripts\"\n",
+            "notebooks/clean.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"c\",\"cell_type\":\"code\",\"source\":\"clean=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "scripts/clean.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 1\n# ---\n# %% {\"id\":\"c\"}\nclean=1\n",
+            "notebooks/stale.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"s\",\"cell_type\":\"code\",\"source\":\"s=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "scripts/stale.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"s\"}\ns=2\n",
+            "notebooks/missing.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"m\",\"cell_type\":\"code\",\"source\":\"m=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "notebooks/conflict.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":2}},\"cells\":[{\"id\":\"x\",\"cell_type\":\"code\",\"source\":\"x='ipynb'\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "scripts/conflict.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"x\"}\nx='text'\n",
+            ".minijupy-state.json": "{\"pairs\":{\"notebooks/clean.ipynb\":{\"ipynb\":\"notebooks/clean.ipynb\",\"text\":\"scripts/clean.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h\",\"text_hash\":\"h\"}},\"notebooks/stale.ipynb\":{\"ipynb\":\"notebooks/stale.ipynb\",\"text\":\"scripts/stale.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h\",\"text_hash\":\"h\"}},\"notebooks/missing.ipynb\":{\"ipynb\":\"notebooks/missing.ipynb\",\"text\":\"scripts/missing.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h\",\"text_hash\":\"h\"}},\"notebooks/conflict.ipynb\":{\"ipynb\":\"notebooks/conflict.ipynb\",\"text\":\"scripts/conflict.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h\",\"text_hash\":\"h\"}}}}"
+        },
+        "commands": [
+            [
+                "status",
+                "--all",
+                "--config",
+                "minijupy.toml"
+            ],
+            {
+                "args": [
+                    "sync",
+                    "--all",
+                    "--config",
+                    "minijupy.toml"
+                ],
+                "expect_error": true
+            }
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "summary": {
+                        "pairs": 4,
+                        "conflicts": 1,
+                        "missing": 1
+                    }
+                }
+            },
+            "file_not_exists": [
+                "scripts/missing.py"
+            ],
+            "file_json_contains_unordered": {
+                "notebooks/stale.ipynb": {
+                    "cells": [
+                        {
+                            "source": "s=1\n"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "id": "JTS005",
+        "layer": "system",
+        "category": "sync_all_malformed_atomicity",
+        "system_dimension": "sync_all_malformed_atomicity",
+        "requirement_refs": [
+            "REQ-sync-all",
+            "REQ-error-atomic",
+            "REQ-invariants"
+        ],
+        "description": "sync --all validates every pair first; one malformed pair prevents writes to an otherwise stale valid pair.",
+        "weight": 8,
+        "setup_files": {
+            "minijupy.toml": "formats = \"ipynb,py:percent\"\nnotebook_dir = \"notebooks\"\nscript_dir = \"scripts\"\n",
+            "notebooks/good.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"g\",\"cell_type\":\"code\",\"source\":\"g=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "scripts/good.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"g\"}\ng=2\n",
+            "notebooks/bad.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"b\",\"cell_type\":\"code\",\"source\":\"b=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "scripts/bad.py": "# %% {bad json}\nb=2\n",
+            ".minijupy-state.json": "{\"pairs\":{\"notebooks/good.ipynb\":{\"ipynb\":\"notebooks/good.ipynb\",\"text\":\"scripts/good.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h\",\"text_hash\":\"h\"}},\"notebooks/bad.ipynb\":{\"ipynb\":\"notebooks/bad.ipynb\",\"text\":\"scripts/bad.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h\",\"text_hash\":\"h\"}}}}"
+        },
+        "commands": [
+            {
+                "args": [
+                    "sync",
+                    "--all",
+                    "--config",
+                    "minijupy.toml"
+                ],
+                "expect_error": true
+            }
+        ],
+        "checks": {
+            "file_json_contains_unordered": {
+                "notebooks/good.ipynb": {
+                    "metadata": {
+                        "minijupy": {
+                            "version": 1
+                        }
+                    },
+                    "cells": [
+                        {
+                            "source": "g=1\n"
+                        }
+                    ]
+                },
+                ".minijupy-state.json": {
+                    "pairs": {
+                        "notebooks/good.ipynb": {
+                            "last_synced": {
+                                "ipynb_version": 1,
+                                "text_version": 1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTS006",
+        "layer": "system",
+        "category": "output_preservation_reorder_insert_delete",
+        "system_dimension": "output_preservation_after_cell_edits",
+        "requirement_refs": [
+            "REQ-sync",
+            "REQ-output-preservation",
+            "REQ-notebook-model"
+        ],
+        "description": "After text reorder/insert/delete edits, sync preserves outputs for matched cells and drops deleted/unmatched outputs.",
+        "weight": 9,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"a()\\n\",\"metadata\":{},\"execution_count\":1,\"outputs\":[{\"output_type\":\"stream\",\"text\":\"A\\n\"}]},{\"id\":\"b\",\"cell_type\":\"code\",\"source\":\"b()\\n\",\"metadata\":{},\"execution_count\":2,\"outputs\":[{\"output_type\":\"stream\",\"text\":\"B\\n\"}]},{\"id\":\"c\",\"cell_type\":\"code\",\"source\":\"c()\\n\",\"metadata\":{},\"execution_count\":3,\"outputs\":[{\"output_type\":\"stream\",\"text\":\"C\\n\"}]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"b\"}\nb()\n# %% {\"id\":\"new\"}\nnew()\n# %% {\"id\":\"a\"}\na()\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h\",\"text_hash\":\"h\"}}}}"
+        },
+        "commands": [
+            [
+                "sync",
+                "--input",
+                "demo.py",
+                "--source",
+                "text"
+            ]
+        ],
+        "checks": {
+            "file_json_contains_unordered": {
+                "demo.ipynb": {
+                    "cells": [
+                        {
+                            "id": "b",
+                            "execution_count": 2,
+                            "outputs": [
+                                {
+                                    "text": "B\n"
+                                }
+                            ]
+                        },
+                        {
+                            "id": "new",
+                            "execution_count": null,
+                            "outputs": []
+                        },
+                        {
+                            "id": "a",
+                            "execution_count": 1,
+                            "outputs": [
+                                {
+                                    "text": "A\n"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "file_not_contains": {
+                "demo.ipynb": [
+                    "C\\n"
+                ]
+            }
+        }
+    },
+    {
+        "id": "JTS007",
+        "layer": "system",
+        "category": "check_detects_state_file_mismatch",
+        "system_dimension": "check_detects_state_file_mismatch",
+        "requirement_refs": [
+            "REQ-check",
+            "REQ-state-file",
+            "REQ-invariants"
+        ],
+        "description": "check reports state/file mismatch when state claims a later synced version than the files contain.",
+        "weight": 7,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 1\n# ---\n# %% {\"id\":\"a\"}\nx=1\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":3,\"text_version\":3,\"ipynb_hash\":\"future\",\"text_hash\":\"future\"}}}}"
+        },
+        "commands": [
+            [
+                "check",
+                "--input",
+                "demo.ipynb"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "pairs": [
+                        {
+                            "roundtrip_ok": false,
+                            "differences": [
+                                "state"
+                            ]
+                        }
+                    ],
+                    "summary": {
+                        "errors": 0
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTS008",
+        "layer": "system",
+        "category": "directory_pair_mapping_workflow",
+        "system_dimension": "directory_pair_mapping_workflow",
+        "requirement_refs": [
+            "REQ-files-config",
+            "REQ-pair-paths",
+            "REQ-pair",
+            "REQ-sync"
+        ],
+        "description": "Directory mapping is applied consistently by pair, state, status, and sync.",
+        "weight": 7,
+        "setup_files": {
+            "minijupy.toml": "formats = \"ipynb,py:percent\"\nnotebook_dir = \"notebooks\"\nscript_dir = \"scripts\"\n",
+            "notebooks/a/b/demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}"
+        },
+        "commands": [
+            [
+                "pair",
+                "--input",
+                "notebooks/a/b/demo.ipynb",
+                "--config",
+                "minijupy.toml"
+            ],
+            [
+                "status",
+                "--input",
+                "scripts/a/b/demo.py",
+                "--config",
+                "minijupy.toml"
+            ],
+            [
+                "sync",
+                "--input",
+                "scripts/a/b/demo.py",
+                "--config",
+                "minijupy.toml"
+            ]
+        ],
+        "checks": {
+            "file_exists": [
+                "scripts/a/b/demo.py",
+                ".minijupy-state.json"
+            ],
+            "stdout_json_contains": {
+                "1": {
+                    "pairs": [
+                        {
+                            "ipynb": "notebooks/a/b/demo.ipynb",
+                            "text": "scripts/a/b/demo.py",
+                            "source": "none"
+                        }
+                    ]
+                }
+            },
+            "file_json_contains_unordered": {
+                ".minijupy-state.json": {
+                    "pairs": {
+                        "notebooks/a/b/demo.ipynb": {
+                            "ipynb": "notebooks/a/b/demo.ipynb",
+                            "text": "scripts/a/b/demo.py"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        "id": "JTS009",
+        "layer": "system",
+        "category": "state_drives_status_after_manual_changes",
+        "system_dimension": "state_drives_status_after_manual_changes",
+        "requirement_refs": [
+            "REQ-state-file",
+            "REQ-version",
+            "REQ-status"
+        ],
+        "description": "After manual file version changes, status uses the state file to choose source and planned writes.",
+        "weight": 7,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":1}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x=1\\n\",\"metadata\":{},\"execution_count\":null,\"outputs\":[]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 3\n# ---\n# %% {\"id\":\"a\"}\nx=3\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"h\",\"text_hash\":\"h\"}}}}"
+        },
+        "commands": [
+            [
+                "status",
+                "--input",
+                "demo.py"
+            ]
+        ],
+        "checks": {
+            "stdout_json_contains": {
+                "0": {
+                    "pairs": [
+                        {
+                            "source": "text",
+                            "versions": {
+                                "ipynb": 1,
+                                "text": 3,
+                                "last_ipynb": 1,
+                                "last_text": 1
+                            },
+                            "planned_writes": [
+                                "demo.ipynb",
+                                ".minijupy-state.json"
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    {
+        "id": "JTS010",
+        "layer": "system",
+        "category": "source_override_updates_files_and_state",
+        "system_dimension": "source_override_updates_files_and_state",
+        "requirement_refs": [
+            "REQ-conflict",
+            "REQ-sync",
+            "REQ-output-preservation",
+            "REQ-state-file"
+        ],
+        "description": "In conflict, --source ipynb updates the text side and state to match the ipynb source.",
+        "weight": 8,
+        "setup_files": {
+            "demo.ipynb": "{\"nbformat\":4,\"metadata\":{\"minijupy\":{\"formats\":\"ipynb,py:percent\",\"version\":2}},\"cells\":[{\"id\":\"a\",\"cell_type\":\"code\",\"source\":\"x='ipynb'\\n\",\"metadata\":{\"tags\":[\"keep\"]},\"execution_count\":4,\"outputs\":[{\"output_type\":\"stream\",\"text\":\"ipynb\\n\"}]}]}",
+            "demo.py": "# ---\n# minijupy:\n#   formats: ipynb,py:percent\n#   version: 2\n# ---\n# %% {\"id\":\"a\"}\nx='text'\n",
+            ".minijupy-state.json": "{\"pairs\":{\"demo.ipynb\":{\"ipynb\":\"demo.ipynb\",\"text\":\"demo.py\",\"last_synced\":{\"ipynb_version\":1,\"text_version\":1,\"ipynb_hash\":\"old\",\"text_hash\":\"old\"}}}}"
+        },
+        "commands": [
+            [
+                "sync",
+                "--input",
+                "demo.ipynb",
+                "--source",
+                "ipynb"
+            ],
+            [
+                "status",
+                "--input",
+                "demo.py"
+            ]
+        ],
+        "checks": {
+            "file_contains": {
+                "demo.py": [
+                    "version: 2",
+                    "# %% {\"id\":\"a\"",
+                    "\"tags\":[\"keep\"]",
+                    "x='ipynb'"
+                ]
+            },
+            "file_not_contains": {
+                "demo.py": [
+                    "outputs",
+                    "execution_count",
+                    "x='text'"
+                ]
+            },
+            "file_json_contains_unordered": {
+                ".minijupy-state.json": {
+                    "pairs": {
+                        "demo.ipynb": {
+                            "last_synced": {
+                                "ipynb_version": 2,
+                                "text_version": 2
+                            }
+                        }
+                    }
+                }
+            },
+            "stdout_json_contains": {
+                "1": {
+                    "pairs": [
+                        {
+                            "source": "none",
+                            "conflict": false,
+                            "planned_writes": []
+                        }
+                    ]
+                }
+            }
+        }
+    }
+]
+===== EXIT 0 =====
+
+===== COMMAND =====
+python3 - /Users/nixer/项目/benchmark/task/jupytext-realrepo-002
+===== OUTPUT =====
+cases_total=24
+cases_unit=14
+cases_system=10
+ids=JTU001, JTU002, JTU003, JTU004, JTU005, JTU006, JTU007, JTU008, JTU009, JTU010, JTU011, JTU012, JTU013, JTU014, JTS001, JTS002, JTS003, JTS004, JTS005, JTS006, JTS007, JTS008, JTS009, JTS010
+STRUCTURE: PASS
+===== EXIT 0 =====
+
+===== COMMAND =====
+sh -c grep -En 'rubric|case[ _-]?[A-Z0-9]|score|scoring|points|hidden|reference implementation|expected output|test id|case id|R[0-9]+|U[0-9]+|S[0-9]+' '/Users/nixer/项目/benchmark/task/jupytext-realrepo-002/prd.md' || true
+===== OUTPUT =====
+===== EXIT 0 =====
+
+===== COMMAND =====
+sh -c find '/Users/nixer/项目/benchmark/task/jupytext-realrepo-002' -type f | grep -E '(_reference|score_report|score\.py|evaluator|candidate|answer|expected|validation|report)' || true
+===== OUTPUT =====
+===== EXIT 0 =====
+
+===== COMMAND =====
+sh -c grep -En 'jupytext|github|commit|canonical|source|repository|repo|revision|SHA|[0-9a-f]{7,40}' '/Users/nixer/项目/benchmark/task/jupytext-realrepo-002/doc/source_repo.md' || true
+===== OUTPUT =====
+5:- Repository: `mwouts/jupytext`
+6:- URL: `https://github.com/mwouts/jupytext`
+7:- Checked revision: `40f3c5fd625f6b7c851bf3c632cd2f7f7e35c4f4`
+8:- Local analysis checkout: `/tmp/jupytext-source`
+11:repository-relative source paths.
+20:- `src/jupytext/cli.py`
+21:- `src/jupytext/paired_paths.py`
+22:- `src/jupytext/pairs.py`
+23:- `src/jupytext/sync_pairs.py`
+24:- `src/jupytext/combine.py`
+25:- `src/jupytext/cell_reader.py`
+26:- `src/jupytext/cell_to_text.py`
+27:- `src/jupytext/cell_metadata.py`
+28:- `src/jupytext/config.py`
+29:- `src/jupytext/formats.py`
+31:- `tests/functional/cli/test_source_is_newer.py`
+35:- `tests/external/pre_commit/test_pre_commit_1_sync.py`
+36:- `tests/external/pre_commit/test_pre_commit_mode.py`
+37:- `tests/external/pre_commit/test_pre_commit_scripts.py`
+41:`jupytext-realrepo-001` was source-grounded and reference-satisfiable, but
+44:one canonical normalized notebook model plus serializers. That is good
+47:`jupytext-realrepo-002` should keep the same source project but re-ground the
+52:-> status/check/conflict report
+73:`.ipynb` destination (`src/jupytext/cli.py`, lines 109-151).
+77:(`src/jupytext/cli.py`, lines 153-159). The paired-notebook docs state that
+78:pairing adds a `"jupytext": {"formats": ...}` entry to notebook metadata
+81:In the CLI implementation, `jupytext_single_file` derives the output path from
+82:the input path and requested output format (`src/jupytext/cli.py`, lines
+83:521-540), loads project config before reading/writing (`src/jupytext/cli.py`,
+85:combines it with `--sync` (`src/jupytext/cli.py`, lines 632-639). This makes
+94:`.ipynb` file if present (`src/jupytext/cli.py`, lines 163-170).
+103:Tests cover source-newer checks: converting or syncing from an older source
+104:raises errors (`tests/functional/cli/test_source_is_newer.py`, lines 12-70).
+106:behavior to adapt is source freshness, stale-source rejection, and explicit
+107:source choice.
+109:The source-level decision is implemented in `latest_inputs_and_outputs`: it
+112:separate input/output notebook files (`src/jupytext/pairs.py`, lines 15-55).
+114:(`src/jupytext/cli.py`, lines 629-660), and `write_pair` writes the `.ipynb`
+115:member first and then text members (`src/jupytext/sync_pairs.py`, lines 40-80).
+124:`src/jupytext/paired_paths.py` implements the source path model:
+127:  boundary before deriving a base path (`src/jupytext/paired_paths.py`, lines
+130:  suffix (`src/jupytext/paired_paths.py`, lines 234-288).
+132:  pairing formats or duplicate paired paths (`src/jupytext/paired_paths.py`,
+147:The source has independent reader/writer paths:
+149:- `src/jupytext/cell_reader.py` parses marker options, cell type, source, and
+151:- `src/jupytext/cell_to_text.py` exports cells to text while filtering
+153:- `src/jupytext/cell_metadata.py` implements metadata conversion and parsing.
+166:`src/jupytext/combine.py` is the key source signal. `combine_inputs_with_outputs`
+167:combines text/source cells from one notebook with outputs and metadata from
+168:another (`src/jupytext/combine.py`, lines 36-116). It uses
+170:rules: cell type/source in order, unused output matching, suffix matching, then
+171:increasing-position fallback (`src/jupytext/combine.py`, lines 119-177).
+179:calls `combine_inputs_with_outputs` (`src/jupytext/cli.py`, lines 954-959).
+185:both flags (`src/jupytext/cli.py`, lines 214-223). Roundtrip tests exercise
+190:`status` / `check` report is a fair adaptation of public roundtrip and
+194:representations for a notebook (`src/jupytext/cli.py`, lines 173-177 and
+195:1038-1045). For 002, this is source evidence for exposing paired-path and
+196:status/check reports as first-class public outputs.
+207:This is a strong source-derived basis for mini-task atomicity: failed sync,
+208:malformed input, stale-source rejection, path mismatch, or conflict detection
+209:must not half-update paired files or reports.
+215:(`src/jupytext/cli.py`, lines 814-919). This gives code-level evidence for an
+227:| `--set-formats` | Source-derived | CLI help says it creates/updates all paired files (`src/jupytext/cli.py`, lines 153-159). Docs show `jupytext --set-formats ipynb,py notebook.ipynb` (`website/src/content/docs/using/cli.md`, lines 28-31). | Keep a public pairing command that writes pairing metadata and creates/updates the counterpart. |
+228:| `--sync` | Source-derived | CLI docs say sync updates whichever paired representation is outdated (`website/src/content/docs/using/cli.md`, lines 28-32). Parser help says inputs come from last-modified file and outputs from `.ipynb` (`src/jupytext/cli.py`, lines 163-170). | Keep sync as mutation workflow; later PRD should make its source choice deterministic. |
+229:| Paired paths | Source-derived | Config docs show global and subfolder pairing (`website/src/content/docs/using/config.md`, lines 10-43). `paired_paths.py` derives bases/paths and rejects unmatched/duplicate pairs (`src/jupytext/paired_paths.py`, lines 86-191 and 234-332). Tests cover simple, tree, config boundary, prefix/suffix, duplicate, and separator behavior (`tests/unit/test_paired_paths.py`, lines 23-240). | Keep same-directory pairing and one directory-mapping subset; require mismatch errors to be public. |
+230:| Newest source decision | Source-derived concept, deterministic adaptation required | `latest_inputs_and_outputs` chooses newest text input / newest `.ipynb` output by timestamp (`src/jupytext/pairs.py`, lines 15-55). Source-newer tests reject stale sources (`tests/functional/cli/test_source_is_newer.py`, lines 12-70). | Preserve the behavior shape, but replace real mtimes with public deterministic version/hash/state semantics. |
+231:| Output preservation | Source-derived | Docs and FAQ state text stores inputs while `.ipynb` stores/restores outputs (`website/src/content/docs/using/paired-notebooks.md`, lines 8-17; `website/src/content/docs/reference/faq.md`, lines 44-46). `combine_inputs_with_outputs` and `map_outputs_to_inputs` merge source cells with output cells (`src/jupytext/combine.py`, lines 36-177). | Keep output/execution-count preservation as a system invariant during sync/update. |
+232:| Conflict / simultaneous changes | Source-derived concept, deterministic adaptation required | Paired docs warn about simultaneous Jupyter/text saves and ask the user to choose/reload (`website/src/content/docs/using/paired-notebooks.md`, lines 29-41). FAQ describes both sides edited and `.ipynb` newer safeguards (`website/src/content/docs/reference/faq.md`, lines 90-98). Tests simulate synchronous modification and require errors/no counterpart writes (`tests/functional/cli/test_synchronous_changes.py`, lines 15-111). | Keep conflict/stale-source handling, but expose deterministic conflict state rather than timing races. |
+233:| Status / test behavior | Source-derived concept, deterministic adaptation required | `--test` / `--test-strict` are public roundtrip checks (`website/src/content/docs/using/cli.md`, lines 86-99; `src/jupytext/cli.py`, lines 214-223). `--paired-paths` lists derived pair locations (`src/jupytext/cli.py`, lines 173-177 and 1038-1045). | A JSON `status`/`check` command is a fair mini-task adaptation of public checks and pair reporting. |
+234:| Failure atomicity | Source-derived | `lazy_write` uses temp file + timestamp recheck + temp cleanup + `os.replace` (`src/jupytext/cli.py`, lines 814-919). Synchronous-change tests assert failed sync/conversion avoids partial counterpart creation (`tests/functional/cli/test_synchronous_changes.py`, lines 15-111). | Require failed public commands to leave existing paired artifacts unchanged. |
+239:These adaptations are allowed because they make source-derived behavior
+245:| Replace real mtimes with public freshness markers, hashes, or a state file | Jupytext chooses newest source by filesystem timestamps (`src/jupytext/pairs.py`, lines 15-55). | Real mtimes are flaky for benchmark scoring and hard for code agents to reason about reproducibly. |
+246:| Add JSON `status` / `check` output | Source has `--test`, `--test-strict`, `--paired-paths`, source-newer checks, and logs/errors, but not one stable JSON status schema. | A stable public report lets system tests compare source choice, pair paths, missing files, conflicts, and roundtrip state without inspecting internals. |
+250:| Define deterministic conflict resolution with explicit `--source` or equivalent | Source handles user conflict through mtimes/Jupyter reload prompts and synchronous-modification errors. | Makes conflict behavior observable without relying on concurrent editors or timing races. |
+255:These source behaviors are intentionally out of scope unless a later user
+267:| Git/pre-commit index semantics | Useful source signal for project checks, but exact Git index behavior is not needed. |
+268:| Image/binary outputs or rich MIME rendering fidelity | The relevant source behavior is output preservation, not rendering. |
+275:| Convert to text | `.ipynb`, format/config | `py:percent` file or stdout/report | text representation | affects roundtrip, sync, status, pre-commit checks |
+276:| Convert to ipynb | `py:percent` text | `.ipynb` file/report | notebook representation | affects output preservation and paired sync |
+279:| Sync source selection | paired files + freshness signal | chosen source + writes | both paired files | drives output preservation, missing counterpart creation, status |
+280:| Output preservation | source cells + existing `.ipynb` outputs | merged `.ipynb` | `.ipynb` outputs/execution counts | exposes wrong cell matching in system cases |
+281:| Status/check report | paired files + config + prior state | JSON report | optional report/state if PRD defines it | predicts sync writes, conflicts, missing pairs, roundtrip ok |
+282:| Error atomicity | malformed input/config, stale/conflict, path mismatch | nonzero/stderr/report | no partial writes | protects existing pair state |
+289:  commands (`src/jupytext/cli.py`, lines 109-223).
+291:- Config files: `jupytext.toml` / `pyproject.toml`; source docs define global
+299:- Notebook input model: ordered cells, cell type, source, metadata, outputs.
+303:- Output map: existing `.ipynb` outputs must be matched to source cells during
+311:- Status/check report: source choice, stale/missing/conflict, roundtrip result,
+313:- Optional project-level report for `--all` if included in the PRD.
+319:- `--source` or conflict-resolution command chooses a side when automatic sync
+338:- `sync --input FILE [--config CONFIG] [--source ipynb|text] [--all]`
+346:Do not draft PRD yet. These are source-grounded boundary recommendations for
+357:| Source freshness / stale rejection | Keep adapted | Public `--check-source-is-newer` behavior and tests support it. |
+360:| `--test` / roundtrip | Keep adapted as `check`/`status` | Public behavior, but use deterministic JSON report. |
+361:| `--all` project operation | Consider keeping | Source config supports project/global pairing; pre-commit docs/tests imply multi-file sync workflows. |
+362:| Pre-commit mode | Exclude exact Git semantics | Use only as source signal for project-level sync/check, not Git index behavior. |
+364:| Jupyter server / ContentsManager | Exclude | Environment-heavy; only source state concepts are reused. |
+373:| `status_sync_consistency` | pair path resolution -> parse both files -> freshness/conflict decision -> status report -> sync writes | Status must predict actual sync effects. |
+374:| `conflict_resolution` | prior sync state -> both files changed -> status/check conflict -> explicit source override -> clean state | Local conversion can pass while conflict logic fails. |
+375:| `output_preservation_under_edit` | text edits -> source selection -> output map -> rewritten `.ipynb` -> status clean | Requires correct matching, not only serialization. |
+376:| `multi_pair_project_flow` | config mapping -> multiple pairs -> status/check `--all` -> sync subset/all -> final report | Prevents hard-coded single-file behavior. |
+378:| `roundtrip_report_consistency` | to-text -> to-ipynb -> normalized comparison -> status/check differences | Report must match actual conversions. |
+379:| `error_atomicity` | validation -> planned writes -> malformed/conflict/path error -> unchanged files | Mirrors source tests for synchronous edits and failed writes. |
+389:- Single-pair status report.
+390:- Single-pair sync source selection.
+399:   - Checks path consistency, no-op idempotence, and report/write agreement.
+402:   - Start with `.ipynb` containing outputs, edit text source, sync from text,
+408:     source, then status clean.
+413:   - Run `status --all` and `sync --all`; report and resulting files must agree.
+415:5. **Roundtrip report as oracle**
+417:     to text, and require `check` to report no representable differences.
+433:  ContentsManager behavior, Git/pre-commit internals, external tools, pipes,
+437:  PRD and justified as a deterministic adaptation of mtime/source freshness and
+449:   success with an explicit report?
+450:5. Should output preservation match by explicit cell id first, then source/type,
+451:   then position, mirroring the source's multi-rule approach, or should the
+453:6. Should `check` be separate from `status`, or should one command report both
+458:`jupytext-realrepo-002` is viable only if it avoids repeating 001's canonical
+459:model collapse. The strongest source-grounded direction is not "more formats";
+465:-> conflict/source decision
+472:`prd.md`, `rubric.json`, or `requirement_map.md` until the state/conflict/report
+===== EXIT 0 =====
+
+===== COMMAND =====
+sh -c for pat in 'public state file' 'conflict definition' 'sync --all atomicity' 'output preservation matching' 'status/check JSON schema'; do printf '%s: ' ""; grep -Fqi "" '/Users/nixer/项目/benchmark/task/jupytext-realrepo-002/doc/boundary_decisions.md' && echo FOUND || echo MISSING; done
+===== OUTPUT =====
+: FOUND
+: FOUND
+: FOUND
+: FOUND
+: FOUND
+===== EXIT 0 =====
+
+===== COMMAND =====
+git -C /Users/nixer/项目/benchmark status --short -- task/jupytext-realrepo-002 validation/jupytext-002/logs/jupytext-realrepo-002-handoff.log
+===== OUTPUT =====
+?? validation/jupytext-002/logs/jupytext-realrepo-002-handoff.log
+===== EXIT 0 =====
+
+===== SUMMARY PLACEHOLDER =====
+Review log above for PASS/FAIL.
+
+===== COMMAND =====
+python3 - boundary_decisions.md locked-boundary check
+===== OUTPUT =====
+public state file: FOUND
+conflict definition: FOUND
+sync --all atomicity: MISSING
+output preservation matching: FOUND
+status/check json schema: MISSING
+===== EXIT 1 =====
+
+===== FINAL SUMMARY =====
+Required files: PASS
+JSON parse: PASS
+Rubric structure: PASS
+Case counts: total=24 unit=14 system=10
+PRD leakage scan: PASS (no matches)
+Task leakage scan: PASS (no matches)
+source_repo canonical source/commit: PASS (mwouts/jupytext at 40f3c5fd625f6b7c851bf3c632cd2f7f7e35c4f4)
+Locked boundary check: FAIL
+OVERALL: FAIL
