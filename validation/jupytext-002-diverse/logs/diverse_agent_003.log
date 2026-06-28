@@ -1,0 +1,13 @@
+Implemented candidate minijupy.py from the public PRD only.
+
+Coverage included:
+- Public CLI commands: inspect, paths, to-text, to-ipynb, pair, status, check, sync, and sync --all.
+- Normalized .ipynb and py:percent parsing/writing with deterministic ids, metadata filtering, versions, and formats.
+- Config-relative pair paths, .minijupy-state.json handling, version-based source selection, conflicts, and missing counterpart creation.
+- Text-source output/execution_count preservation by id, source hash, then position.
+- Atomic write planning for sync --all before applying any writes.
+
+Verification performed:
+- Red/green public sanity tests during implementation.
+- Syntax compile check.
+- Manual smoke checks for conversion/update, pairing/status/check, conflict no-write behavior, explicit conflict resolution, and sync --all all-or-nothing behavior.

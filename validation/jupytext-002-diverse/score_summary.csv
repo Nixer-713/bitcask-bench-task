@@ -1,0 +1,5 @@
+run,unit_pass,unit_total,system_pass,system_total,unit_score,system_score,gap_pp,failed_case_ids
+reference,16,16,13,13,100.0,100.0,0.0,
+diverse_agent_001,15,16,12,13,93.75,92.31,1.44,JTU003;JTS010
+diverse_agent_002,14,16,13,13,87.5,100.0,-12.5,JTU004;JTU005
+diverse_agent_003,16,16,13,13,100.0,100.0,0.0,

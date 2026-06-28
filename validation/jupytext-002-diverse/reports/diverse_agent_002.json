@@ -1,0 +1,33 @@
+{
+  "program": "/Users/nixer/\u9879\u76ee/benchmark/validation/jupytext-002-diverse/candidates/diverse_agent_002/minijupy.py",
+  "total_cases": 29,
+  "unit_pass": 14,
+  "unit_total": 16,
+  "system_pass": 13,
+  "system_total": 13,
+  "unit_score": 87.5,
+  "system_score": 100.0,
+  "gap_pp": -12.5,
+  "failed_case_ids": [
+    "JTU004",
+    "JTU005"
+  ],
+  "failed": [
+    {
+      "id": "JTU004",
+      "layer": "unit",
+      "passed": false,
+      "diagnostics": [
+        "stdout 0 json does not contain {'ok': True, 'pairs': [{'ipynb': 'demo.ipynb', 'text': 'demo.py', 'exists': {'ipynb': True, 'text': False}, 'source': 'ipynb', 'missing': ['demo.py']}]}; got {'command': 'status', 'ok': True, 'pairs': [{'conflict': False, 'differences': ['missing'], 'errors': [], 'exists': {'ipynb': True, 'text': False}, 'ipynb': 'demo.ipynb', 'missing': ['text'], 'planned_writes': ['demo.py', '.minijupy-state.json'], 'roundtrip_ok': False, 'source': 'ipynb', 'text': 'demo.py', 'versions': {'ipynb': 1, 'last_ipynb': None, 'last_text': None, 'text': None}}], 'root': '.', 'summary': {'conflicts': 0, 'errors': 0, 'missing': 1, 'pairs': 1, 'planned_writes': 2}}"
+      ]
+    },
+    {
+      "id": "JTU005",
+      "layer": "unit",
+      "passed": false,
+      "diagnostics": [
+        "stdout 0 json does not contain {'pairs': [{'ipynb': 'notebooks/a/demo.ipynb', 'text': 'scripts/a/demo.py', 'missing': ['scripts/a/demo.py'], 'source': 'ipynb'}]}; got {'command': 'status', 'ok': True, 'pairs': [{'conflict': False, 'differences': ['missing'], 'errors': [], 'exists': {'ipynb': True, 'text': False}, 'ipynb': 'notebooks/a/demo.ipynb', 'missing': ['text'], 'planned_writes': ['scripts/a/demo.py', '.minijupy-state.json'], 'roundtrip_ok': False, 'source': 'ipynb', 'text': 'scripts/a/demo.py', 'versions': {'ipynb': 1, 'last_ipynb': None, 'last_text': None, 'text': None}}], 'root': '.', 'summary': {'conflicts': 0, 'errors': 0, 'missing': 1, 'pairs': 1, 'planned_writes': 2}}"
+      ]
+    }
+  ]
+}

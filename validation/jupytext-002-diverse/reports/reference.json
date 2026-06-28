@@ -1,0 +1,13 @@
+{
+  "program": "/Users/nixer/\u9879\u76ee/benchmark/validation/jupytext-002-diverse/reference/minijupy.py",
+  "total_cases": 29,
+  "unit_pass": 16,
+  "unit_total": 16,
+  "system_pass": 13,
+  "system_total": 13,
+  "unit_score": 100.0,
+  "system_score": 100.0,
+  "gap_pp": 0.0,
+  "failed_case_ids": [],
+  "failed": []
+}

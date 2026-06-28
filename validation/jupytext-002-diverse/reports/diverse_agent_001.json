@@ -1,0 +1,33 @@
+{
+  "program": "/Users/nixer/\u9879\u76ee/benchmark/validation/jupytext-002-diverse/candidates/diverse_agent_001/minijupy.py",
+  "total_cases": 29,
+  "unit_pass": 15,
+  "unit_total": 16,
+  "system_pass": 12,
+  "system_total": 13,
+  "unit_score": 93.75,
+  "system_score": 92.31,
+  "gap_pp": 1.44,
+  "failed_case_ids": [
+    "JTU003",
+    "JTS010"
+  ],
+  "failed": [
+    {
+      "id": "JTU003",
+      "layer": "unit",
+      "passed": false,
+      "diagnostics": [
+        "run.py missing substring '# %% {\"id\":\"run\"'"
+      ]
+    },
+    {
+      "id": "JTS010",
+      "layer": "system",
+      "passed": false,
+      "diagnostics": [
+        "demo.py missing substring '# %% {\"id\":\"a\"'"
+      ]
+    }
+  ]
+}
