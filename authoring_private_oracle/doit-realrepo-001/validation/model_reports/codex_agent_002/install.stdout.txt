@@ -1,0 +1,22 @@
+Defaulting to user installation because normal Python install location is not writeable
+Obtaining file://CANDIDATE_WORKSPACE
+  Installing build dependencies: started
+  Installing build dependencies: finished with status 'done'
+  Checking if build backend supports build_editable: started
+  Checking if build backend supports build_editable: finished with status 'done'
+  Getting requirements to build editable: started
+  Getting requirements to build editable: finished with status 'done'
+  Preparing editable metadata (pyproject.toml): started
+  Preparing editable metadata (pyproject.toml): finished with status 'done'
+Building wheels for collected packages: minidoit
+  Building editable for minidoit (pyproject.toml): started
+  Building editable for minidoit (pyproject.toml): finished with status 'done'
+  Created wheel for minidoit: filename=minidoit-0.1.0-0.editable-py3-none-any.whl size=1520 sha256=b43054a24c7ea49100e3af2a812ec9a457df4148696e4eadee1e80231b5094c5
+  Stored in directory: PYTEST_TMP
+Successfully built minidoit
+Installing collected packages: minidoit
+  Attempting uninstall: minidoit
+    Found existing installation: minidoit 0.1.0
+    Uninstalling minidoit-0.1.0:
+      Successfully uninstalled minidoit-0.1.0
+Successfully installed minidoit-0.1.0

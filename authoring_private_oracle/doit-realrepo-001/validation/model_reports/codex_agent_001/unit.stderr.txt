@@ -1,0 +1,2 @@
+PYTHON_PATH RequestsDependencyWarning: urllib3 (2.6.3) or chardet (7.4.2)/charset_normalizer (3.4.4) doesn't match a supported version!
+  warnings.warn(

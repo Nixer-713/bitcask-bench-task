@@ -1,0 +1,63 @@
+{
+  "interpretation": "no positive unit/integration gap observed in this batch",
+  "oracle_size": {
+    "contract": 4,
+    "integration": 8,
+    "total": 27,
+    "unit": 15
+  },
+  "runs": [
+    {
+      "contract_passed": 4,
+      "contract_total": 4,
+      "failed_tests": "filtered_unit_tests.test_state_and_status::test_missing_file_dependency_is_task_error",
+      "failure_reasons": "missing file dependency error reported on stdout instead of stderr",
+      "install_success": true,
+      "integration_gap_pp": -6.6667,
+      "integration_pass_rate": 1.0,
+      "integration_passed": 8,
+      "integration_total": 8,
+      "overall_pass_rate": 0.962963,
+      "run_id": "codex_agent_001",
+      "status": "negative_gap_local_failure",
+      "unit_pass_rate": 0.933333,
+      "unit_passed": 14,
+      "unit_total": 15
+    },
+    {
+      "contract_passed": 4,
+      "contract_total": 4,
+      "failed_tests": "filtered_unit_tests.test_state_and_status::test_missing_file_dependency_is_task_error",
+      "failure_reasons": "missing file dependency error reported on stdout instead of stderr",
+      "install_success": true,
+      "integration_gap_pp": -6.6667,
+      "integration_pass_rate": 1.0,
+      "integration_passed": 8,
+      "integration_total": 8,
+      "overall_pass_rate": 0.962963,
+      "run_id": "codex_agent_002",
+      "status": "negative_gap_local_failure",
+      "unit_pass_rate": 0.933333,
+      "unit_passed": 14,
+      "unit_total": 15
+    },
+    {
+      "contract_passed": 4,
+      "contract_total": 4,
+      "failed_tests": "",
+      "failure_reasons": "",
+      "install_success": true,
+      "integration_gap_pp": 0.0,
+      "integration_pass_rate": 1.0,
+      "integration_passed": 8,
+      "integration_total": 8,
+      "overall_pass_rate": 1.0,
+      "run_id": "codex_agent_003",
+      "status": "no_gap_observed",
+      "unit_pass_rate": 1.0,
+      "unit_passed": 15,
+      "unit_total": 15
+    }
+  ],
+  "task_id": "doit-realrepo-001"
+}
