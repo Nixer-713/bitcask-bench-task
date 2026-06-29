@@ -8,10 +8,16 @@ benchmarks can become saturated: models may pass isolated bug-fix or unit-level
 tasks while still failing when multiple features must compose into one coherent
 system.
 
-The benchmark design follows a PRD-plus-rubric handoff pattern:
+The benchmark design originally followed a PRD-plus-rubric handoff pattern:
 
 - `prd.md` is the model-visible product requirement document.
 - `rubric.json` is the hidden evaluation definition used to score outputs.
+
+The current v2 direction adds an E2E full-project mode. In that mode, candidates
+receive a public PRD/API/packaging packet and must deliver a complete
+installable Python package. The hidden oracle should primarily come from the
+source repository's upstream tests after derivability filtering, rather than
+from fully hand-authored cases.
 
 ## Current Status
 
@@ -114,6 +120,42 @@ The active roadmap is fixed unless the user changes it explicitly:
    before drafting new PRDs or rubrics.
 6. Validate `copier-realrepo-001` on a validation branch. Keep reference,
    scorer, candidate outputs, reports, and summaries out of `main`.
+7. For new repositories after Copier, use `e2e_full_project_task` as the
+   default construction mode. Start from repository selection gates, source
+   evidence, public capability decomposition, and upstream test filtering before
+   writing the public candidate packet.
+
+## E2E Full-Project Pipeline
+
+The v2 pipeline is documented in `doc/e2e_full_project_pipeline.md`.
+
+Candidate-visible files belong under:
+
+```text
+public_candidate_packet/<task-name>/
+```
+
+Private authoring and scoring files belong under private branches, ignored
+workspaces, or:
+
+```text
+authoring_private_oracle/<task-name>/
+```
+
+Candidates must not see source implementation checkouts, filtered tests,
+scorers, Docker harnesses, validation reports, reference solutions, or outputs
+from other candidates.
+
+The default acceptance path for an E2E task is:
+
+1. select a Python package with public docs and executable tests;
+2. build source evidence and capability/state/artifact inventories;
+3. write public PRD/API/packaging contracts;
+4. filter upstream tests by PRD derivability;
+5. validate the hidden oracle on the checked source implementation;
+6. run at least three isolated code-agent candidates;
+7. interpret install, unit, integration, overall, and integration-gap metrics
+   conservatively.
 
 ## Goal
 
@@ -154,6 +196,12 @@ Review these files first:
 - `task/copier-realrepo-001/doc/source_repo.md`: Copier source evidence and
   Source Evidence Matrix.
 - `task/copier-realrepo-001/doc/requirement_map.md`: Copier traceability map.
+- `doc/e2e_full_project_pipeline.md`: v2 full-project pipeline from repository
+  selection through candidate evaluation.
+- `public_candidate_packet/README.md`: public packet boundary for future E2E
+  tasks.
+- `authoring_private_oracle/README.md`: private oracle boundary for future E2E
+  tasks.
 - `archive/no-gap-observed/marmite-realrepo-001/`: archived Marmite handoff.
 - `archive/no-gap-observed/jupytext-realrepo-001/`: archived Jupytext handoff.
 

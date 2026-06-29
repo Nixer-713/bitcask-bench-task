@@ -9,6 +9,11 @@ implementation repository.
 - `PROJECT_CONTEXT.md`: project background, current task status, and roadmap.
 - `AGENTS.md`: construction rules, task priority, correctness gates, leakage
   prevention, and review workflow.
+- `doc/e2e_full_project_pipeline.md`: v2 source-selection-to-eval workflow for
+  full-project tasks that use public candidate packets and private filtered
+  test oracles.
+- `public_candidate_packet/README.md`: candidate-visible E2E packet boundary.
+- `authoring_private_oracle/README.md`: private oracle/evaluation boundary.
 
 ## Task Index
 
@@ -129,7 +134,8 @@ python3 -m json.tool task/xitkit-realrepo-001/rubric.json >/dev/null
 python3 -m json.tool archive/no-gap-observed/marmite-realrepo-001/rubric.json >/dev/null
 python3 -m json.tool archive/no-gap-observed/jupytext-realrepo-001/rubric.json >/dev/null
 python3 -m json.tool task/copier-realrepo-001/rubric.json >/dev/null
-git ls-files | rg '(^|/)(_reference|score_reports?|runs|candidate|.*score\.py|evaluator|answer|expected[-_ ]output)'
+git ls-files | rg '(^|/)(_reference|reference_solution|filtered_tests|oracle/|score_reports?|runs/|validation/|candidates?/|.*score\.py|evaluator|answer|expected[-_ ]output|original_source)'
+git ls-files | rg '(^|/)authoring_private_oracle/.+/(oracle|docker|validation|reference_solution|original_source_checkout|model_reports|score_reports|candidates)/'
 python3 - <<'PY'
 import json
 from pathlib import Path
@@ -167,6 +173,9 @@ README.md
 AGENTS.md
 INDEX.md
 PROJECT_CONTEXT.md
+doc/e2e_full_project_pipeline.md
+public_candidate_packet/README.md
+authoring_private_oracle/README.md
 task/bitcask-realrepo-001/prd.md
 task/bitcask-realrepo-001/rubric.json
 task/bitcask-realrepo-001/doc/source_repo.md

@@ -5,3 +5,9 @@ __pycache__/
 # Local source checkout and candidate model runs.
 bitcask-main/
 runs/
+
+# E2E full-project benchmark private artifacts.
+# Public candidate packets may be committed intentionally, but private oracle
+# task directories must stay outside public handoff branches by default.
+authoring_private_oracle/*
+!authoring_private_oracle/README.md

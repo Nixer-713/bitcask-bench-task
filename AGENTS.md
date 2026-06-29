@@ -4,20 +4,31 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 
 ## 1. Deliverable Boundary
 
-- Core deliverables are only `prd.md` and `rubric.json` under each task directory.
-- `prd.md` is the public requirement document shown to model/code agents.
-- `rubric.json` is the hidden evaluation definition used to score model outputs.
-- `doc/source_repo.md` and `doc/requirement_map.md` are supporting review materials.
-- Do not commit reference implementations, scorer scripts, candidate outputs, or score reports unless explicitly requested for an internal validation branch.
+- Existing `task/<name>/` directories are legacy mini-product handoff packets.
+  Their core deliverables are `prd.md` and `rubric.json`, plus supporting
+  `doc/source_repo.md` and `doc/requirement_map.md`.
+- New full-project tasks should default to the E2E split:
+  `public_candidate_packet/<name>/` for model-visible PRD/API/packaging files
+  and `authoring_private_oracle/<name>/` for private source evidence, filtered
+  tests, scoring manifests, harnesses, and validation reports.
+- `prd.md` is always the public requirement document shown to model/code agents.
+- `rubric.json` or filtered oracle tests are hidden evaluation definitions used
+  to score model outputs.
+- Do not commit reference implementations, scorer scripts, candidate outputs, or score reports to public handoff branches unless explicitly requested for an internal validation branch.
 - Do not present generated implementation code as the task deliverable.
 
 ## 2. Benchmark Design Principles
 
 - Start from a real open-source project and document the source in `doc/source_repo.md`.
-- Abstract the source project into a smaller, self-contained task with clear public behavior.
+- For new E2E full-project tasks, preserve the source project's public behavior
+  through a senior-engineer PRD and filtered upstream tests rather than
+  hand-authoring all tests from scratch.
+- Abstract mini-product tasks only when the source project is not suitable for
+  E2E full-project evaluation.
 - The task should test system-level composition, not only isolated API behavior.
 - Prefer stateful workflows, cross-module interactions, error recovery, persistence, ordering sensitivity, or global invariants when they naturally exist in the source project.
-- `rubric.json` cases must be naturally inferable from `prd.md`; no hidden product requirements.
+- `rubric.json` cases or filtered oracle tests must be naturally inferable from
+  candidate-facing documents; no hidden product requirements.
 - Tests must not depend on private implementation details such as file names, internal formats, object layouts, or exact algorithm choices unless the PRD explicitly requires them.
 - Unit cases check local capabilities; system cases check interactions across at least two capabilities.
 - The target signal is a meaningful gap: high unit pass rate with lower system pass rate.
@@ -37,6 +48,9 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 - `copier-realrepo-001` is the active draft handoff for the current source-task
   generation pass. Keep validation assets on a validation branch and do not
   claim `core_strong` without positive unit/system gap evidence.
+- For future source selection, default to `e2e_full_project_task`: candidates
+  receive only `public_candidate_packet/<name>/`, while filtered upstream tests,
+  scorer/harness assets, source evidence, and validation reports stay private.
 
 ## 2.2 Case-Like Difficulty Requirements
 
@@ -70,19 +84,33 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 
 - Validate every changed `rubric.json` with JSON parsing before handoff.
 - Check at minimum: unique IDs, valid layers, non-empty requirement refs, system cases have dimensions, and no implementation fields such as `solution`, `reference`, `implementation`, or `test_code`.
+- For E2E full-project tasks, inventory upstream tests first, filter by
+  derivability from the public packet, and validate the filtered oracle against
+  the checked source implementation before running candidates.
+- E2E harnesses must run install, contract, unit, and integration stages
+  separately, preserve stdout/stderr/JUnit or JSON artifacts, and write
+  `summary.json` before deciding final exit code.
 - Confirm repository file tree contains only allowed deliverables and supporting docs.
 - If local validation tools exist outside the handoff tree, run them from ignored/local paths and do not commit them.
-- Run a leakage scan before commit: search for `_reference`, `score_report`, `score.py`, `evaluator`, `candidate`, `answer`, `expected output`, and implementation artifacts.
+- Run a leakage scan before commit: search for `_reference`, `score_report`,
+  `score.py`, `evaluator`, `runs/`, `validation/`, `candidates/`, `answer`,
+  `expected output`, and implementation artifacts. `public_candidate_packet/`
+  is allowed when it contains only model-visible files.
 - Use `git ls-files` as the source of truth for what will be delivered.
 
 ## 6. Correctness And Leakage Gates
 
 - Every rubric case must trace to `requirement_map.md` and a public PRD behavior.
+- Every E2E selected test must trace to `test_inventory.md`, `requirement_map.md`,
+  and a public PRD/API/packaging behavior.
 - If a test cannot be inferred from PRD, either remove the test or update PRD.
 - If PRD states an implementation choice is free, rubric must not constrain that choice.
 - PRD must not contain case IDs, hidden assertions, score strategy, or reference implementation hints.
 - Rubric must not contain solution code, reference outputs beyond public assertions, or private setup formats.
-- Official handoff tree should stay small: `README.md`, `AGENTS.md`, optional `INDEX.md`, optional `PROJECT_CONTEXT.md`, and task PRD/rubric/docs.
+- Official handoff tree should stay small: `README.md`, `AGENTS.md`, optional
+  `INDEX.md`, optional `PROJECT_CONTEXT.md`, legacy task PRD/rubric/docs, and
+  E2E public packet files. Hidden oracle assets belong only in private branches
+  or ignored/private workspaces.
 
 ## 7. Required Subagent Checks
 

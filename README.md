@@ -1,8 +1,14 @@
 # Benchmark Task Deliverables
 
 This repository contains benchmark task handoff files derived from real
-open-source projects. Each task is represented by a public PRD and a hidden
-rubric, plus supporting source and requirement mapping docs.
+open-source projects.
+
+Older tasks use the mini-product handoff shape: a public `prd.md`, hidden
+`rubric.json`, and supporting source/requirement docs under `task/<name>/`.
+New full-project tasks should use the v2 E2E split: candidate-visible PRD/API
+and packaging files under `public_candidate_packet/<name>/`, with filtered
+upstream tests, scorer/harness assets, source evidence, and validation reports
+kept in private oracle workspaces.
 
 ## Tasks
 
@@ -16,16 +22,28 @@ rubric, plus supporting source and requirement mapping docs.
 
 ## Deliverable Boundary
 
-For each active handoff task, the core deliverables are:
+For legacy mini-product handoff tasks, the core deliverables are:
 
 - `prd.md`: public product requirement document shown to model/code agents.
 - `rubric.json`: hidden unit/system evaluation definition.
 - `doc/source_repo.md`: source-project evidence and adaptation rationale.
 - `doc/requirement_map.md`: traceability from PRD requirements to rubric cases.
 
+For new E2E full-project tasks, the candidate-visible deliverables are:
+
+- `public_candidate_packet/<name>/prd.md`
+- `public_candidate_packet/<name>/public_api_contract.md`
+- `public_candidate_packet/<name>/packaging_contract.md`
+
+Private authoring and evaluation material belongs under an ignored/private
+oracle workspace, not in the candidate packet.
+
 Reference implementations, scorer scripts, candidate outputs, and score reports
 must stay out of `main` unless the repository is explicitly converted into a
 validation package.
+
+See `doc/e2e_full_project_pipeline.md` for the source-selection-to-eval
+workflow.
 
 ## Current Direction
 
@@ -47,5 +65,9 @@ and rewrite notes only. The active construction path is:
 5. Build and validate `copier-realrepo-001` as the next active candidate. Its
    current `main` packet is a draft handoff, not a confirmed or core-strong
    benchmark.
+6. For any new source repository after Copier, default to the E2E full-project
+   flow: select a Python package with executable upstream tests, filter the
+   original tests by PRD derivability, validate the oracle on the checked source
+   implementation, then run isolated code-agent candidates.
 
 For AI reviewers, start from `PROJECT_CONTEXT.md`, `INDEX.md`, and `AGENTS.md`.
