@@ -1,0 +1,150 @@
+# Artifact Shape: pydoit/doit Candidate
+
+Status: planning artifact only. This file records likely packet/oracle shapes
+for a future E2E task. It does not create a candidate packet or oracle.
+
+## Current Source Artifact Shape
+
+| Artifact | Source evidence | Notes |
+| --- | --- | --- |
+| Python package | `pyproject.toml` | Package `doit`, Python `>=3.10`, console script `doit`. |
+| CLI entrypoint | `doit/__main__.py` | Calls `DoitMain().run(sys.argv[1:])`. |
+| Task source file | `README.rst`, `doc/tasks.rst` | Default task file is `dodo.py`; task creators return dictionaries. |
+| Task graph state | `doit/task.py`, `doit/runner.py` | Tasks include actions, deps, targets, clean, metadata, and status. |
+| Dependency DB | `doc/cmd-run.rst`, `doit/dependency.py` | Default `.doit.db`; multiple backends in source. |
+| CLI reports | `doc/cmd-run.rst`, `doc/cmd-other.rst` | Run/list/info/clean/forget/dumpdb outputs. |
+| Tests | `tests/test_*.py` | Command and dependency tests can seed filtered oracle. |
+
+## Future Public Candidate Packet Shape
+
+If boundary decisions keep `doit-realrepo-001`, the public packet should likely
+be:
+
+```text
+public_candidate_packet/doit-realrepo-001/
+  prd.md
+  public_api_contract.md
+  packaging_contract.md
+  starter files if explicitly needed
+```
+
+Candidate-visible documents must define only public behavior. They must not
+include upstream test names, hidden case IDs, source file paths required for
+implementation, scorer logic, reference code, or expected oracle outputs.
+
+## Future Private Oracle Shape
+
+The private authoring tree may later contain:
+
+```text
+authoring_private_oracle/doit-realrepo-001/
+  scoring_manifest.json
+  doc/source_repo.md
+  doc/source_evidence_matrix.md
+  doc/behavior_inventory.md
+  doc/artifact_shape.md
+  doc/requirement_map.md
+  doc/test_inventory.md
+  doc/test_derivability_review.md
+  doc/environment_contract.md
+  doc/oracle_validation_report.md
+  doc/review_structure.md
+  doc/review_fairness.md
+  doc/review_oracle.md
+  oracle/contract_tests/
+  oracle/filtered_unit_tests/
+  oracle/filtered_integration_tests/
+  docker/run_eval.sh
+  validation/original_report.json
+  validation/model_reports/
+```
+
+Only the four source-grounding docs exist in this step.
+
+## Likely Candidate Package Contract
+
+Not final PRD. Candidate implementation may be required to provide:
+
+- An installable Python package, such as `minidoit`.
+- A console script, such as `minidoit`.
+- A constrained task file loader.
+- Commands:
+  - `run`
+  - `list`
+  - `info`
+  - `clean`
+  - `forget`
+  - `dumpdb`
+- Optional JSON modes for stable scoring.
+
+## Likely Input Artifacts
+
+- `dodo.py` or constrained task file.
+- Source files referenced by `file_dep`.
+- Existing target files.
+- Existing dependency database file.
+- Optional `pyproject.toml` subset.
+- CLI command-line options and selected task names.
+
+## Likely Output Artifacts
+
+- Generated target files.
+- Persistent dependency DB.
+- stdout/stderr/exit code.
+- `dumpdb` or normalized JSON DB report.
+- `list` and `info` reports.
+
+## Persistent State Model Candidates
+
+The source supports multiple DB backends. A future mini task should likely use
+one deterministic public state format, for example `.minidoit.db.json`, with:
+
+- task name
+- dependency signatures
+- target signatures or existence
+- successful-run marker
+- saved result/values if included
+
+This would be a deterministic subset of source behavior and must be public in
+the PRD. Tests must not assume the private layout unless the PRD defines it as
+public user-visible output.
+
+## Oracle Construction Constraints
+
+Future oracle filtering should:
+
+- Prefer upstream command tests that exercise public CLI behavior.
+- Convert private internal class tests into public contract tests only when the
+  behavior is documented and observable.
+- Exclude tests that require source internals, plugin APIs, exact reporters,
+  platform-specific `strace`, multiprocessing, or non-selected DB backends.
+- Keep at least one integration test for each selected system dimension.
+- Validate the original source implementation at the checked commit before
+  candidate evaluation.
+
+## Non-Goals For V1 Candidate Shape
+
+These should remain excluded unless later source-boundary review explicitly
+changes scope:
+
+- Full `doit` feature parity.
+- Plugin architecture and custom loaders.
+- Parallel execution.
+- `strace`.
+- Full subprocess shell portability.
+- All DB backend behavior.
+- Exact private DB file format.
+- Exact internal class names or module layout.
+- Network services, credentials, GUI, or external daemons.
+
+## Next Required Step
+
+Before PRD drafting, create boundary decisions that answer:
+
+1. Public task file format and sandboxing model.
+2. Supported action subset.
+3. Dependency signature semantics.
+4. Persistent DB public shape.
+5. Command subset and report formats.
+6. Selected upstream tests and exclusions.
+7. Environment contract for running candidate packages.
