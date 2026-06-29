@@ -13,7 +13,7 @@ created in this step.
 | Checked revision | `1f9cbbce78a93f96a35abf2db5425361e2abf142` |
 | Intended task id | `doit-realrepo-001` |
 | Intended task mode | `e2e_full_project_task` |
-| Local analysis checkout | `/tmp/e2e-source-candidate-scan/pydoit__doit` |
+| Local analysis checkout | Local throwaway checkout used for analysis; not part of committed evidence |
 
 The local checkout path is analysis context only. Evidence citations below use
 repository-relative paths.

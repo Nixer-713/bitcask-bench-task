@@ -22,3 +22,9 @@ def test_console_script_version(tmp_path):
     result = run_console(tmp_path, "--version")
     assert result.returncode == 0
     assert result.stdout.strip()
+
+
+def test_dumpdb_rejects_file_option(tmp_path):
+    result = run_minidoit(tmp_path, "dumpdb", "--file", "missing.py", "--json")
+    assert result.returncode != 0
+    assert result.stderr.strip()

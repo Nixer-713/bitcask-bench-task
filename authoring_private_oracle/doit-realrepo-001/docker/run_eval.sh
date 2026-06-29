@@ -9,6 +9,7 @@ REPORT_DIR="${REPORT_DIR:-/workspace/report}"
 MANIFEST_PATH="${SCORING_MANIFEST:-$(cd "${SCRIPT_DIR}/.." && pwd)/scoring_manifest.json}"
 
 mkdir -p "${REPORT_DIR}"
+export PYTHONDONTWRITEBYTECODE=1
 
 manifest_value() {
   local query="$1"
@@ -122,15 +123,15 @@ run_stage install "${INSTALL_TIMEOUT}" "${PYTHON_BIN}" -m pip install -e "${SUBM
 INSTALL_RC=$?
 
 if [ "${INSTALL_RC}" -eq 0 ]; then
-  run_stage contract "${CONTRACT_TIMEOUT}" "${PYTHON_BIN}" -m pytest "${CONTRACT_PATH}" -q --junitxml="${REPORT_DIR}/contract.junit.xml"
+  run_stage contract "${CONTRACT_TIMEOUT}" "${PYTHON_BIN}" -m pytest "${CONTRACT_PATH}" -q -p no:cacheprovider --junitxml="${REPORT_DIR}/contract.junit.xml"
   CONTRACT_RC=$?
   parse_junit "${REPORT_DIR}/contract.junit.xml" "${REPORT_DIR}/contract.junit_summary.json"
 
-  run_stage unit "${UNIT_TIMEOUT}" "${PYTHON_BIN}" -m pytest "${UNIT_PATH}" -q --junitxml="${REPORT_DIR}/unit.junit.xml"
+  run_stage unit "${UNIT_TIMEOUT}" "${PYTHON_BIN}" -m pytest "${UNIT_PATH}" -q -p no:cacheprovider --junitxml="${REPORT_DIR}/unit.junit.xml"
   UNIT_RC=$?
   parse_junit "${REPORT_DIR}/unit.junit.xml" "${REPORT_DIR}/unit.junit_summary.json"
 
-  run_stage integration "${INTEGRATION_TIMEOUT}" "${PYTHON_BIN}" -m pytest "${INTEGRATION_PATH}" -q --junitxml="${REPORT_DIR}/integration.junit.xml"
+  run_stage integration "${INTEGRATION_TIMEOUT}" "${PYTHON_BIN}" -m pytest "${INTEGRATION_PATH}" -q -p no:cacheprovider --junitxml="${REPORT_DIR}/integration.junit.xml"
   INTEGRATION_RC=$?
   parse_junit "${REPORT_DIR}/integration.junit.xml" "${REPORT_DIR}/integration.junit_summary.json"
 else

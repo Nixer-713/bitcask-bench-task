@@ -1,0 +1,5 @@
+layer,passed,total,pass_rate,notes
+contract,4,4,1.0,install/import/CLI contract passed
+unit,15,15,1.0,local task parsing reports actions config state errors passed
+integration,8,8,1.0,cross-command state clean forget config boundary error atomicity passed
+overall,27,27,1.0,private reference passed selected oracle

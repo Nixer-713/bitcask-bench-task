@@ -117,6 +117,7 @@ only for author/reviewer traceability and must not be shown to candidate agents.
 | `contract_tests/test_contract_cli.py::test_public_package_import_and_version` | contract | REQ-package | `import minidoit` and public `__version__` |
 | `contract_tests/test_contract_cli.py::test_module_execution_help` | contract | REQ-package, REQ-cli | `python -m minidoit --help` exposes supported commands |
 | `contract_tests/test_contract_cli.py::test_console_script_version` | contract | REQ-package, REQ-cli | installed `minidoit --version` console script works |
+| `contract_tests/test_contract_cli.py::test_dumpdb_rejects_file_option` | contract | REQ-cli, REQ-dumpdb | `dumpdb` rejects unsupported `--file` while remaining state-only |
 
 ### Unit Tests
 
@@ -153,7 +154,7 @@ only for author/reviewer traceability and must not be shown to candidate agents.
 
 Selected coverage count:
 
-- contract: 3 tests;
+- contract: 4 tests;
 - unit: 15 tests;
 - integration: 8 tests;
 - integration dimensions covered: `cross_feature_dataflow`,
