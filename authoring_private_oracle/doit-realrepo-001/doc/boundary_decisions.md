@@ -58,7 +58,9 @@ Allowed:
 
 - Top-level `def task_<name>():` functions.
 - Return values that are static Python literals.
-- A single task dictionary or a list of task dictionaries.
+- A single task dictionary per task function. The final v1 lock excludes
+  list-returned multiple tasks because subtasks, `name`, and `basename` are out
+  of scope.
 - Literal values for supported task fields.
 
 Excluded from the restricted loader:
