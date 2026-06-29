@@ -1,0 +1,86 @@
+{
+  "task_id": "doit-realrepo-001",
+  "mode": "e2e_full_project_task",
+  "source_repo": "pydoit/doit",
+  "source_commit": "1f9cbbce78a9",
+  "candidate_package": "minidoit",
+  "candidate_install": "${PYTHON_BIN:-python3} -m pip install -e .",
+  "candidate_visible_packet": "public_candidate_packet/doit-realrepo-001",
+  "oracle_root": "authoring_private_oracle/doit-realrepo-001/oracle",
+  "environment_contract": "authoring_private_oracle/doit-realrepo-001/doc/environment_contract.md",
+  "scoring": {
+    "default_weighting": "equal_by_test",
+    "primary_unit_metric": "unit_pass_rate",
+    "primary_integration_metric": "integration_pass_rate",
+    "gap_metric": "integration_gap_pp = 100 * (unit_pass_rate - integration_pass_rate)"
+  },
+  "test_groups": [
+    {
+      "id": "contract",
+      "layer": "contract",
+      "score_group": "core",
+      "path": "contract_tests",
+      "command": "pytest oracle/contract_tests -q",
+      "requirement_refs": ["REQ-package", "REQ-runtime-env", "REQ-cli"],
+      "weight": 1
+    },
+    {
+      "id": "unit",
+      "layer": "unit",
+      "score_group": "core",
+      "path": "filtered_unit_tests",
+      "command": "pytest oracle/filtered_unit_tests -q",
+      "requirement_refs": [
+        "REQ-config",
+        "REQ-task-file",
+        "REQ-task-schema",
+        "REQ-action-dsl",
+        "REQ-state",
+        "REQ-list",
+        "REQ-info",
+        "REQ-dumpdb",
+        "REQ-status-values",
+        "REQ-error-atomic"
+      ],
+      "weight": 1
+    },
+    {
+      "id": "integration",
+      "layer": "integration",
+      "score_group": "core",
+      "path": "filtered_integration_tests",
+      "command": "pytest oracle/filtered_integration_tests -q",
+      "requirement_refs": [
+        "REQ-cli",
+        "REQ-config",
+        "REQ-run",
+        "REQ-clean",
+        "REQ-forget",
+        "REQ-dumpdb",
+        "REQ-error-atomic",
+        "REQ-global-invariants"
+      ],
+      "integration_dimensions": [
+        "cross_feature_dataflow",
+        "state_accumulation",
+        "global_invariant",
+        "error_atomicity",
+        "boundary_crossing",
+        "operation_order_sensitivity"
+      ],
+      "weight": 1
+    }
+  ],
+  "timeouts": {
+    "install_seconds": 300,
+    "contract_seconds": 180,
+    "unit_seconds": 300,
+    "integration_seconds": 600
+  },
+  "fairness_rules": [
+    "Oracle tests exercise only public CLI, import, stdout, stderr, exit code, task/config/state files, and generated workspace files.",
+    "Oracle tests do not import or inspect private implementation modules beyond the public minidoit package import contract.",
+    "Oracle tests do not use network, credentials, real mtimes, platform tools, original doit source files, or local absolute paths.",
+    "Each pytest test maps to public requirements in doc/requirement_map.md."
+  ]
+}

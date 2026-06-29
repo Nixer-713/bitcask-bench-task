@@ -105,12 +105,65 @@ These are future cross-feature workflows, not selected tests:
   `public_api_contract.md`.
 - A behavior excluded in REQ-nongoals must not appear in the hidden oracle.
 
+## Selected Oracle Coverage
+
+These selected oracle tests are private evaluation assets. They are listed here
+only for author/reviewer traceability and must not be shown to candidate agents.
+
+### Contract Tests
+
+| Test ID | Layer | Requirement refs | Public behavior checked |
+| --- | --- | --- | --- |
+| `contract_tests/test_contract_cli.py::test_public_package_import_and_version` | contract | REQ-package | `import minidoit` and public `__version__` |
+| `contract_tests/test_contract_cli.py::test_module_execution_help` | contract | REQ-package, REQ-cli | `python -m minidoit --help` exposes supported commands |
+| `contract_tests/test_contract_cli.py::test_console_script_version` | contract | REQ-package, REQ-cli | installed `minidoit --version` console script works |
+
+### Unit Tests
+
+| Test ID | Layer | Requirement refs | Public behavior checked |
+| --- | --- | --- | --- |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_list_json_reports_static_literal_task` | unit | REQ-task-file, REQ-task-schema, REQ-list, REQ-status-values | static task dict is listed with JSON status |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_info_json_reports_reasons_before_run` | unit | REQ-task-schema, REQ-info, REQ-status-values | `info --json` exposes status and reason keys before first run |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_duplicate_task_names_are_rejected_before_writes` | unit | REQ-task-file, REQ-error-atomic | duplicate task names fail before targets/state are written |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_unsupported_task_field_is_rejected` | unit | REQ-task-schema, REQ-error-atomic | unsupported task fields are public input errors |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_invalid_relative_paths_are_rejected_before_writes` | unit | REQ-task-schema, REQ-action-dsl, REQ-error-atomic | invalid relative paths fail before writes |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_safe_actions_write_append_copy_delete` | unit | REQ-action-dsl | safe action DSL file effects |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_dumpdb_json_empty_without_task_file` | unit | REQ-dumpdb, REQ-state | `dumpdb --json` is state-only and works without task file |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_config_selects_task_file_and_db_file` | unit | REQ-config, REQ-cli | config selects task and state paths |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_cli_file_and_db_file_override_config` | unit | REQ-config, REQ-cli | CLI paths override config paths |
+| `filtered_unit_tests/test_cli_reports_and_parser.py::test_malformed_toml_is_pre_execution_error` | unit | REQ-config, REQ-error-atomic | malformed TOML fails with no target/state writes |
+| `filtered_unit_tests/test_state_and_status.py::test_successful_run_writes_public_state_shape` | unit | REQ-run, REQ-state, REQ-status-values | successful run writes public JSON state shape |
+| `filtered_unit_tests/test_state_and_status.py::test_missing_file_dependency_is_task_error` | unit | REQ-run, REQ-state, REQ-error-atomic | missing file dependency is task error without target |
+| `filtered_unit_tests/test_state_and_status.py::test_info_reports_changed_file_dependency` | unit | REQ-state, REQ-info, REQ-status-values | changed dependency appears in public info reasons |
+| `filtered_unit_tests/test_state_and_status.py::test_uptodate_false_forces_rerun_status` | unit | REQ-task-schema, REQ-state, REQ-info | `uptodate=False` forces rerun status |
+| `filtered_unit_tests/test_state_and_status.py::test_corrupted_state_is_pre_execution_error` | unit | REQ-state, REQ-error-atomic | corrupted JSON state blocks execution before target writes |
+
+### Integration Tests
+
+| Test ID | Layer | System dimension | Requirement refs | Public behavior checked |
+| --- | --- | --- | --- | --- |
+| `filtered_integration_tests/test_run_state_reports.py::test_run_then_reports_and_dumpdb_agree` | integration | cross_feature_dataflow, state_accumulation, global_invariant | REQ-run, REQ-list, REQ-info, REQ-dumpdb, REQ-global-invariants | run/rerun/list/info/dumpdb agree on task state |
+| `filtered_integration_tests/test_run_state_reports.py::test_dependency_order_and_cross_task_state` | integration | cross_feature_dataflow, operation_order_sensitivity | REQ-run, REQ-state, REQ-global-invariants | dependency order produces targets and state for both tasks |
+| `filtered_integration_tests/test_run_state_reports.py::test_clean_forget_target_and_state_consistency` | integration | global_invariant, operation_order_sensitivity | REQ-clean, REQ-info, REQ-dumpdb, REQ-global-invariants | clean --forget updates targets, state, and reports consistently |
+| `filtered_integration_tests/test_run_state_reports.py::test_forget_keeps_target_but_forces_future_run` | integration | state_accumulation, operation_order_sensitivity | REQ-forget, REQ-info, REQ-state | forget removes state while preserving targets and forcing future run |
+| `filtered_integration_tests/test_run_state_reports.py::test_failed_dependency_blocks_dependent_and_no_false_success` | integration | error_atomicity, operation_order_sensitivity | REQ-action-dsl, REQ-run, REQ-error-atomic, REQ-state | failed dependency blocks dependents and saves no false success |
+| `filtered_integration_tests/test_run_state_reports.py::test_config_boundary_with_custom_task_and_state_paths` | integration | boundary_crossing, cross_feature_dataflow | REQ-config, REQ-run, REQ-dumpdb, REQ-global-invariants | config task/state paths drive run artifacts and dumpdb |
+| `filtered_integration_tests/test_error_atomicity.py::test_pre_execution_parse_error_leaves_existing_state_and_targets` | integration | error_atomicity, state_accumulation | REQ-task-file, REQ-error-atomic, REQ-state | later parse error preserves prior public state and target |
+| `filtered_integration_tests/test_error_atomicity.py::test_operation_order_clean_then_run_then_forget` | integration | operation_order_sensitivity, global_invariant | REQ-run, REQ-clean, REQ-forget, REQ-info, REQ-dumpdb | clean/run/forget order produces consistent reports and state |
+
+Selected coverage count:
+
+- contract: 3 tests;
+- unit: 15 tests;
+- integration: 8 tests;
+- integration dimensions covered: `cross_feature_dataflow`,
+  `state_accumulation`, `global_invariant`, `error_atomicity`,
+  `boundary_crossing`, and `operation_order_sensitivity`.
+
 ## Next Step
 
-After this map passes review, the next skill step is oracle construction:
+After this oracle skeleton passes review, the next skill step is oracle
+validation:
 
-- create `scoring_manifest.json`;
-- create filtered contract/unit/integration tests under the private oracle tree;
-- create environment contract and `run_eval.sh`;
 - validate the selected oracle against an implementation before any candidate
   evaluation.
