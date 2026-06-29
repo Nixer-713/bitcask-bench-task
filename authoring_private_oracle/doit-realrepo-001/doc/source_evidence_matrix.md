@@ -17,7 +17,7 @@ Adaptation types:
 | --- | --- | --- | --- | --- | --- | --- |
 | DOIT-BEH-001 | Package exposes a `doit` command-line entrypoint. | `pyproject.toml`; `doit/__main__.py`; `doc/cmd-run.rst` | config + source + docs | `interface_translation` | pending | contract CLI smoke |
 | DOIT-BEH-002 | Default command is `run`; `-f` can select a task file. | `doc/cmd-run.rst`; `tests/test_cmd_run.py` | docs + tests | `direct_copy` | pending | run command tests |
-| DOIT-BEH-003 | Tasks are defined in Python `dodo.py` task creators returning dictionaries. | `README.rst`; `doc/tasks.rst`; `doit/task.py` | docs + source | `direct_copy` or `deterministic_subset` | pending | task loading tests |
+| DOIT-BEH-003 | Tasks are defined in Python `dodo.py` task creators returning dictionaries. | `README.rst`; `doc/tasks.rst`; `doit/task.py` | docs + source | `deterministic_subset` | pending | task loading tests |
 | DOIT-BEH-004 | Task dictionaries include actions, file dependencies, targets, task dependencies, clean behavior, and docs/metadata. | `doc/tasks.rst`; `doit/task.py`; `tests/test_runner.py` | docs + source + tests | `deterministic_subset` | pending | task model tests |
 | DOIT-BEH-005 | `run` executes selected tasks and their dependencies in dependency order. | `README.rst`; `doc/cmd-run.rst`; `doit/runner.py`; `tests/test_cmd_run.py`; `tests/test_runner.py` | docs + source + tests | `direct_copy` | pending | run/order integration |
 | DOIT-BEH-006 | Up-to-date checks use dependency state, file dependencies, target existence, and `uptodate` values. | `doc/dependencies.rst`; `doit/runner.py`; `tests/test_runner.py`; `tests/test_cmd_info.py` | docs + source + tests | `deterministic_subset` | pending | dependency/status tests |
@@ -28,17 +28,17 @@ Adaptation types:
 | DOIT-BEH-011 | `clean` removes target files or runs clean actions and can clean dependency tasks. | `doc/cmd-other.rst`; `doit/cmd_clean.py`; `tests/test_cmd_clean.py` | docs + source + tests | `deterministic_subset` | pending | clean workflow tests |
 | DOIT-BEH-012 | `forget` removes saved dependency state for selected tasks or all tasks. | `doc/cmd-other.rst`; `doit/cmd_forget.py`; `tests/test_cmd_forget.py` | docs + source + tests | `direct_copy` | pending | forget/rerun tests |
 | DOIT-BEH-013 | `dumpdb` exposes readable dependency database content. | `doc/cmd-other.rst`; `doit/cmd_dumpdb.py`; `tests/test_cmd_dumpdb.py` | docs + source + tests | `interface_translation` | pending | dumpdb invariant tests |
-| DOIT-BEH-014 | `reset-dep` recomputes dependency metadata without running actions. | `doc/cmd-other.rst` | docs | `deterministic_subset` or `excluded` | pending | optional reset-dep tests |
+| DOIT-BEH-014 | `reset-dep` recomputes dependency metadata without running actions. | `doc/cmd-other.rst` | docs | `excluded` | pending | optional reset-dep tests |
 | DOIT-BEH-015 | Config can come from `pyproject.toml` `[tool.doit]` and command/task sections. | `doc/configuration.rst` | docs | `deterministic_subset` | pending | config tests |
 | DOIT-BEH-016 | Return codes distinguish success, task failure, task error, and pre-execution error. | `doc/cmd-run.rst` | docs | `deterministic_subset` | pending | CLI error tests |
 | DOIT-BEH-017 | Reporters can change stdout format, including a JSON reporter in source. | `doc/cmd-run.rst`; `doit/cmd_run.py`; `tests/test_cmd_run.py` | docs + source + tests | `interface_translation` | pending | stable report tests |
-| DOIT-BEH-018 | Value saving, `getargs`, and task result dependency can pass values between tasks. | `doc/dependencies.rst`; `tests/test_runner.py`; `tests/test_cmd_list.py` | docs + tests | `deterministic_subset` or `excluded` | pending | optional dataflow tests |
+| DOIT-BEH-018 | Value saving, `getargs`, and task result dependency can pass values between tasks. | `doc/dependencies.rst`; `tests/test_runner.py`; `tests/test_cmd_list.py` | docs + tests | `excluded` | pending | optional dataflow tests |
 | DOIT-BEH-019 | Corrupted dependency DB raises a database/pre-execution error. | `doit/dependency.py`; `tests/test_dependency.py` | source + tests | `deterministic_subset` | pending | DB error tests |
 | DOIT-EXC-001 | Plugin architecture, custom loaders, custom reporters, and tab completion. | `doc/cmd-run.rst`; source plugin hooks | docs + source | `excluded` | non-goal | excluded |
 | DOIT-EXC-002 | Parallel execution and multiprocessing behavior. | `README.rst`; `doit/cmd_run.py` | docs + source | `excluded` | non-goal | excluded |
 | DOIT-EXC-003 | `strace` platform-specific dependency discovery. | `doc/cmd-other.rst` | docs | `excluded` | non-goal | excluded |
-| DOIT-EXC-004 | Full database backend matrix: dbm, sqlite3, json, and custom codecs. | `doc/cmd-run.rst`; `doit/dependency.py`; `tests/test_dependency.py` | docs + source + tests | `excluded` or narrowed | non-goal | excluded from v1 |
-| DOIT-EXC-005 | Exact shell execution portability and all subprocess environment behavior. | `doc/tasks.rst` | docs | `excluded` or narrowed | non-goal | excluded from v1 |
+| DOIT-EXC-004 | Full database backend matrix: dbm, sqlite3, json, and custom codecs. | `doc/cmd-run.rst`; `doit/dependency.py`; `tests/test_dependency.py` | docs + source + tests | `excluded` | non-goal | excluded from v1 |
+| DOIT-EXC-005 | Exact shell execution portability and all subprocess environment behavior. | `doc/tasks.rst` | docs | `excluded` | non-goal | excluded from v1 |
 
 ## Traceability Notes
 

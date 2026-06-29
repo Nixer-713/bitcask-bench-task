@@ -11,9 +11,17 @@ fit so a later PRD and filtered oracle can be built without guessing.
 | Source test files scanned | 27 |
 | Test classes scanned | approximately 165 |
 | Test methods scanned | approximately 673 |
-| Candidate keep families | 15 |
-| Needs PRD clarification families | 8 |
-| Excluded families | 18 |
+| `keep_core` families | 8 |
+| `keep_integration` families | 10 |
+| `keep_reasonably_implicit` families | 0 |
+| `keep_regression` families | 0 |
+| `needs_prd_clarification` families | 5 |
+| `exclude_internal` families | 5 |
+| `exclude_not_inferable` families | 3 |
+| `exclude_conflicts_with_prd` families | 18 |
+| `exclude_flaky` families | 0 |
+| `exclude_env_dependent` families | 1 |
+| `exclude_duplicate` families | 0 |
 | Oracle files created | 0 |
 
 Source checkout:
