@@ -1,0 +1,28 @@
+...........F...                                                          [100%]
+=================================== FAILURES ===================================
+__________________ test_missing_file_dependency_is_task_error __________________
+
+tmp_path = PosixPath('[tmp]')
+
+    def test_missing_file_dependency_is_task_error(tmp_path):
+        write_dodo(
+            tmp_path,
+            """
+            def task_build():
+                return {'actions': ['write out.txt impossible'], 'file_dep': ['missing.txt'], 'targets': ['out.txt']}
+            """,
+        )
+
+        result = run_minidoit(tmp_path, "run", "build")
+
+        assert result.returncode != 0
+>       assert result.stderr.strip()
+E       AssertionError: assert ''
+E        +  where '' = <built-in method strip of str object at 0x1061ebdb8>()
+E        +    where <built-in method strip of str object at 0x1061ebdb8> = ''.strip
+E        +      where '' = CompletedProcess(args=['[python]', '-m', 'minidoit', 'run', 'build'], returncode=1, stdout='failed build: no_success_state, missing_file_dep, missing_target\n', stderr='').stderr
+
+authoring_private_oracle/doit-realrepo-001/oracle/filtered_unit_tests/test_state_and_status.py:38: AssertionError
+=========================== short test summary info ============================
+FAILED authoring_private_oracle/doit-realrepo-001/oracle/filtered_unit_tests/test_state_and_status.py::test_missing_file_dependency_is_task_error
+1 failed, 14 passed in 0.90s

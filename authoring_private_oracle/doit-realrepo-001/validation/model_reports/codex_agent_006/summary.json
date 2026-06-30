@@ -1,0 +1,57 @@
+{
+  "install": {
+    "exit_code": 0,
+    "passed": true,
+    "stderr": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/install.stderr.txt",
+    "stdout": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/install.stdout.txt"
+  },
+  "scoring_manifest": "[repo]/authoring_private_oracle/doit-realrepo-001/scoring_manifest.json",
+  "stages": {
+    "contract": {
+      "errors": 0,
+      "exit_code": 0,
+      "failures": 0,
+      "junit": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/contract.junit.xml",
+      "passed": 4,
+      "skipped": 0,
+      "stderr": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/contract.stderr.txt",
+      "stdout": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/contract.stdout.txt",
+      "tests": 4
+    },
+    "integration": {
+      "errors": 0,
+      "exit_code": 0,
+      "failures": 0,
+      "junit": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/integration.junit.xml",
+      "passed": 8,
+      "skipped": 0,
+      "stderr": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/integration.stderr.txt",
+      "stdout": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/integration.stdout.txt",
+      "tests": 8
+    },
+    "unit": {
+      "errors": 0,
+      "exit_code": 1,
+      "failures": 1,
+      "junit": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/unit.junit.xml",
+      "passed": 14,
+      "skipped": 0,
+      "stderr": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/unit.stderr.txt",
+      "stdout": "[repo]/authoring_private_oracle/doit-realrepo-001/validation/model_reports/codex_agent_006/unit.stdout.txt",
+      "tests": 15
+    }
+  },
+  "summary": {
+    "contract_passed": 4,
+    "contract_total": 4,
+    "integration_gap_pp": -6.666666666666665,
+    "integration_pass_rate": 1.0,
+    "integration_passed": 8,
+    "integration_total": 8,
+    "overall_pass_rate": 0.9629629629629629,
+    "unit_pass_rate": 0.9333333333333333,
+    "unit_passed": 14,
+    "unit_total": 15
+  },
+  "task_id": "doit-realrepo-001"
+}

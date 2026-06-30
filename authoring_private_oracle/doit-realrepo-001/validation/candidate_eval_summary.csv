@@ -2,3 +2,8 @@ run_id,install_success,contract_passed,contract_total,unit_passed,unit_total,int
 codex_agent_001,True,4,4,14,15,8,8,0.933333,1.0,-6.6667,0.962963,filtered_unit_tests.test_state_and_status::test_missing_file_dependency_is_task_error,missing file dependency error reported on stdout instead of stderr,negative_gap_local_failure
 codex_agent_002,True,4,4,14,15,8,8,0.933333,1.0,-6.6667,0.962963,filtered_unit_tests.test_state_and_status::test_missing_file_dependency_is_task_error,missing file dependency error reported on stdout instead of stderr,negative_gap_local_failure
 codex_agent_003,True,4,4,15,15,8,8,1.0,1.0,0.0,1.0,,,no_gap_observed
+codex_agent_004,True,4,4,15,15,8,8,1.0,1.0,0.0,1.0,,,no_gap_observed
+codex_agent_005,True,4,4,15,15,8,8,1.0,1.0,0.0,1.0,,,no_gap_observed
+codex_agent_006,True,4,4,14,15,8,8,0.933333,1.0,-6.6667,0.962963,filtered_unit_tests.test_state_and_status::test_missing_file_dependency_is_task_error,missing file dependency error reported on stdout instead of stderr,negative_gap_local_failure
+codex_agent_007,True,4,4,15,15,8,8,1.0,1.0,0.0,1.0,,,no_gap_observed
+codex_agent_008,True,4,4,15,15,8,8,1.0,1.0,0.0,1.0,,,no_gap_observed
