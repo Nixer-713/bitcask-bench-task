@@ -1,8 +1,8 @@
 # PRD Boundary Lock: doit-realrepo-001
 
 Status: final PRD boundary lock. This document resolves the open questions from
-`test_inventory.md` and `test_derivability_review.md`; those decisions were used
-to draft the public candidate packet and selected oracle.
+`test_inventory.md` and `test_derivability_review.md`; those decisions are
+reflected in the public candidate packet and selected oracle.
 
 ## Locked V1 Scope
 
@@ -86,7 +86,7 @@ Explicitly excluded from task files:
 
 ## Safe Action DSL
 
-The PRD should expose these action forms exactly:
+The PRD exposes these action forms:
 
 - `write PATH TEXT`
 - `append PATH TEXT`
@@ -116,7 +116,7 @@ Execution rules:
 
 ## Dependency and State Semantics
 
-The PRD should define deterministic content-signature behavior:
+The PRD defines deterministic content-signature behavior:
 
 - signatures are based on file content, not mtime;
 - missing `file_dep` is a pre-task dependency error for the task;
@@ -136,7 +136,7 @@ State file:
 - hidden tests may inspect state through `dumpdb --json` and may directly read
   `.minidoit.db.json` for fields declared in the PRD.
 
-## Commands To Specify In PRD
+## Commands Specified In PRD
 
 Required:
 
@@ -181,11 +181,11 @@ Expected report concepts:
 - `dumpdb --json`: normalized state with task entries and saved dependency
   signatures/status.
 
-Exact key names should be fixed in the PRD and public API contract.
+Exact key names are fixed in the PRD and public API contract.
 
 ## Config Subset
 
-The PRD should include only this `pyproject.toml` subset:
+The PRD includes only this `pyproject.toml` subset:
 
 ```toml
 [tool.minidoit]
@@ -242,9 +242,9 @@ Task execution failures:
 - may preserve prior successful task state for tasks completed before the
   failure.
 
-## Oracle Direction After PRD
+## Selected Oracle Direction
 
-Future oracle tests should be built from public behavior translations:
+Selected oracle tests are built from public behavior translations:
 
 - contract tests for install, CLI, help/version, and module invocation;
 - unit tests for restricted parser, safe action DSL, state file behavior, and
@@ -270,7 +270,7 @@ The following prior open items are resolved:
 - task schema: restricted literal task dictionary subset.
 - list-returned multiple tasks: excluded.
 
-The next skill step is to draft the candidate-facing packet:
+The candidate-facing packet is present at:
 
 - `public_candidate_packet/doit-realrepo-001/prd.md`
 - `public_candidate_packet/doit-realrepo-001/public_api_contract.md`

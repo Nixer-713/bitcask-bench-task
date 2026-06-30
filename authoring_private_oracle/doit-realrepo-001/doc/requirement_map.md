@@ -6,7 +6,7 @@ It does not define or copy oracle tests.
 
 ## Public Requirement Table
 
-| Requirement ID | Public requirement | Public packet location | Source evidence / adaptation basis | Adaptation type | Future oracle focus |
+| Requirement ID | Public requirement | Public packet location | Source evidence / adaptation basis | Adaptation type | Selected oracle focus |
 | --- | --- | --- | --- | --- | --- |
 | REQ-package | Candidate output is an installable Python package named `minidoit` with import path, console script, module execution, version, and editable install support. | `public_candidate_packet/doit-realrepo-001/prd.md#2-artifact-shape`; `public_api_contract.md#package`; `packaging_contract.md` | `DOIT-BEH-001`; source package exposes a CLI entrypoint and module execution. Package name is translated for candidate task isolation. | `interface_translation` | contract |
 | REQ-runtime-env | Package supports Python `>=3.10`, editable offline-compatible install, no network/services/credentials/platform tools, arbitrary working directories, and isolated workspace file assumptions. | `packaging_contract.md#python-version`; `packaging_contract.md#installation`; `packaging_contract.md#runtime-constraints`; `packaging_contract.md#candidate-workspace-assumptions` | Source is a Python package with local CLI behavior; E2E evaluation requires deterministic container-friendly runtime constraints. | `deterministic_subset` | contract + environment |
@@ -97,11 +97,11 @@ oracle:
 
 - Candidate-facing packet does not include upstream source paths, test names,
   hidden oracle details, scorer logic, or reference implementation hints.
-- Future oracle tests must use only public CLI, public package import, declared
+- Selected oracle tests use only public CLI, public package import, declared
   task/config/state files, stdout, stderr, exit codes, and generated files.
 - Upstream tests that import source internals must be translated into public
   behavior tests or excluded.
-- Exact human-readable wording is not a scoring surface unless a future public
+- Exact human-readable wording is not a scoring surface unless the public
   contract explicitly defines it.
 - The public JSON state file is a scoring surface only for fields declared in
   `public_api_contract.md`.

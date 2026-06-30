@@ -114,8 +114,8 @@ Likely exclude or defer families:
 ## Boundary Risks
 
 1. Real Python `dodo.py` loading is source-faithful but can execute arbitrary
-   code. The PRD may need a constrained task-definition format or sandboxed
-   Python subset.
+   code. The public packet resolves this with a constrained static
+   task-definition subset.
 2. Upstream tests often target internal classes. E2E oracle filtering must keep
    public behavior and exclude private implementation assumptions.
 3. Doit's real feature set is broad. A valid task should select a coherent

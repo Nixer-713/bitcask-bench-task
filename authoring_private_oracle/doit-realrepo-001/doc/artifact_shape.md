@@ -109,7 +109,7 @@ contract. Tests assert only the public fields declared there.
 
 ## Oracle Construction Constraints
 
-Future oracle filtering should:
+Selected oracle filtering follows these constraints:
 
 - Prefer upstream command tests that exercise public CLI behavior.
 - Convert private internal class tests into public contract tests only when the
