@@ -1,9 +1,8 @@
 # Boundary Decisions: doit-realrepo-001
 
-Status: boundary decisions only. This file locks the deterministic E2E scope
-before PRD drafting and upstream test filtering. It does not define final
-candidate-facing wording, hidden tests, oracle files, scoring manifests,
-reference code, or validation assets.
+Status: final boundary decision record for `doit-realrepo-001`. This file locks
+the deterministic E2E scope used by the public packet, selected oracle, scoring
+manifest, reference validation, and candidate evaluation.
 
 ## Decision Summary
 
@@ -46,8 +45,8 @@ repository docs, source, and tests recorded in `source_repo.md` and
 ## Deterministic Adaptations
 
 These adaptations preserve source project intent while making the benchmark
-safe, deterministic, and mechanically scoreable. Every adaptation must be
-public in the future PRD and traced in the future requirement map.
+safe, deterministic, and mechanically scoreable. Every adaptation is public in
+the PRD/API contract and traced in the requirement map.
 
 ### Restricted `dodo.py`
 
@@ -118,7 +117,7 @@ Supported `uptodate` values:
 State file:
 
 - The public default state file is `.minidoit.db.json`.
-- A future PRD may expose `--db-file FILE` as the public override.
+- The public PRD/API exposes `--db-file FILE` as the override.
 - The state file should be treated as user-visible for `dumpdb`, but hidden
   tests must only assert fields declared public in the PRD.
 
@@ -185,13 +184,13 @@ Excluded config:
 
 - plugin config
 - reporter config beyond public JSON flags
-- per-task config unless future test inventory shows strong public need
+- per-task config
 - legacy `doit.cfg` INI syntax
 
 ## Failure and Atomicity Boundary
 
-The future PRD and oracle should distinguish pre-execution failures from task
-execution failures.
+The PRD and oracle distinguish pre-execution failures from task execution
+failures.
 
 Pre-execution failures:
 
@@ -221,20 +220,20 @@ Expected behavior:
 - later dependent tasks do not run
 - earlier successfully completed tasks may remain successful
 - files written by earlier actions in the failed task are not automatically
-  rolled back unless the future PRD defines a stronger transaction boundary
+  rolled back; the PRD does not define a stronger transaction boundary
 
 ## Oracle Implications
 
-The future filtered oracle should emphasize workflows where one task state
-drives multiple public artifacts.
+The selected oracle emphasizes workflows where one task state drives multiple
+public artifacts.
 
-Likely contract tests:
+Selected contract tests:
 
 - package installs
 - `minidoit` and `python -m minidoit` work
 - commands parse and return documented errors
 
-Likely unit/local tests:
+Selected unit/local tests:
 
 - restricted `dodo.py` parsing
 - safe action DSL parsing and execution
@@ -243,7 +242,7 @@ Likely unit/local tests:
 - JSON state load/save/dump
 - `list`, `info`, `clean`, `forget`
 
-Likely integration/system tests:
+Selected integration/system tests:
 
 - `run -> list --status -> info --json -> dumpdb --json`
 - `run -> run again skips -> modify file_dep -> run updates`
@@ -252,32 +251,23 @@ Likely integration/system tests:
 - failed dependency prevents dependent task and preserves prior success state
 - malformed task/config failure leaves target and state unchanged
 
-Do not select upstream tests that require excluded internals or behavior unless
-the PRD boundary is revised first.
+Upstream tests that require excluded internals or behavior are not selected.
 
-## Unresolved Until Test Inventory
+## Decisions From Test Inventory
 
-These items should be answered while building `test_inventory.md` and
+These items were resolved while building `test_inventory.md` and
 `test_derivability_review.md`:
 
-1. Whether `clean` should support dependency-recursive behavior in v1 or only
-   explicit selected tasks.
-2. Whether private task names and subtasks are included in `list` behavior.
-3. Whether `task_dep` should support groups/subtasks or only named tasks.
-4. Whether `pyproject.toml` command defaults are required for the filtered
-   upstream oracle.
-5. Whether `dumpdb` should expose full state JSON or a smaller normalized
-   report.
-6. Whether source-style textual statuses such as `R`, `U`, and `I` are kept or
-   translated to stable strings like `run`, `up_to_date`, and `ignored`.
+1. `clean` supports selected/default tasks only; dependency-recursive clean is
+   excluded.
+2. Private task names and subtasks are excluded.
+3. `task_dep` supports named tasks only, not groups/subtasks.
+4. `pyproject.toml` supports only `[tool.minidoit]` `task_file` and `db_file`.
+5. `dumpdb --json` exposes the public state JSON object.
+6. Source-style textual statuses are translated to stable public strings such as
+   `run`, `up_to_date`, and `error`.
 
-## Next Step
+## Final State
 
-Create upstream test inventory and derivability triage:
-
-- `authoring_private_oracle/doit-realrepo-001/doc/test_inventory.md`
-- `authoring_private_oracle/doit-realrepo-001/doc/test_derivability_review.md`
-
-No public candidate packet or oracle files should be created until the test
-inventory confirms that the selected boundaries can support a fair filtered
-oracle.
+The test inventory, public packet, selected oracle, reference validation, and
+candidate evaluation have all been completed using these boundaries.

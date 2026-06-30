@@ -1,8 +1,8 @@
 # Upstream Test Inventory: doit-realrepo-001
 
-Status: preliminary inventory only. No oracle tests have been selected or
-copied. This document classifies upstream tests by public behavior and boundary
-fit so a later PRD and filtered oracle can be built without guessing.
+Status: upstream inventory plus derivability basis for the selected private
+oracle. The final oracle is an adapted pytest suite under `oracle/`, with
+selected coverage traced in `doc/requirement_map.md`.
 
 ## Scan Summary
 
@@ -15,14 +15,14 @@ fit so a later PRD and filtered oracle can be built without guessing.
 | `keep_integration` families | 10 |
 | `keep_reasonably_implicit` families | 0 |
 | `keep_regression` families | 0 |
-| `needs_prd_clarification` families | 5 |
+| `needs_prd_clarification` families | 0 |
 | `exclude_internal` families | 5 |
 | `exclude_not_inferable` families | 3 |
-| `exclude_conflicts_with_prd` families | 18 |
+| `exclude_conflicts_with_prd` families | 21 |
 | `exclude_flaky` families | 0 |
 | `exclude_env_dependent` families | 1 |
 | `exclude_duplicate` families | 0 |
-| Oracle files created | 0 |
+| Selected oracle tests | 27 |
 
 Source checkout:
 
@@ -42,9 +42,9 @@ Decision labels use the required filtering vocabulary:
 
 | Test path | Test name/pattern | Layer | Behavior asserted | PRD support | Source evidence | Decision | Reason | Reviewer notes |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `tests/test___main__.py` | module execution smoke | contract | `python -m doit` can execute a command. | Boundary says future CLI supports `minidoit` and `python -m minidoit`. | `pyproject.toml`; `doit/__main__.py`; `doc/cmd-run.rst` | `keep_core` | Package/CLI contract is public and E2E-critical. | Convert to `minidoit`, not source package name. |
+| `tests/test___main__.py` | module execution smoke | contract | `python -m doit` can execute a command. | Public API contract supports `minidoit` and `python -m minidoit`. | `pyproject.toml`; `doit/__main__.py`; `doc/cmd-run.rst` | `keep_core` | Package/CLI contract is public and E2E-critical. | Convert to `minidoit`, not source package name. |
 | `tests/test_doit_cmd.py` | default command and command dispatch | contract | Empty CLI defaults to `run`; named subcommands dispatch correctly. | Boundary keeps `run` as central command and includes selected subcommands. | `doc/cmd-run.rst`; `doit/__main__.py`; `doit/cmd_run.py` | `keep_core` | Public CLI behavior. | Avoid private `DoitMain` mocking in final oracle. |
-| `tests/test_doit_cmd.py` | version/help output | contract | CLI exposes version/help text. | Not yet in boundary. | `doc/cmd-run.rst`; `tests/test_doit_cmd.py` | `needs_prd_clarification` | Useful package polish, but not required by locked scope yet. | Add minimal `--help`/`--version` only if PRD wants it. |
+| `tests/test_doit_cmd.py` | version/help output | contract | CLI exposes version/help text. | Public API contract includes minimal help/version behavior. | `doc/cmd-run.rst`; `tests/test_doit_cmd.py` | `keep_core` | Useful package polish selected as public contract behavior. | Assert non-exact help/version only. |
 | `tests/test_doit_cmd.py` | command-line vars and loader options | excluded | `x=1` vars, `-k`, loader option placement. | Boundary excludes broad loader behavior and command-line vars. | `tests/test_doit_cmd.py`; `doc/tasks.rst` | `exclude_conflicts_with_prd` | Would expand beyond restricted task/file model. | Do not include in v1 oracle. |
 | `tests/test_doit_cmd.py` | config/plugin command loading | excluded | INI/TOML plugin commands and custom command execution. | Boundary excludes plugins and legacy INI. | `doc/configuration.rst`; `tests/test_doit_cmd.py` | `exclude_conflicts_with_prd` | Plugin command loading is out of v1. | Keep only small `pyproject.toml` config if PRD includes it. |
 | `tests/test_api.py` | `doit.api.run` and `run_tasks` | excluded | Python API can run tasks from in-memory loaders. | E2E candidate contract is CLI/package, not source Python API parity. | `tests/test_api.py` | `exclude_not_inferable` | Public-ish API exists upstream, but not in v1 boundary. | Reconsider only if public API contract includes it. |
@@ -55,15 +55,15 @@ Decision labels use the required filtering vocabulary:
 | `tests/test_cmd_run.py` | custom/plugin reporters and outfile | excluded | Reporter plugins and output redirection. | Boundary excludes custom reporters; output files not in v1 scope. | `doit/cmd_run.py`; `tests/test_cmd_run.py` | `exclude_conflicts_with_prd` | Reporter plugin behavior is not candidate-visible v1. | JSON report modes are separate interface translations. |
 | `tests/test_cmd_list.py` | list names/docs/dependencies | unit | List shows task names, docs, and dependency references. | Boundary keeps `list`; JSON mode planned for stable scoring. | `doc/cmd-other.rst`; `tests/test_cmd_list.py` | `keep_core` | Public derived view from task graph. | Prefer `list --json` in oracle to avoid exact text coupling. |
 | `tests/test_cmd_list.py` | list status from dependency DB | integration | Status output reflects DB and task dependency state. | Boundary keeps status and persistent state. | `doc/cmd-other.rst`; `tests/test_cmd_list.py`; `tests/test_dependency.py` | `keep_integration` | Crosses task graph, persisted state, and derived list view. | PRD must define final status values. |
-| `tests/test_cmd_list.py` | private tasks, subtasks, grouping, filters | unit | Private tasks hidden unless requested; subtask filters expand groups. | Boundary leaves private/subtask policy unresolved. | `doc/cmd-other.rst`; `tests/test_cmd_list.py` | `needs_prd_clarification` | Source supports it, but v1 boundary has not committed. | Decide during PRD whether to include private/subtasks. |
+| `tests/test_cmd_list.py` | private tasks, subtasks, grouping, filters | excluded | Private tasks hidden unless requested; subtask filters expand groups. | PRD excludes private tasks, subtasks, and groups. | `doc/cmd-other.rst`; `tests/test_cmd_list.py` | `exclude_conflicts_with_prd` | Source supports it, but v1 deliberately excludes it. | Do not include in hidden oracle. |
 | `tests/test_cmd_list.py` | custom templates and unicode names | excluded | Text template formatting and unicode task names. | Not core to boundary; exact text format is not planned. | `tests/test_cmd_list.py` | `exclude_not_inferable` | Could be source-public but not needed for E2E signal. | Unicode may be reintroduced if PRD wants broad text support. |
 | `tests/test_cmd_info.py` | info metadata/deps/targets/status | unit | Info exposes task doc, file deps, metadata, and status. | Boundary keeps `info` and planned JSON mode. | `doc/cmd-other.rst`; `tests/test_cmd_info.py` | `keep_core` | Public inspection command. | Exclude source-only fields like `getargs` unless PRD adds them. |
 | `tests/test_cmd_info.py` | reasons task would run | integration | Info reports changed/missing deps, missing targets, and uptodate reasons. | Boundary keeps dependency reasons as a derived view. | `doc/cmd-other.rst`; `doc/dependencies.rst`; `tests/test_cmd_info.py` | `keep_integration` | Crosses DB/filesystem state and info report. | PRD must define reason keys or text. |
 | `tests/test_cmd_clean.py` | clean selected/all and target removal | integration | Clean removes generated targets or executes clean behavior. | Boundary keeps `clean`; safe DSL can express generated targets. | `doc/cmd-other.rst`; `tests/test_cmd_clean.py` | `keep_integration` | Mutates filesystem artifacts and affects later run/info. | Final oracle should test public files, not mocked clean callbacks. |
-| `tests/test_cmd_clean.py` | clean with dependency recursion | integration | Cleaning a task may also clean task dependencies. | Boundary marks recursive clean unresolved. | `doc/cmd-other.rst`; `tests/test_cmd_clean.py` | `needs_prd_clarification` | Fair if PRD includes `--clean-dep` or default recursion; otherwise hidden. | Decide before PRD. |
+| `tests/test_cmd_clean.py` | clean with dependency recursion | excluded | Cleaning a task may also clean task dependencies. | PRD excludes dependency-recursive clean. | `doc/cmd-other.rst`; `tests/test_cmd_clean.py` | `exclude_conflicts_with_prd` | Fair only if PRD includes it; v1 does not. | Do not include in hidden oracle. |
 | `tests/test_cmd_clean.py` | clean with forget | integration | Clean can remove task DB state as part of cleanup. | Boundary includes `clean --forget`. | `doc/cmd-other.rst`; `tests/test_cmd_clean.py`; `tests/test_cmd_forget.py` | `keep_integration` | Crosses cleanup, DB mutation, and future up-to-date state. | Re-express with public JSON DB/dumpdb. |
 | `tests/test_cmd_forget.py` | forget selected/all | integration | Forget removes successful-run state for selected tasks or all tasks. | Boundary keeps `forget [TASK...] [--all]`. | `doc/cmd-other.rst`; `tests/test_cmd_forget.py` | `keep_integration` | Persistent state mutation affects later run/list/info. | Use public `dumpdb --json` to assert state. |
-| `tests/test_cmd_forget.py` | forget groups/subtasks/dependencies | integration | Forget group and dependency behavior. | Boundary leaves group/subtask support unresolved. | `tests/test_cmd_forget.py`; `tests/test_cmd_list.py` | `needs_prd_clarification` | Source-derived but not yet in v1 scope. | Tie to private/subtask decision. |
+| `tests/test_cmd_forget.py` | forget groups/subtasks/dependencies | excluded | Forget group and dependency behavior. | PRD excludes groups, subtasks, and dependency-recursive forget. | `tests/test_cmd_forget.py`; `tests/test_cmd_list.py` | `exclude_conflicts_with_prd` | Source-derived but out of v1 scope. | Do not include in hidden oracle. |
 | `tests/test_cmd_dumpdb.py` | dump persisted DB | unit | DumpDB prints stored dependency data. | Boundary keeps `dumpdb` with JSON interface translation. | `doc/cmd-other.rst`; `tests/test_cmd_dumpdb.py` | `keep_core` | Public state inspection. | Avoid dbm-specific representation. |
 | `tests/test_dependency.py` | JSON DB save/load/remove/dump | unit | Dependency state can be persisted, reloaded, removed, and dumped. | Boundary uses public JSON state file. | `doc/cmd-run.rst`; `doit/dependency.py`; `tests/test_dependency.py` | `keep_core` | State persistence is central. | Keep through public CLI/state, not private `_get/_set`. |
 | `tests/test_dependency.py` | file content checker behavior | unit | File content changes make tasks not up-to-date. | Boundary uses deterministic content signatures. | `doc/dependencies.rst`; `tests/test_dependency.py` | `keep_core` | Directly supports deterministic adaptation. | Do not require timestamp-specific logic. |
@@ -76,7 +76,7 @@ Decision labels use the required filtering vocabulary:
 | `tests/test_loader.py` | task function discovery and literal task dicts | unit | Loader discovers `task_*` and task dictionaries. | Boundary keeps restricted `dodo.py`. | `doc/tasks.rst`; `tests/test_loader.py`; `doit/task.py` | `keep_core` | Public task definition shape. | Convert from executing Python to static parse semantics. |
 | `tests/test_loader.py` | delayed tasks, decorators, generators, dynamic generation | excluded | Dynamic task creation and create_after behavior. | Boundary excludes dynamic generation. | `tests/test_loader.py`; `doc/tasks.rst` | `exclude_conflicts_with_prd` | Contradicts restricted loader. | No hidden dynamic tests. |
 | `tests/test_loader.py` | `DOIT_CONFIG` dict in dodo | excluded | Source dodo can carry config in module globals. | Boundary prefers pyproject subset, not arbitrary dodo globals. | `tests/test_loader.py`; `doc/configuration.rst` | `exclude_conflicts_with_prd` | Would require executing Python/globals. | Use pyproject if config is included. |
-| `tests/test_task.py` | task dict validation and supported fields | unit | Invalid/missing fields fail; supported fields initialize task metadata. | Boundary supports subset of task fields. | `doc/tasks.rst`; `doit/task.py`; `tests/test_task.py` | `needs_prd_clarification` | Must be rephrased as public restricted-dodo validation, not internal `Task`. | Add explicit PRD task schema. |
+| `tests/test_task.py` | task dict validation and supported fields | unit | Invalid/missing fields fail; supported fields initialize task metadata. | PRD defines public restricted-dodo schema and unsupported-field errors. | `doc/tasks.rst`; `doit/task.py`; `tests/test_task.py` | `keep_core` | Rephrased as public restricted-dodo validation, not internal `Task`. | Selected unit oracle covers schema validation. |
 | `tests/test_task.py` | params, getargs, value_savers, result_dep, pickle | excluded | Advanced task internals and Python object lifecycle. | Boundary excludes value passing/results and private object APIs. | `tests/test_task.py` | `exclude_conflicts_with_prd` | Out of v1. | Do not keep. |
 | `tests/test_action.py` | shell command actions, Python actions, IO capture | excluded | Full source action system. | Boundary replaces actions with safe DSL. | `doc/tasks.rst`; `tests/test_action.py` | `exclude_conflicts_with_prd` | Contradicts action model. | Source intent informs action ordering/failure only. |
 | `tests/test_cmdparse.py` | internal command option parser | excluded | Private parser defaults, option objects, help formatting. | Future PRD should define public CLI, not parser internals. | `tests/test_cmdparse.py` | `exclude_internal` | Private implementation detail. | Do not keep directly. |
@@ -104,15 +104,15 @@ tests:
 - integration: run/order/dependency state, status reports, clean/forget flows,
   file dependency changes, missing target behavior, and failure atomicity
 
-## Unresolved Blockers Before Oracle Construction
+## Resolved Oracle Construction Decisions
 
-- PRD must define the restricted `dodo.py` literal grammar.
-- PRD must define the safe action DSL exactly.
-- PRD must define JSON schemas for `list --json`, `info --json`, and
-  `dumpdb --json`.
-- PRD must decide whether private tasks, subtasks, groups, recursive clean, and
-  dependency-recursive forget are included.
-- PRD must decide whether `pyproject.toml` config is in v1 and which keys are
-  supported.
-- PRD must define status values and reason keys so tests do not rely on source
+- PRD defines the restricted `dodo.py` literal grammar.
+- PRD defines the safe action DSL exactly.
+- Public API contract defines JSON schemas for `list --json`, `info --json`,
+  and `dumpdb --json`.
+- Private tasks, subtasks, groups, recursive clean, and dependency-recursive
+  forget are excluded from v1.
+- `pyproject.toml` config is included only for `[tool.minidoit]` `task_file`
+  and `db_file`.
+- PRD/API define status values and reason keys so tests do not rely on source
   text formatting.

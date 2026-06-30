@@ -1,8 +1,9 @@
 # pydoit/doit Source Grounding
 
-Status: source-grounding only. No PRD, public API contract, packaging contract,
-oracle, scorer, reference implementation, or candidate validation has been
-created in this step.
+Status: final source-grounding record for the completed
+`doit-realrepo-001` E2E packet. The public candidate packet, private oracle,
+reference validation, and candidate batch evaluation were created in later
+workflow steps and are recorded in sibling documents.
 
 ## Canonical Source
 
@@ -185,23 +186,24 @@ Likely public outputs:
 | Config | `pyproject.toml` subset | option values/effective behavior | none | affects DB path, command behavior |
 | Failure handling | invalid dodo/action/config/DB | non-zero exit/stderr | no corrupt success state | protects prior state |
 
-## Adaptation Boundary Draft
+## Adaptation Boundary
 
-These are source-grounding observations, not final PRD decisions.
+These source-grounding observations were resolved into the public PRD/API
+contract and requirement map.
 
-Likely keep as source-derived:
+Kept as source-derived:
 
 - Python task file loading from `dodo.py` or selected path.
 - Task dictionaries with `actions`, `targets`, `file_dep`, `task_dep`, `clean`,
-  `uptodate`, `doc`, and private task naming.
+  `uptodate`, and `doc`.
 - `run`, `list`, `info`, `clean`, `forget`, and `dumpdb` behavior.
 - Persistent dependency state and up-to-date decisions.
 - Return-code distinction between success and user/task errors.
 
-Likely simplify as deterministic mini-task adaptation:
+Simplified as deterministic E2E adaptation:
 
-- Limit action forms to deterministic shell-like actions such as writing,
-  appending, copying, and failing, or to a small safe Python-callable subset.
+- Limit action forms to deterministic safe DSL actions: `write`, `append`,
+  `copy`, `delete`, and `fail`.
 - Use JSON DB for dependency state rather than supporting dbm/sqlite backends.
 - Add JSON report modes for `list`, `info`, or `dumpdb` if needed for stable
   scoring.
@@ -209,7 +211,7 @@ Likely simplify as deterministic mini-task adaptation:
   require more.
 - Limit config to `pyproject.toml` `[tool.doit]` and command sections.
 
-Likely exclude unless later justified:
+Excluded from v1:
 
 - Plugin architecture, custom reporters, tab completion, and loader plugins.
 - Parallel execution/multiprocessing and delayed task creation.
@@ -218,26 +220,24 @@ Likely exclude unless later justified:
 - All database backends except one deterministic state file.
 - Complete compatibility with every `doit` parameter, checker, or task loader.
 
-## Open Boundary Questions Before PRD
+## Boundary Decisions Resolved
 
-1. Should the E2E task expose the CLI as `minidoit` or require `python -m
-   minidoit`?
-2. What exact constrained action language should replace arbitrary shell/Python
-   execution while preserving public task semantics?
-3. Should task files be real Python `dodo.py` modules, a restricted Python
-   subset, or a TOML/JSON interface translation? Real Python is more
-   source-faithful but harder to sandbox.
-4. Which dependency checks are in v1: file content hash, mtime, target
-   existence, `uptodate` booleans, or saved values?
-5. Should `dumpdb` expose exact persistent state or a normalized JSON view?
-6. Should `clean --forget` and dependency-recursive clean be included in v1?
-7. Should `reset-dep` be included or excluded to keep v1 focused?
-8. What upstream tests can be filtered into contract/unit/integration oracle
-   without importing private implementation assumptions?
+1. The E2E task exposes both `minidoit` and `python -m minidoit`.
+2. Arbitrary shell/Python execution is replaced by the public safe action DSL:
+   `write`, `append`, `copy`, `delete`, and `fail`.
+3. Task files use a restricted Python-looking `dodo.py` grammar with static
+   `task_<name>()` functions returning literal task dictionaries.
+4. Dependency checks use deterministic content signatures, target existence,
+   `uptodate` booleans, and persisted success state. Real mtimes are excluded.
+5. `dumpdb --json` exposes a normalized public JSON state view.
+6. `clean --forget` is included. Dependency-recursive clean is excluded.
+7. `reset-dep` is excluded to keep v1 focused.
+8. The selected oracle is filtered into contract, unit, and integration pytest
+   tests and avoids private source implementation assumptions.
 
 ## Source-Grounding Conclusion
 
-`pydoit/doit` passes the initial source selection gate. It has public docs,
-tests, CLI behavior, persistent state, filesystem artifacts, and natural
-operation-order workflows. The next step should be boundary decisions and test
-inventory, not PRD drafting.
+`pydoit/doit` passed the source selection gate. It has public docs, tests, CLI
+behavior, persistent state, filesystem artifacts, and natural operation-order
+workflows. The completed `doit-realrepo-001` packet uses this evidence for a
+deterministic E2E task with a public candidate packet and private oracle.

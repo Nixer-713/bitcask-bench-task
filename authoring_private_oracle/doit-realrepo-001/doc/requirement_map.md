@@ -50,9 +50,10 @@ It does not define or copy oracle tests.
 | REQ-global-invariants | DOIT-BEH-005, DOIT-BEH-006, DOIT-BEH-007, DOIT-BEH-009, DOIT-BEH-010, DOIT-BEH-011, DOIT-BEH-012, DOIT-BEH-013 |
 | REQ-nongoals | DOIT-BEH-014, DOIT-BEH-018, DOIT-EXC-001, DOIT-EXC-002, DOIT-EXC-003, DOIT-EXC-004, DOIT-EXC-005 |
 
-## Planned Contract Coverage
+## Contract Coverage Basis
 
-These are future oracle categories, not selected tests:
+These public contract categories are represented by the selected contract
+oracle:
 
 - package installs with editable install in Python `>=3.10`;
 - `import minidoit` works and exposes `__version__`;
@@ -63,9 +64,9 @@ These are future oracle categories, not selected tests:
 Mapped requirements: REQ-package, REQ-runtime-env, REQ-cli, REQ-config,
 REQ-error-atomic.
 
-## Planned Unit Coverage
+## Unit Coverage Basis
 
-These are future local-behavior test focuses, not selected tests:
+These local-behavior categories are represented by the selected unit oracle:
 
 - restricted `dodo.py` parser accepts one literal task dict and rejects dynamic constructs;
 - task schema validation, duplicate names, invalid names, unsupported fields, and invalid paths;
@@ -78,9 +79,10 @@ Mapped requirements: REQ-config, REQ-task-file, REQ-task-schema,
 REQ-action-dsl, REQ-state, REQ-list, REQ-info, REQ-dumpdb,
 REQ-status-values.
 
-## Planned Integration Coverage
+## Integration Coverage Basis
 
-These are future cross-feature workflows, not selected tests:
+These cross-feature workflows are represented by the selected integration
+oracle:
 
 | Integration dimension | Crossed requirements | Candidate workflow |
 | --- | --- | --- |
@@ -161,10 +163,8 @@ Selected coverage count:
   `state_accumulation`, `global_invariant`, `error_atomicity`,
   `boundary_crossing`, and `operation_order_sensitivity`.
 
-## Next Step
+## Final Status
 
-After this oracle skeleton passes review, the next skill step is oracle
-validation:
-
-- validate the selected oracle against an implementation before any candidate
-  evaluation.
+The selected oracle has been validated against a private reference
+implementation and used for a three-candidate evaluation batch. Results are
+recorded under `validation/`.

@@ -1,7 +1,8 @@
 # Behavior Inventory: pydoit/doit
 
-Status: source-grounding inventory only. This file decomposes public behavior
-into capabilities and state flows; it does not define PRD requirements yet.
+Status: final public behavior inventory for the completed `doit-realrepo-001`
+E2E packet. This file decomposes source behavior into capabilities and state
+flows used by the PRD, requirement map, and selected oracle.
 
 ## Public Capability Decomposition
 
@@ -58,9 +59,9 @@ mutation/recovery layers. Examples: `run -> list --status -> dumpdb`,
 - `forget` removes persisted state.
 - Corrupted/malformed inputs fail without corrupting unrelated state.
 
-## Likely Unit Focus Areas
+## Selected Unit Focus Areas
 
-These are candidate oracle areas, not selected tests.
+These local behavior areas are represented by the selected private unit oracle.
 
 - CLI entrypoint and command selection.
 - Dodo file discovery and `-f` task file selection.
@@ -76,7 +77,7 @@ These are candidate oracle areas, not selected tests.
 - Config parsing for DB path and command defaults.
 - Failure exit codes and no false success state.
 
-## Likely Integration Dimensions
+## Selected Integration Dimensions
 
 | Dimension | Crossed modules | Why system-level |
 | --- | --- | --- |
@@ -87,7 +88,7 @@ These are candidate oracle areas, not selected tests.
 | `boundary_crossing` | Python task file, filesystem targets, DB file, CLI reports | correctness crosses language/file/state boundaries |
 | `operation_order_sensitivity` | run, clean, forget, reset-like flows | command order changes expected state transitions |
 
-## Candidate Test Inventory Seed
+## Test Inventory Basis
 
 Potential keep families after PRD boundary decisions:
 

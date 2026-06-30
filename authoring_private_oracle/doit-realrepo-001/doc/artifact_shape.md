@@ -1,7 +1,8 @@
 # Artifact Shape: pydoit/doit Candidate
 
-Status: planning artifact only. This file records likely packet/oracle shapes
-for a future E2E task. It does not create a candidate packet or oracle.
+Status: final artifact-shape record. This file began as a planning artifact;
+the packet and oracle shapes below have since been realized for
+`doit-realrepo-001`.
 
 ## Current Source Artifact Shape
 
@@ -15,26 +16,24 @@ for a future E2E task. It does not create a candidate packet or oracle.
 | CLI reports | `doc/cmd-run.rst`, `doc/cmd-other.rst` | Run/list/info/clean/forget/dumpdb outputs. |
 | Tests | `tests/test_*.py` | Command and dependency tests can seed filtered oracle. |
 
-## Future Public Candidate Packet Shape
+## Public Candidate Packet Shape
 
-If boundary decisions keep `doit-realrepo-001`, the public packet should likely
-be:
+The public packet is:
 
 ```text
 public_candidate_packet/doit-realrepo-001/
   prd.md
   public_api_contract.md
   packaging_contract.md
-  starter files if explicitly needed
 ```
 
 Candidate-visible documents must define only public behavior. They must not
 include upstream test names, hidden case IDs, source file paths required for
 implementation, scorer logic, reference code, or expected oracle outputs.
 
-## Future Private Oracle Shape
+## Private Oracle Shape
 
-The private authoring tree may later contain:
+The private authoring tree contains:
 
 ```text
 authoring_private_oracle/doit-realrepo-001/
@@ -54,19 +53,19 @@ authoring_private_oracle/doit-realrepo-001/
   oracle/contract_tests/
   oracle/filtered_unit_tests/
   oracle/filtered_integration_tests/
+  oracle/pytest.ini
+  docker/Dockerfile
   docker/run_eval.sh
   validation/original_report.json
   validation/model_reports/
 ```
 
-Only the four source-grounding docs exist in this step.
+## Candidate Package Contract
 
-## Likely Candidate Package Contract
+The candidate implementation is required to provide:
 
-Not final PRD. Candidate implementation may be required to provide:
-
-- An installable Python package, such as `minidoit`.
-- A console script, such as `minidoit`.
+- An installable Python package named `minidoit`.
+- A console script named `minidoit`.
 - A constrained task file loader.
 - Commands:
   - `run`
@@ -75,7 +74,7 @@ Not final PRD. Candidate implementation may be required to provide:
   - `clean`
   - `forget`
   - `dumpdb`
-- Optional JSON modes for stable scoring.
+- JSON modes for stable scoring where specified in the public API contract.
 
 ## Likely Input Artifacts
 
@@ -94,20 +93,19 @@ Not final PRD. Candidate implementation may be required to provide:
 - `dumpdb` or normalized JSON DB report.
 - `list` and `info` reports.
 
-## Persistent State Model Candidates
+## Persistent State Model
 
-The source supports multiple DB backends. A future mini task should likely use
-one deterministic public state format, for example `.minidoit.db.json`, with:
+The source supports multiple DB backends. The E2E task uses one deterministic
+public state format, `.minidoit.db.json`, with:
 
 - task name
 - dependency signatures
 - target signatures or existence
 - successful-run marker
-- saved result/values if included
+- saved result marker
 
-This would be a deterministic subset of source behavior and must be public in
-the PRD. Tests must not assume the private layout unless the PRD defines it as
-public user-visible output.
+This is a deterministic subset of source behavior and is public in the PRD/API
+contract. Tests assert only the public fields declared there.
 
 ## Oracle Construction Constraints
 
@@ -137,14 +135,8 @@ changes scope:
 - Exact internal class names or module layout.
 - Network services, credentials, GUI, or external daemons.
 
-## Next Required Step
+## Final State
 
-Before PRD drafting, create boundary decisions that answer:
-
-1. Public task file format and sandboxing model.
-2. Supported action subset.
-3. Dependency signature semantics.
-4. Persistent DB public shape.
-5. Command subset and report formats.
-6. Selected upstream tests and exclusions.
-7. Environment contract for running candidate packages.
+Boundary decisions, public packet, requirement map, selected oracle,
+environment contract, reference validation, and candidate evaluation have been
+completed for `doit-realrepo-001`.

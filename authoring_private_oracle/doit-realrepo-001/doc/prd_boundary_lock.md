@@ -1,11 +1,8 @@
 # PRD Boundary Lock: doit-realrepo-001
 
-Status: final pre-PRD boundary lock. This document resolves the open questions
-from `test_inventory.md` and `test_derivability_review.md` so the next step can
-draft the candidate-facing packet without new scope decisions.
-
-No PRD, public candidate packet, oracle tests, scorer, reference implementation,
-or validation assets are created in this step.
+Status: final PRD boundary lock. This document resolves the open questions from
+`test_inventory.md` and `test_derivability_review.md`; those decisions were used
+to draft the public candidate packet and selected oracle.
 
 ## Locked V1 Scope
 
@@ -37,7 +34,7 @@ V1 measures the public task-automation lifecycle:
 
 ## Candidate-Facing Package Contract Defaults
 
-The future public packet should require:
+The public packet requires:
 
 - package name: `minidoit`;
 - import path: `minidoit`;
@@ -50,8 +47,8 @@ The future public packet should require:
 
 ## Restricted `dodo.py` Grammar
 
-The PRD should define a static subset of Python task files. Hidden tests may
-create user-facing `dodo.py` inputs within this subset.
+The PRD defines a static subset of Python task files. Hidden tests create
+user-facing `dodo.py` inputs within this subset.
 
 Allowed structure:
 

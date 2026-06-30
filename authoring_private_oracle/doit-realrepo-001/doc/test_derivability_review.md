@@ -1,8 +1,8 @@
 # Test Derivability Review: doit-realrepo-001
 
-Status: preliminary fairness and derivability review. This file does not select
-or copy hidden tests. It records which upstream test intentions can become fair
-oracle behavior after PRD drafting.
+Status: final fairness and derivability review for the selected hidden oracle.
+It records which upstream test intentions became fair oracle behavior after
+public PRD/API/packaging contracts were drafted.
 
 ## Review Inputs
 
@@ -15,20 +15,20 @@ oracle behavior after PRD drafting.
 
 ## Derivability Standard Applied
 
-A future hidden test is fair only if it satisfies one of these:
+A hidden test is fair only if it satisfies one of these:
 
 - explicitly inferable from the candidate-facing PRD/API/packaging contract;
 - reasonably implicit from declared artifact shape and global invariants;
 - public source regression that the PRD explicitly includes.
 
-Current review is stricter than "source has a test." A source test that targets
+This review is stricter than "source has a test." A source test that targets
 private classes, private reporters, exact text, non-selected features, or
 environment-specific behavior is excluded or converted into a public behavior
-candidate only after PRD clarification.
+test only after PRD clarification.
 
 ## Keepable Public Behavior Families
 
-| Family | Future layer | Source basis | Derivability verdict | PRD requirement needed |
+| Family | Selected layer | Source basis | Derivability verdict | Public requirement support |
 | --- | --- | --- | --- | --- |
 | Package and CLI invocation | `contract` | `pyproject.toml`, `doit/__main__.py`, `tests/test___main__.py` | explicitly inferable if PRD defines package/CLI | package name, console script, module invocation |
 | Default `run` command | `contract` | `doc/cmd-run.rst`, `tests/test_doit_cmd.py` | explicitly inferable | empty command defaults to `run` |
@@ -44,17 +44,17 @@ candidate only after PRD clarification.
 | DumpDB state view | `unit` or `integration` | `doc/cmd-other.rst`, `tests/test_cmd_dumpdb.py` | interface translation | `dumpdb --json` public schema |
 | Failure atomicity | `integration` | `doc/cmd-run.rst`, `doit/runner.py`, `tests/test_runner.py` | explicitly inferable | pre-execution vs task execution failure boundary |
 
-## Gray Areas Requiring PRD Clarification
+## Gray Areas Resolved By PRD Boundary
 
-| Area | Why useful | Why not yet fair | Recommended PRD decision |
+| Area | Why useful | Final fairness decision | PRD decision |
 | --- | --- | --- | --- |
-| Private tasks | Source list command hides `_task` by default. | Boundary has not committed private task behavior. | Include only if needed for integration pressure; otherwise exclude. |
-| Subtasks and groups | Source supports group/subtask list/forget/clean behavior. | Restricted loader currently excludes dynamic task generation. | Exclude v1 unless static list-return subtasks are explicitly defined. |
-| Recursive clean | Source clean can clean dependencies. | Boundary left recursive clean unresolved. | Include a simple `clean --clean-dep` only if tests need it; otherwise selected tasks only. |
-| Dependency-recursive forget | Source supports selected/dependency forget variants. | Boundary only committed selected/all forget. | Keep selected/all in v1; defer recursive forget unless PRD adds it. |
-| `pyproject.toml` config | Source docs support TOML config. | Exact keys are not chosen. | Include only DB file and task file defaults for v1. |
-| Help/version | Source has tests and docs. | Low system value and exact text can be brittle. | Include minimal non-exact help/version only if package contract wants it. |
-| Status symbols | Source uses `R`, `U`, `I`, `E` in list status. | Boundary allows stable strings instead. | Prefer JSON strings: `run`, `up_to_date`, `ignored`, `error`. |
+| Private tasks | Source list command hides `_task` by default. | Excluded from v1. | Do not include in hidden oracle. |
+| Subtasks and groups | Source supports group/subtask list/forget/clean behavior. | Excluded from v1. | Do not include in hidden oracle. |
+| Recursive clean | Source clean can clean dependencies. | PRD excludes dependency-recursive clean. | Exclude from v1 hidden oracle. |
+| Dependency-recursive forget | Source supports selected/dependency forget variants. | Recursive behavior excluded from v1. | Keep selected/all only. |
+| `pyproject.toml` config | Source docs support TOML config. | Included as deterministic subset. | Include only `task_file` and `db_file`. |
+| Help/version | Source has tests and docs. | Included as non-exact contract behavior. | Include minimal non-exact help/version. |
+| Status symbols | Source uses `R`, `U`, `I`, `E` in list status. | Translated to stable JSON strings. | Use `run`, `up_to_date`, and `error`. |
 | Info reason text | Source tests exact human-readable text. | Exact phrasing would be overconstrained. | Use JSON reason keys and membership checks. |
 
 ## Exclusion Rationale
@@ -79,10 +79,10 @@ is deliberately revised:
   objects, exception classes, and dependency managers: useful as source
   evidence but not direct candidate-facing oracle.
 
-## Fair Oracle Construction Guidance
+## Fair Oracle Construction Applied
 
-When the PRD exists, build oracle tests from the keepable behavior families
-using public commands and files only:
+Oracle tests are built from the keepable behavior families using public commands
+and files only:
 
 - install candidate package in an isolated workspace;
 - create restricted `dodo.py` files as public user input;
@@ -95,9 +95,9 @@ using public commands and files only:
 
 Do not copy upstream tests verbatim when they import `doit.*` internals or
 assert exact source output. Convert their public intent into candidate-facing
-contract/unit/integration tests after PRD support exists.
+  contract/unit/integration tests after PRD support exists.
 
-## Preliminary Integration Dimensions
+## Selected Integration Dimensions
 
 | Dimension | Candidate workflows |
 | --- | --- |
@@ -108,17 +108,8 @@ contract/unit/integration tests after PRD support exists.
 | `boundary_crossing` | Python-like task file, safe action DSL, filesystem targets, JSON DB, CLI reports |
 | `operation_order_sensitivity` | run -> run, run -> clean, run -> forget, file edit -> run |
 
-## Recommendation
+## Final Decision
 
-Proceed to PRD drafting only after recording the following PRD decisions:
-
-1. Restricted `dodo.py` grammar and task schema.
-2. Safe action DSL syntax and failure semantics.
-3. Public JSON schemas for `list`, `info`, and `dumpdb`.
-4. Status values and reason keys.
-5. Config subset, if any.
-6. Final decision on private tasks, subtasks/groups, and recursive clean.
-
-The current source/test evidence supports a fair E2E task, but the hidden oracle
-must be built from public behavior translations rather than source-internal
-unit tests.
+The source/test evidence supports the selected E2E oracle. The hidden oracle was
+built from public behavior translations rather than source-internal unit tests,
+and every selected test is traced in `doc/requirement_map.md`.

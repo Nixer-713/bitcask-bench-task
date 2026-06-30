@@ -1,7 +1,7 @@
 # Source Evidence Matrix: pydoit/doit
 
-Status: source-grounding matrix with public packet anchors. `Tests` remain
-provisional until oracle filtering is complete.
+Status: source-grounding matrix with public packet anchors. The `Tests` column
+summarizes selected or excluded oracle families after filtering.
 
 Adaptation types:
 
@@ -42,10 +42,10 @@ Adaptation types:
 
 ## Traceability Notes
 
-- The matrix records source behavior, adaptation class, and public packet
-  anchors. Test-family references remain provisional until oracle filtering.
-- No rubric or hidden oracle has been selected yet. The `Tests` column lists
-  candidate test families, not committed oracle cases.
+- The matrix records source behavior, adaptation class, public packet anchors,
+  and selected or excluded test families.
+- The concrete selected oracle is listed in
+  `doc/requirement_map.md#selected-oracle-coverage`.
 - Any behavior marked `deterministic_subset` must be explicitly documented in
   the PRD before tests are allowed to assert it.
 - Any behavior marked `interface_translation` must be justified as preserving a
