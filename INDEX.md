@@ -13,6 +13,9 @@ not an implementation repository.
   workflow.
 - `doc/repo_pool_alignment.md`: current Bmk-dev REPO_POOL interpretation and
   cleanup record.
+- `CANDIDATES.md`: source selection and retirement log for the local pipeline.
+- `wip/_template/PIPELINE_STATE.md`: reusable state-machine seed for new
+  SpecBench-style task candidates.
 - `public_candidate_packet/README.md`: candidate-visible E2E packet boundary.
 - `authoring_private_oracle/README.md`: private oracle/evaluation boundary.
 

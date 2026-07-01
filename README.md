@@ -71,3 +71,16 @@ outputs.
 
 See `doc/e2e_full_project_pipeline.md` and `doc/repo_pool_alignment.md` for the
 current process.
+
+## Local Pipeline Setup
+
+The local Codex environment has the Bmk-dev stage skills installed as:
+
+- `e2e-00-task-synthesizer`
+- `e2e-01-candidate-selector`
+- `e2e-02-spec-writer`
+- `e2e-03-test-filter`
+- `e2e-04-task-judge`
+
+New candidates should start from `wip/_template/PIPELINE_STATE.md` and append
+their selection or retirement result to `CANDIDATES.md`.
