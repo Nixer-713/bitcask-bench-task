@@ -12,12 +12,12 @@ targets. They must not be claimed as `core_strong`, `confirmed benchmark`, or
 
 | Task | Archived status |
 | --- | --- |
-| `marmite-realrepo-001` | Hardened reference-satisfiable on `validation/marmite-hardened`; no positive unit/system gap observed. |
 | `jupytext-realrepo-001` | Reference-satisfiable on `validation/jupytext`; three candidates also passed all cases, so no-gap-observed. |
 
-## Active Rewrite Boundary
+## REPO_POOL Cleanup
 
-The active `task/marmite-realrepo-001/` and `task/jupytext-realrepo-001/`
-directories keep only source-grounding material and rewrite notes. New PRD and
-rubric files should be drafted from a fresh public-behavior inventory, state /
-artifact model, and system-invariant decomposition.
+The archived Marmite packet was removed because upstream Bmk-dev `REPO_POOL.md`
+lists `marmite` as non-Python/outside the current pipeline scope.
+
+Jupytext is retained as historical no-gap evidence because it is not listed as
+retired or outside scope in the checked REPO_POOL snapshot.

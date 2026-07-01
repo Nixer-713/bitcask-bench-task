@@ -3,231 +3,90 @@
 ## Background
 
 This repository is part of a benchmark construction effort for evaluating AI
-coding agents on system-level software tasks. Existing single-issue repair
-benchmarks can become saturated: models may pass isolated bug-fix or unit-level
-tasks while still failing when multiple features must compose into one coherent
-system.
+coding agents on end-to-end software tasks. The current direction follows the
+updated Bmk-dev workflow: prefer full-project reconstruction tasks with a public
+candidate packet and a private, source-grounded oracle built from filtered
+upstream tests.
 
-The benchmark design originally followed a PRD-plus-rubric handoff pattern:
+Older mini-product PRD/rubric tasks remain only when their source repository is
+still acceptable and the files are useful as draft or historical material.
 
-- `prd.md` is the model-visible product requirement document.
-- `rubric.json` is the hidden evaluation definition used to score outputs.
+## REPO_POOL Alignment
 
-The current v2 direction adds an E2E full-project mode. In that mode, candidates
-receive a public PRD/API/packaging packet and must deliver a complete
-installable Python package. The hidden oracle should primarily come from the
-source repository's upstream tests after derivability filtering, rather than
-from fully hand-authored cases.
+Bmk-dev `REPO_POOL.md` was checked on 2026-07-01. It states that the listed
+Python repositories are already occupied by the upstream pipeline, and it also
+lists repositories that are retired or outside scope.
+
+This cleanup removes local task deliverables for repositories that are explicitly
+not usable in the current pipeline:
+
+- `SarthakMakhija/bitcask`: non-Python / out of scope.
+- `hoechstleistungshaartrockner/xitkit`: retired because of docs-test
+  projection mismatch.
+- `rochacbruno/marmite`: Rust / outside the Python-only pipeline.
+
+Those tasks must not be revived or used as active development targets unless the
+user explicitly changes the rule.
 
 ## Current Status
 
-### Bitcask
+### Doit
 
-`task/bitcask-realrepo-001` is a clean candidate handoff derived from
-`SarthakMakhija/bitcask`. Validation evidence exists outside `main` showing that
-the task is executable and reference-satisfiable, but tested code-agent
-candidates also reached 100% unit and 100% system scores. Treat Bitcask as
-candidate/no-gap-observed evidence. Do not claim `core_strong`, and do not add
-more Bitcask lifecycle cases unless explicitly requested.
+`doit-realrepo-001` is the current E2E-style local artifact derived from
+`pydoit/doit`. The candidate-visible files are under
+`public_candidate_packet/doit-realrepo-001/`, while source evidence, filtered
+tests, harnesses, and validation material are under
+`authoring_private_oracle/doit-realrepo-001/`.
 
-### Xitkit
-
-`task/xitkit-realrepo-001` is a source-grounded candidate task derived from
-`hoechstleistungshaartrockner/xitkit`. It abstracts the source into a local
-`.xit` task-file CLI. The intended system pressure is that one task-file state
-drives several public outputs and effects: parsed task records, filters, sorted
-views, stats summaries, writeback results, and cross-file movement.
-
-Initial validation evidence exists on `validation/xitkit`: the reference passed
-16/16 unit and 12/12 system cases, and three independent code-agent candidates
-also passed 16/16 unit and 12/12 system cases. Treat xitkit as
-source-grounded candidate/no-gap-observed evidence. Do not claim
-`core_strong`, `confirmed benchmark`, or `gap-producing` from current evidence.
-
-### Marmite
-
-`task/marmite-realrepo-001` is reset for redesign from `rochacbruno/marmite`.
-The prior handoff packet defined a static-site generator task where one
-markdown content graph and configuration produced multiple public outputs:
-rendered pages, taxonomies, pagination, feeds, search index, URL manifest, and
-wikilink/backlink views.
-
-Prior validation evidence on `validation/marmite` was reference-satisfiable but
-no-positive-gap-observed. After that, a small source-grounded hardening pass
-added draft-aware link exclusion, archive-year taxonomy, and a read-only URL
-manifest preview command.
-
-Hardened validation evidence exists on `validation/marmite-hardened`. The
-hardened rubric had 34 cases: 19 unit and 15 system. The reference passed 19/19
-unit and 15/15 system cases. `codex_agent_001` also passed 19/19 unit and 15/15
-system. `codex_agent_002` and `codex_agent_003` each passed 17/19 unit and
-14/15 system; their failures were local filename metadata / stream parsing
-issues, not positive unit/system gap evidence.
-
-The prior PRD/rubric/requirement map is archived under
-`archive/no-gap-observed/marmite-realrepo-001/`. The active task directory keeps
-`doc/source_repo.md` and `doc/rewrite_note.md` only. Treat Marmite as archived
-reference-satisfiable/no-positive-gap-observed evidence until a fresh redesign
-produces a new PRD/rubric. Do not claim `core_strong`, `confirmed benchmark`,
-or `gap-producing` from current evidence.
-
-### Jupytext
-
-`task/jupytext-realrepo-001` is reset for redesign from `mwouts/jupytext`. The
-prior handoff abstracted paired notebook behavior into a deterministic local CLI
-where one notebook model stayed consistent across `.ipynb`, `py:percent` text,
-pairing metadata, version-based sync, output preservation, and status reports.
-
-Validation evidence exists on `validation/jupytext`: the reference and three
-independent candidates all passed 20/20 unit and 14/14 system cases. This is
-reference-satisfiable/no-gap-observed evidence, not positive unit/system gap
-evidence.
-
-The prior PRD/rubric/requirement map is archived under
-`archive/no-gap-observed/jupytext-realrepo-001/`. The active task directory
-keeps `doc/source_repo.md` and `doc/rewrite_note.md` only. Treat Jupytext as
-archived reference-satisfiable/no-gap-observed evidence until a fresh redesign
-produces a new PRD/rubric. Do not claim `core_strong`, `confirmed benchmark`,
-or `gap-producing` from current evidence.
+Treat it as a local authoring/evaluation artifact. Keep candidate-visible and
+private oracle boundaries explicit.
 
 ### Copier
 
-`task/copier-realrepo-001` is a draft handoff derived from `copier-org/copier`
-at commit `454ec4244132bce478e60c4707ee418312ca8922`. It abstracts Copier into
-a compact local CLI, `minicopier.py`, covering copy, recopy, update,
-check-update, answers files, local Git refs/tags, exclude/skip, pretend mode,
-safe tasks/migrations, subdirectory rendering, update conflicts, and
-atomicity.
+`task/copier-realrepo-001` is a legacy mini-product draft derived from
+`copier-org/copier`. It has PRD, rubric, source evidence, requirement map, and
+review docs, but it is not aligned to the updated full-project filtered-test
+workflow.
 
-The task is source-grounded and has PRD, requirement map, rubric, boundary
-decisions, and review docs on `main`. Validation evidence has not been accepted
-into `main`. Treat Copier as draft/pending validation until a validation branch
-shows reference 100/100 and candidate results. Do not claim `core_strong`,
-`confirmed benchmark`, or `gap-producing`.
+Do not claim it as `core_strong`, confirmed benchmark, or gap-producing.
 
-### Roadmap
+### Jupytext
 
-The active roadmap is fixed unless the user changes it explicitly:
+`task/jupytext-realrepo-002` is a rewritten mini-product task draft derived from
+`mwouts/jupytext`. `archive/no-gap-observed/jupytext-realrepo-001/` is retained
+as historical no-gap evidence.
 
-1. Keep Bitcask as candidate/no-gap-observed evidence.
-2. Keep xitkit as source-grounded candidate/no-gap-observed evidence from
-   initial validation.
-3. Keep archived Marmite as hardened reference-satisfiable/no-positive-gap
-   evidence.
-4. Keep archived Jupytext as reference-satisfiable/no-gap-observed evidence.
-5. Redesign Marmite and Jupytext from public behavior inventory, capability
-   modules, state/artifact models, and system-testable cross-feature workflows
-   before drafting new PRDs or rubrics.
-6. Validate `copier-realrepo-001` on a validation branch. Keep reference,
-   scorer, candidate outputs, reports, and summaries out of `main`.
-7. For new repositories after Copier, use `e2e_full_project_task` as the
-   default construction mode. Start from repository selection gates, source
-   evidence, public capability decomposition, and upstream test filtering before
-   writing the public candidate packet.
+Do not claim either Jupytext packet as `core_strong`, confirmed benchmark, or
+gap-producing.
 
-## E2E Full-Project Pipeline
+## Current Direction
 
-The v2 pipeline is documented in `doc/e2e_full_project_pipeline.md`.
-
-Candidate-visible files belong under:
-
-```text
-public_candidate_packet/<task-name>/
-```
-
-Private authoring and scoring files belong under private branches, ignored
-workspaces, or:
-
-```text
-authoring_private_oracle/<task-name>/
-```
-
-Candidates must not see source implementation checkouts, filtered tests,
-scorers, Docker harnesses, validation reports, reference solutions, or outputs
-from other candidates.
-
-The default acceptance path for an E2E task is:
-
-1. select a Python package with public docs and executable tests;
-2. build source evidence and capability/state/artifact inventories;
-3. write public PRD/API/packaging contracts;
-4. filter upstream tests by PRD derivability;
-5. validate the hidden oracle on the checked source implementation;
-6. run at least three isolated code-agent candidates;
-7. interpret install, unit, integration, overall, and integration-gap metrics
-   conservatively.
-
-## Goal
-
-The goal is to test whether a model can maintain global correctness across
-composed workflows, not merely implement isolated commands.
-
-The expected benchmark signal is:
-
-```text
-unit_score - system_score
-```
-
-The ideal task produces high unit pass rates but lower system pass rates for
-weaker agents, revealing the gap between local feature correctness and
-cross-feature system correctness. A 100/100 candidate result is no-gap evidence,
-not proof that a task is invalid.
-
-## What To Review
-
-Review these files first:
-
-- `AGENTS.md`: repo-wide construction, priority, and leakage-prevention rules.
-- `INDEX.md`: task index and mechanical checks.
-- `task/xitkit-realrepo-001/prd.md`: source-grounded model-visible requirements.
-- `task/xitkit-realrepo-001/rubric.json`: source-grounded unit/system
-  evaluation cases with no-gap-observed initial validation.
-- `task/xitkit-realrepo-001/doc/source_repo.md`: source-grounding evidence.
-- `task/xitkit-realrepo-001/doc/requirement_map.md`: traceability and
-  source-grounding map.
-- `task/marmite-realrepo-001/doc/source_repo.md`: source-grounding notes for
-  the Marmite redesign.
-- `task/marmite-realrepo-001/doc/rewrite_note.md`: Marmite reset boundary.
-- `task/jupytext-realrepo-001/doc/source_repo.md`: Jupytext source-grounding
-  evidence.
-- `task/jupytext-realrepo-001/doc/rewrite_note.md`: Jupytext reset boundary.
-- `task/copier-realrepo-001/prd.md`: Copier model-visible requirements.
-- `task/copier-realrepo-001/rubric.json`: Copier draft unit/system cases.
-- `task/copier-realrepo-001/doc/source_repo.md`: Copier source evidence and
-  Source Evidence Matrix.
-- `task/copier-realrepo-001/doc/requirement_map.md`: Copier traceability map.
-- `doc/e2e_full_project_pipeline.md`: v2 full-project pipeline from repository
-  selection through candidate evaluation.
-- `public_candidate_packet/README.md`: public packet boundary for future E2E
-  tasks.
-- `authoring_private_oracle/README.md`: private oracle boundary for future E2E
-  tasks.
-- `archive/no-gap-observed/marmite-realrepo-001/`: archived Marmite handoff.
-- `archive/no-gap-observed/jupytext-realrepo-001/`: archived Jupytext handoff.
+1. Check Bmk-dev `REPO_POOL.md` before selecting any source repository.
+2. Do not start work on repositories listed as qualified, in progress, pending,
+   retired, or outside scope unless the user explicitly overrides the pool.
+3. Prefer the full-project workflow:
+   - source evidence and capability decomposition;
+   - boundary decisions;
+   - public PRD/API/packaging packet;
+   - filtered upstream oracle;
+   - original/source validation;
+   - isolated candidate evaluation.
+4. Keep live evaluation packets clean: candidates see only
+   `public_candidate_packet/<task-name>/`.
+5. Interpret results conservatively. Candidate 100/100 is no-gap evidence, not
+   a reason to add hidden requirements.
 
 ## Review Questions
 
-1. Does each `prd.md` describe only public, model-visible behavior?
-2. Can every `rubric.json` case be naturally inferred from the matching PRD?
-3. Are unit cases and system cases meaningfully separated?
-4. Do system cases combine heterogeneous features and derived views?
-5. Does each rubric avoid private implementation details?
-6. Do all `requirement_refs` map back to `requirement_map.md`?
-7. Is there any answer leakage, reference implementation, scorer, candidate
-   output, or score report committed to `main`?
-8. Do xitkit, Marmite, and Jupytext statuses stay clearly separated from any
-   `core_strong` or confirmed benchmark claim?
+1. Does the repository still contain active task deliverables for a source
+   marked unusable by Bmk-dev `REPO_POOL.md`?
+2. Are public candidate packets separated from private oracle material?
+3. Are any current docs recommending a repository already occupied by
+   `REPO_POOL.md`?
+4. Are any tasks claimed as `core_strong` without positive gap evidence?
 
 ## Non-Goals
 
-- Do not evaluate a generated implementation in this repository.
-- Do not require tasks to reproduce full original projects.
-- Do not require private implementation structures unless the PRD explicitly
-  exposes them as public behavior.
-
-## Expected Review Output
-
-Return findings ordered by severity. Each finding should include file path and
-line number, the concrete issue, why it affects correctness/fairness/leakage
-risk, and a specific recommended change. If there are no blocking issues, state
-that clearly and mention residual risks.
+- Do not revive Bitcask, Xitkit, or Marmite as local task targets.
+- Do not add hidden tests or scorer logic to a public candidate packet.
+- Do not evaluate generated implementations from this cleanup step.

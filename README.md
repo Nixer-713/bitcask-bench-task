@@ -1,73 +1,73 @@
 # Benchmark Task Deliverables
 
-This repository contains benchmark task handoff files derived from real
+This repository contains benchmark task handoff material derived from real
 open-source projects.
 
-Older tasks use the mini-product handoff shape: a public `prd.md`, hidden
-`rubric.json`, and supporting source/requirement docs under `task/<name>/`.
-New full-project tasks should use the v2 E2E split: candidate-visible PRD/API
-and packaging files under `public_candidate_packet/<name>/`, with filtered
-upstream tests, scorer/harness assets, source evidence, and validation reports
-kept in private oracle workspaces.
+The active direction follows the updated Bmk-dev workflow:
 
-## Tasks
+- prefer full-project E2E tasks over compact mini rewrites;
+- give candidates only a public PRD/API/packaging packet;
+- keep source evidence, filtered tests, oracle assets, harnesses, and validation
+  reports out of the candidate packet;
+- check Bmk-dev `REPO_POOL.md` before starting any new source repository.
 
-| Task | Source project | Status |
+## REPO_POOL Alignment
+
+The upstream Bmk-dev `REPO_POOL.md` was checked on 2026-07-01. Repositories
+listed there as already occupied, retired, or outside scope must not be used for
+new local task development unless the user explicitly overrides that rule.
+
+The following prior local task artifacts were removed from this branch because
+their sources are explicitly retired or outside the current Python-only pool:
+
+| Removed local task | Source | REPO_POOL status |
 | --- | --- | --- |
-| `task/bitcask-realrepo-001` | `SarthakMakhija/bitcask` | Candidate with no-gap-observed validation evidence; not core-strong |
-| `task/xitkit-realrepo-001` | `hoechstleistungshaartrockner/xitkit` | Source-grounded candidate with initial no-gap-observed validation evidence; not core-strong |
-| `task/marmite-realrepo-001` | `rochacbruno/marmite` | Prior handoff archived as no-positive-gap-observed evidence; active task reset for redesign |
-| `task/jupytext-realrepo-001` | `mwouts/jupytext` | Prior handoff archived as no-gap-observed evidence; active task reset for redesign |
-| `task/copier-realrepo-001` | `copier-org/copier` | Draft handoff created; pending validation on a validation branch |
+| `task/bitcask-realrepo-001` | `SarthakMakhija/bitcask` | Non-Python / out of scope |
+| `task/xitkit-realrepo-001` | `hoechstleistungshaartrockner/xitkit` | Retired / cannot continue |
+| `task/marmite-realrepo-001` and archived Marmite packet | `rochacbruno/marmite` | Non-Python / out of scope |
+
+## Current Local Artifacts
+
+| Artifact | Source project | Status |
+| --- | --- | --- |
+| `task/copier-realrepo-001` | `copier-org/copier` | Legacy mini-product draft; not aligned to current full-project oracle workflow |
+| `task/jupytext-realrepo-001` | `mwouts/jupytext` | Source-grounding/rewrite notes only |
+| `task/jupytext-realrepo-002` | `mwouts/jupytext` | Rewritten mini-product packet; no `core_strong` claim |
+| `archive/no-gap-observed/jupytext-realrepo-001` | `mwouts/jupytext` | Historical no-gap evidence |
+| `public_candidate_packet/doit-realrepo-001` | `pydoit/doit` | E2E public candidate packet |
+| `authoring_private_oracle/doit-realrepo-001` | `pydoit/doit` | Authoring/oracle material for local validation; not candidate-visible |
+
+No current task in this repository is claimed as `core_strong`, confirmed
+gap-producing, or a confirmed benchmark.
 
 ## Deliverable Boundary
 
-For legacy mini-product handoff tasks, the core deliverables are:
+Legacy mini-product tasks may contain:
 
 - `prd.md`: public product requirement document shown to model/code agents.
 - `rubric.json`: hidden unit/system evaluation definition.
 - `doc/source_repo.md`: source-project evidence and adaptation rationale.
 - `doc/requirement_map.md`: traceability from PRD requirements to rubric cases.
 
-For new E2E full-project tasks, the candidate-visible deliverables are:
+New full-project tasks should use:
 
-- `public_candidate_packet/<name>/prd.md`
-- `public_candidate_packet/<name>/public_api_contract.md`
-- `public_candidate_packet/<name>/packaging_contract.md`
+```text
+public_candidate_packet/<task-name>/
+  prd.md
+  public_api_contract.md
+  packaging_contract.md
 
-Private authoring and evaluation material belongs under an ignored/private
-oracle workspace, not in the candidate packet.
+authoring_private_oracle/<task-name>/
+  doc/
+  oracle/
+  docker/
+  validation/
+```
 
-Reference implementations, scorer scripts, candidate outputs, and score reports
-must stay out of `main` unless the repository is explicitly converted into a
-validation package.
+During live candidate evaluation, candidates must receive only the
+`public_candidate_packet`. They must not see filtered tests, scorer/harness
+logic, source implementation, reference solutions, reports, or other candidate
+outputs.
 
-See `doc/e2e_full_project_pipeline.md` for the source-selection-to-eval
-workflow.
-
-## Current Direction
-
-Bitcask remains useful as a clean candidate handoff and no-gap evidence, but it
-must not be claimed as `core_strong`. Xitkit is source-grounded and executable,
-but initial validation also produced no observed unit/system gap. The prior
-Marmite and Jupytext handoff packets have been archived under
-`archive/no-gap-observed/` because validation did not show positive unit/system
-gap evidence. Their active task directories now keep source-grounding material
-and rewrite notes only. The active construction path is:
-
-1. Keep Bitcask and xitkit recorded as candidate/no-gap-observed evidence.
-2. Do not merge validation assets into `main`.
-3. Treat archived Marmite and Jupytext packets as evidence/history, not current
-   handoff deliverables.
-4. Redesign Marmite and Jupytext from public behavior inventory, capability
-   modules, state/artifact models, and system invariants before drafting new
-   PRDs or rubrics.
-5. Build and validate `copier-realrepo-001` as the next active candidate. Its
-   current `main` packet is a draft handoff, not a confirmed or core-strong
-   benchmark.
-6. For any new source repository after Copier, default to the E2E full-project
-   flow: select a Python package with executable upstream tests, filter the
-   original tests by PRD derivability, validate the oracle on the checked source
-   implementation, then run isolated code-agent candidates.
-
-For AI reviewers, start from `PROJECT_CONTEXT.md`, `INDEX.md`, and `AGENTS.md`.
+See `doc/e2e_full_project_pipeline.md` and `doc/repo_pool_alignment.md` for the
+current process.

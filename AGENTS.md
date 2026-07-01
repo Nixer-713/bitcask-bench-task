@@ -35,19 +35,18 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 
 ## 2.1 Task Selection Roadmap
 
-- Current roadmap state: `bitcask`, `xitkit`, `marmite`, and `jupytext` have
-  no-positive-gap or no-gap-observed evidence and no `core_strong` claim.
-- Prior Marmite and Jupytext PRD/rubric packets are archived under
-  `archive/no-gap-observed/`; their active task directories are reset for
-  redesign and keep source-grounding plus rewrite notes only.
-- The active work is to redesign Marmite and Jupytext from public behavior
-  inventory, capability modules, state/artifact models, and system invariants
-  before drafting new PRDs or rubrics.
-- Do not start another source repository unless Marmite/Jupytext rewrite is
-  rejected with concrete reasoning or the user explicitly changes priority.
-- `copier-realrepo-001` is the active draft handoff for the current source-task
-  generation pass. Keep validation assets on a validation branch and do not
-  claim `core_strong` without positive unit/system gap evidence.
+- Check upstream Bmk-dev `REPO_POOL.md` before starting any new source
+  repository. Repositories listed there as qualified, in progress, pending,
+  retired, or outside scope are not available for local development unless the
+  user explicitly overrides that rule.
+- `bitcask`, `xitkit`, and `marmite` task deliverables were removed from this
+  branch because REPO_POOL marks their sources as non-Python/out-of-scope or
+  retired.
+- `copier-realrepo-001` and `jupytext-realrepo-002` are legacy mini-product
+  draft artifacts. Do not claim either as `core_strong` or confirmed.
+- `doit-realrepo-001` is the current E2E-style local artifact. Keep
+  `public_candidate_packet/doit-realrepo-001/` candidate-visible and
+  `authoring_private_oracle/doit-realrepo-001/` private/oracle-only.
 - For future source selection, default to `e2e_full_project_task`: candidates
   receive only `public_candidate_packet/<name>/`, while filtered upstream tests,
   scorer/harness assets, source evidence, and validation reports stay private.
