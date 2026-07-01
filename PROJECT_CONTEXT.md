@@ -64,16 +64,25 @@ gap-producing.
 1. Check Bmk-dev `REPO_POOL.md` before selecting any source repository.
 2. Do not start work on repositories listed as qualified, in progress, pending,
    retired, or outside scope unless the user explicitly overrides the pool.
-3. Prefer the full-project workflow:
+3. Use `skills/e2e-00-task-synthesizer/SKILL.md` as the main orchestrator. It
+   dispatches the installed/repository stage skills from candidate selection
+   through judging.
+4. Prefer the full-project workflow:
    - source evidence and capability decomposition;
    - boundary decisions;
    - public PRD/API/packaging packet;
    - filtered upstream oracle;
    - original/source validation;
    - isolated candidate evaluation.
-4. Keep live evaluation packets clean: candidates see only
+5. Keep live evaluation packets clean: candidates see only
    `public_candidate_packet/<task-name>/`.
-5. Interpret results conservatively. Candidate 100/100 is no-gap evidence, not
+6. Keep task lifecycle directories distinct:
+   - `wip/` for active synthesis;
+   - `tasks/` for qualified tasks;
+   - `candidate-runs/`, `results/`, and `logs/` for ignored local runtime
+     artifacts;
+   - `archive/` for historical or retired material.
+7. Interpret results conservatively. Candidate 100/100 is no-gap evidence, not
    a reason to add hidden requirements.
 
 ## Review Questions

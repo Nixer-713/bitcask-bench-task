@@ -50,6 +50,12 @@ Scope: this repo contains benchmark task deliverables derived from open-source p
 - For future source selection, default to `e2e_full_project_task`: candidates
   receive only `public_candidate_packet/<name>/`, while filtered upstream tests,
   scorer/harness assets, source evidence, and validation reports stay private.
+- The local SpecBench pipeline is versioned under `skills/e2e-*`. Use
+  `skills/e2e-00-task-synthesizer/SKILL.md` as the orchestrator, then follow
+  `e2e-01` through `e2e-04` in order.
+- Track active synthesis in `wip/<task-id>/`. Move only qualified tasks into
+  `tasks/<task-id>/`. Keep candidate runs, logs, and result tables out of
+  candidate-visible packets.
 
 ## 2.2 Case-Like Difficulty Requirements
 

@@ -1,0 +1,38 @@
+{
+  "suite": "local_specbench_workspace",
+  "version": "2026-07-01",
+  "status": "initialized",
+  "active_direction": {
+    "summary": "Reuse the Bmk-dev SpecBench workflow for full multi-file reconstruction benchmark development.",
+    "candidate_visibility_rule": "Candidate agents may see only the public packet/spec for a task.",
+    "candidate_must_not_see": [
+      "source repositories",
+      "hidden tests",
+      "oracle fixtures",
+      "reference implementations",
+      "previous model attempts",
+      "trace logs",
+      "score reports"
+    ]
+  },
+  "layout": {
+    "skills_root": "skills",
+    "wip_root": "wip",
+    "qualified_tasks_root": "tasks",
+    "candidate_runs_root": "candidate-runs",
+    "results_root": "results",
+    "logs_root": "logs",
+    "archive_root": "archive",
+    "legacy_mini_tasks_root": "task",
+    "legacy_public_packets_root": "public_candidate_packet",
+    "legacy_private_oracle_root": "authoring_private_oracle"
+  },
+  "active_skills": [
+    "e2e-00-task-synthesizer",
+    "e2e-01-candidate-selector",
+    "e2e-02-spec-writer",
+    "e2e-03-test-filter",
+    "e2e-04-task-judge"
+  ],
+  "repo_pool_policy": "Check upstream Bmk-dev REPO_POOL.md before starting a source repository. Do not duplicate qualified, in-progress, pending, retired, or out-of-scope sources without explicit user override."
+}

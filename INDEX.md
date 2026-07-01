@@ -13,11 +13,29 @@ not an implementation repository.
   workflow.
 - `doc/repo_pool_alignment.md`: current Bmk-dev REPO_POOL interpretation and
   cleanup record.
+- `MANIFEST.json`: local workspace layout and active skill list.
+- `skills/README.md`: repository-maintained E2E skill copies and install notes.
 - `CANDIDATES.md`: source selection and retirement log for the local pipeline.
 - `wip/_template/PIPELINE_STATE.md`: reusable state-machine seed for new
   SpecBench-style task candidates.
+- `tasks/README.md`: destination for qualified tasks.
+- `candidate-runs/README.md`, `results/README.md`, `logs/README.md`: ignored
+  runtime output directories.
 - `public_candidate_packet/README.md`: candidate-visible E2E packet boundary.
 - `authoring_private_oracle/README.md`: private oracle/evaluation boundary.
+
+## Pipeline Skill Index
+
+The main orchestrator is `skills/e2e-00-task-synthesizer/SKILL.md`. It routes
+the full workflow through:
+
+1. `skills/e2e-01-candidate-selector/SKILL.md`
+2. `skills/e2e-02-spec-writer/SKILL.md`
+3. `skills/e2e-03-test-filter/SKILL.md`
+4. cleanroom candidate evaluation
+5. `skills/e2e-04-task-judge/SKILL.md`
+
+Runtime copies are installed under `/Users/nixer/.codex/skills/e2e-*`.
 
 ## Active And Historical Artifacts
 

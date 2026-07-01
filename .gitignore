@@ -5,6 +5,18 @@ __pycache__/
 # Local source checkout and candidate model runs.
 bitcask-main/
 runs/
+repo-pool/
+benchmarks/
+source-checkouts/
+
+# SpecBench runtime outputs. Keep only directory README files tracked.
+candidate-runs/*
+!candidate-runs/README.md
+results/*
+!results/README.md
+logs/*
+!logs/README.md
+validation/
 
 # E2E full-project benchmark private artifacts.
 # Public candidate packets may be committed intentionally, but private oracle

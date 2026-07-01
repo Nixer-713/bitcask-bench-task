@@ -74,7 +74,9 @@ current process.
 
 ## Local Pipeline Setup
 
-The local Codex environment has the Bmk-dev stage skills installed as:
+The local Codex environment and this repository both carry the Bmk-dev stage
+skills. The main orchestrator is installed and versioned as
+`e2e-00-task-synthesizer`; it is the skill that chains Stage 1 through Stage 5.
 
 - `e2e-00-task-synthesizer`
 - `e2e-01-candidate-selector`
@@ -82,5 +84,29 @@ The local Codex environment has the Bmk-dev stage skills installed as:
 - `e2e-03-test-filter`
 - `e2e-04-task-judge`
 
+Repository copies live under `skills/`. Runtime copies live under
+`/Users/nixer/.codex/skills/`.
+
 New candidates should start from `wip/_template/PIPELINE_STATE.md` and append
 their selection or retirement result to `CANDIDATES.md`.
+
+After editing a repository skill, run:
+
+```bash
+scripts/sync_e2e_skills.sh
+```
+
+Then restart Codex so the skill list refreshes.
+
+## Workspace Layout
+
+| Path | Purpose |
+| --- | --- |
+| `skills/` | Versioned E2E pipeline skill copies for team review and iteration |
+| `wip/` | Active task synthesis state, one directory per in-progress task |
+| `tasks/` | Qualified tasks only, after the judge marks them complete |
+| `candidate-runs/` | Ignored local candidate run outputs |
+| `results/` | Ignored local aggregate reports |
+| `logs/` | Ignored local pipeline logs |
+| `archive/` | Historical, retired, or no-gap materials |
+| `task/` | Legacy mini-product task drafts retained for reference only |
